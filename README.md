@@ -1,12 +1,17 @@
-# Raspberry Pi AirPlay‑to‑Snapcast Server
+# Snpcast-pi
 
 Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams (from iOS/macOS) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
+
+The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
+
+
+## Software
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
 | Snapserver     | **0.31.0**  + built‑in Snapclient                          |
 | Shairport‑Sync | **4.3.x** (Debian Bookworm, AirPlay 1)                     |
-| DAC overlay    | **HiFiBerry Amp4** *(swap for your own overlay if needed)* |
+| Device overlay    | **HiFiBerry Amp4 Pro** *(swap for your own overlay if needed)* |
 | Web UI         | **Snapweb** – grouping, volume & status                    |
 
 ---
@@ -16,8 +21,8 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams
 | Part               | Notes                                                |
 | ------------------ | ---------------------------------------------------- |
 | **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
-| **HiFiBerry Amp4** | Plays both 44.1 kHz (AirPlay) & 48 kHz sources       |
-| **Power Supply**   | Amp4 is powered via the Pi’s GPIO header             |
+| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       |
+| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
 
 ---
 
@@ -32,6 +37,8 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams
    * *(Optional)* enter Wi‑Fi credentials
 4. Flash the card, insert it, boot the Pi.
 
+### SSh into the pi 
+
 ```bash
 ssh pi@audiopi.local
 sudo apt update && sudo apt full-upgrade -y
@@ -39,24 +46,51 @@ sudo apt update && sudo apt full-upgrade -y
 
 ---
 
-## 2 · Enable the DAC overlay (Amp 4 example)
+## 2 · Activate Drivers (HIFI Berry Amp 4 example)
+
+Based on hifi berry docs: https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/
 
 ```bash
 sudo nano /boot/firmware/config.txt
 ```
 
-Add **at the very end**:
 
-```ini
-dtoverlay=hifiberry-dacplus-std
-dtparam=audio=off
+
+**Remove** the line: 
+```
+dtparam=audio=on
 ```
 
-Reboot, then verify:
+Add **at instead**:
+
+```ini
+dtoverlay=hifiberry-amp4pro
+```
+Scorll down and find this line:
+
+```
+dtoverlay=vc4-kms-v3d
+```
+
+add "noaudio" and makesure it looks exactly like this:
+
+```
+dtoverlay=vc4-kms-v3d,noaudio
+```
+
+
+
+Reboot, 
+
+```
+sudo rebbot
+```
+SSH back in,then verify:
 
 ```bash
 aplay -l   # must list "sndrpihifiberry"
 ```
+
 
 ---
 
