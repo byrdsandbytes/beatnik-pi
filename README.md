@@ -1,1 +1,243 @@
-# snapcast-pi
+# Raspberry Pi AirPlay‑to‑Snapcast Server
+
+Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams (from iOS/macOS) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
+
+| Component      | Version / Role                                             |
+| -------------- | ---------------------------------------------------------- |
+| Snapserver     | **0.31.0**  + built‑in Snapclient                          |
+| Shairport‑Sync | **4.3.x** (Debian Bookworm, AirPlay 1)                     |
+| DAC overlay    | **HiFiBerry Amp4** *(swap for your own overlay if needed)* |
+| Web UI         | **Snapweb** – grouping, volume & status                    |
+
+---
+
+## Hardware
+
+| Part               | Notes                                                |
+| ------------------ | ---------------------------------------------------- |
+| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
+| **HiFiBerry Amp4** | Plays both 44.1 kHz (AirPlay) & 48 kHz sources       |
+| **Power Supply**   | Amp4 is powered via the Pi’s GPIO header             |
+
+---
+
+## 1 · Flash OS & SSH into the Pi
+
+1. **Download** [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
+2. Select **Raspberry Pi OS Lite (64‑bit, Bookworm)**.
+3. In *OS customisation*:
+
+   * **Enable SSH**
+   * **Hostname:** `audiopi`
+   * *(Optional)* enter Wi‑Fi credentials
+4. Flash the card, insert it, boot the Pi.
+
+```bash
+ssh pi@audiopi.local
+sudo apt update && sudo apt full-upgrade -y
+```
+
+---
+
+## 2 · Enable the DAC overlay (Amp 4 example)
+
+```bash
+sudo nano /boot/firmware/config.txt
+```
+
+Add **at the very end**:
+
+```ini
+dtoverlay=hifiberry-dacplus-std
+dtparam=audio=off
+```
+
+Reboot, then verify:
+
+```bash
+aplay -l   # must list "sndrpihifiberry"
+```
+
+---
+
+## 3 · Install Snapcast 0.31
+
+```bash
+cd /tmp
+wget https://github.com/badaix/snapcast/releases/download/v0.31.0/\
+snapserver_0.31.0-1_arm64_bookworm.deb \
+snapclient_0.31.0-1_arm64_bookworm.deb
+
+sudo apt install ./snapserver_* ./snapclient_* -y
+```
+
+---
+
+## 4 · Install Shairport‑Sync (AirPlay 1)
+
+```bash
+sudo apt install shairport-sync -y   # v4.3.x
+```
+
+> **Keep its systemd service disabled** – Snapserver will spawn its own instance.
+
+---
+
+## 5 · Configure Snapserver
+
+```bash
+sudo nano /etc/snapserver.conf
+```
+
+```ini
+[stream]
+source       = airplay:///usr/bin/shairport-sync?name=AirPlay&port=5000
+sampleformat = 44100:16:2
+codec        = flac
+buffer       = 300      # server buffer (ms)
+chunk_ms     = 26
+```
+
+---
+
+## 6 · Point Snapclient at the DAC
+
+```bash
+sudo usermod -aG audio snapclient   # grant ALSA access
+
+sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
+[snapclient]
+host         = localhost
+sound_device = hw:0,0        # change if card index differs
+buffer       = 80            # client buffer (ms)
+EOF
+```
+
+---
+
+## 7 · Start the services
+
+```bash
+sudo systemctl enable --now snapserver snapclient
+```
+
+Live logs:
+
+```bash
+journalctl -u snapserver -f   # “… starting /usr/bin/shairport-sync …”
+journalctl -u snapclient -f   # “… Connected to … hw:0,0 …”
+```
+
+---
+
+## 8 · Snapweb UI
+
+Open **[http://audiopi.local:1780](http://audiopi.local:1780)**
+
+* **Streams** – should list *AirPlay*
+* **Clients** – should list *audiopi* with live meters & volume
+
+---
+
+## 9 · AirPlay test
+
+* **macOS / iTunes** → 🔊 menu → **AirPlay** (multi‑room capable)
+* **iPhone / iPad** → Control Centre → **AirPlay** (single room)
+
+Snapweb flips to *playing* and audio starts after ≈ 0.4 s.
+
+---
+
+## 10 · Add more rooms
+
+On another Pi (e.g. Pi Zero 2 W + MiniAmp):
+
+```bash
+sudo apt install snapclient -y          # or install the v0.31 .deb
+sudo snapclient -h audiopi.local        # one‑shot test
+sudo systemctl enable --now snapclient
+```
+
+In **Snapweb → Clients** drag the new client onto the default group tile and set its volume—the room starts in perfect sync.
+
+---
+
+### Tweaking latency
+
+| Parameter                          | Effect             | Safe Wi‑Fi minimum |
+| ---------------------------------- | ------------------ | ------------------ |
+| `[stream] buffer` (server)         | Startup delay      | **250 ms**         |
+| `buffer` in `/etc/snapclient.conf` | Per‑client cushion | **50 ms**          |
+
+---
+
+
+## 11 · Add a Pi Zero 2 W + HiFiBerry MiniAmp 
+
+### 11.1 Flash & first boot
+
+*Imager settings*
+
+```
+OS           : Raspberry Pi OS Lite (32‑bit, Bookworm)
+Hostname     : pizero-mini          # must be unique
+SSH          : enabled
+Wi‑Fi        : your credentials
+```
+
+```bash
+ssh pi@pizero-mini.local
+sudo passwd pi
+sudo apt update && sudo apt full-upgrade -y
+```
+
+### 11.2 Enable the MiniAmp overlay
+
+```bash
+sudo nano /boot/firmware/config.txt
+# add:
+dtoverlay=hifiberry-dac           # MiniAmp overlay
+```
+
+Reboot and confirm `aplay -l` shows **sndrpihifiberry**.
+
+### 11.3 Install Snapclient 0.31
+
+```bash
+cd /tmp
+wget https://github.com/badaix/snapcast/releases/download/v0.31.0/\
+snapclient_0.31.0-1_armhf_bookworm.deb
+sudo apt install ./snapclient_* -y
+```
+
+### 11.4 Create a dedicated config
+
+```bash
+sudo usermod -aG audio snapclient
+
+sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
+[snapclient]
+host         = audiopi.local   # master Pi
+sound_device = hw:0,0          # card index from `aplay -l`
+buffer       = 120             # Wi‑Fi cushion (ms)
+EOF
+```
+
+### 11.5 Enable & start
+
+```bash
+sudo systemctl enable --now snapclient
+journalctl -u snapclient -f   # look for “Connected to audiopi.local:1704 …”
+```
+
+### 11.6 Join the group
+
+1. Open **Snapweb → Clients** on the main Pi.
+2. Drag **pizero-mini** onto the default group tile.
+3. Adjust its volume slider — it plays in sync immediately.
+
+> Repeat for as many extra Pis as you like. Just give each one a **unique hostname** and point `host = audiopi.local` (or your server’s IP) in `/etc/snapclient.conf`.
+
+---
+
+Happy listening! 🎶
