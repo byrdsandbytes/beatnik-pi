@@ -4,6 +4,8 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams
 
 The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
 
+**NOTE**: This is a basic setup to stream music via airplay. You ca add more streams follwing the docs here: https://github.com/badaix/snapcast
+
 
 ## Software
 
@@ -16,7 +18,8 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 ---
 
-## Hardware
+## Hardware 
+### Server
 
 | Part               | Notes                                                |
 | ------------------ | ---------------------------------------------------- |
@@ -24,7 +27,17 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
 
+### Client
+
+| Part               | Notes                                                |
+| ------------------ | ---------------------------------------------------- |
+| **Pi Zero 2 WH**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
+| **HifiBerry Mini Amp** | Just Plug it on your GPIOs       |
+| **Power Supply**   | Amp is powered via  GPIO            |
+
 ---
+
+
 
 ## 1 · Flash OS & SSH into the Pi
 
@@ -34,8 +47,8 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
    * **Enable SSH**
    * **Hostname:** `audiopi`
-   * *(Optional)* enter Wi‑Fi credentials
-4. Flash the card, insert it, boot the Pi.
+   * *(Optional)* enter Wi‑Fi credentials if you plan using Wi-Fi
+4. Flash the card, insert it, boot up the Pi.
 
 ### SSh into the pi 
 
@@ -61,7 +74,7 @@ sudo nano /boot/firmware/config.txt
 dtparam=audio=on
 ```
 
-Add **at instead**:
+Add **instead**:
 
 ```ini
 dtoverlay=hifiberry-amp4pro
@@ -126,10 +139,10 @@ sudo nano /etc/snapserver.conf
 ```ini
 [stream]
 source       = airplay:///usr/bin/shairport-sync?name=AirPlay&port=5000
-sampleformat = 44100:16:2
-codec        = flac
-buffer       = 300      # server buffer (ms)
-chunk_ms     = 26
+# sampleformat = 44100:16:2 #(optional)
+# codec        = flac #(optional)
+# buffer       = 300  #(optional)    # server buffer (ms)
+# chunk_ms     = 26  #(optional)
 ```
 
 ---
@@ -143,7 +156,7 @@ sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
 [snapclient]
 host         = localhost
 sound_device = hw:0,0        # change if card index differs
-buffer       = 80            # client buffer (ms)
+# buffer       = 80            # optional client buffer (ms)
 EOF
 ```
 
@@ -175,9 +188,8 @@ Open **[http://audiopi.local:1780](http://audiopi.local:1780)**
 
 ## 9 · AirPlay test
 
-* **macOS / iTunes** → 🔊 menu → **AirPlay** (multi‑room capable)
-* **iPhone / iPad** → Control Centre → **AirPlay** (single room)
-
+* **macOS / appple  music**  → **AirPlay** 
+* **iPhone / iPad** → apple music → **AirPlay** 
 Snapweb flips to *playing* and audio starts after ≈ 0.4 s.
 
 ---
@@ -186,29 +198,7 @@ Snapweb flips to *playing* and audio starts after ≈ 0.4 s.
 
 On another Pi (e.g. Pi Zero 2 W + MiniAmp):
 
-```bash
-sudo apt install snapclient -y          # or install the v0.31 .deb
-sudo snapclient -h audiopi.local        # one‑shot test
-sudo systemctl enable --now snapclient
-```
-
-In **Snapweb → Clients** drag the new client onto the default group tile and set its volume—the room starts in perfect sync.
-
----
-
-### Tweaking latency
-
-| Parameter                          | Effect             | Safe Wi‑Fi minimum |
-| ---------------------------------- | ------------------ | ------------------ |
-| `[stream] buffer` (server)         | Startup delay      | **250 ms**         |
-| `buffer` in `/etc/snapclient.conf` | Per‑client cushion | **50 ms**          |
-
----
-
-
-## 11 · Add a Pi Zero 2 W + HiFiBerry MiniAmp 
-
-### 11.1 Flash & first boot
+### 10.1 Flash & first boot
 
 *Imager settings*
 
@@ -225,7 +215,7 @@ sudo passwd pi
 sudo apt update && sudo apt full-upgrade -y
 ```
 
-### 11.2 Enable the MiniAmp overlay
+### 10.2 Enable the MiniAmp overlay
 
 ```bash
 sudo nano /boot/firmware/config.txt
@@ -235,7 +225,7 @@ dtoverlay=hifiberry-dac           # MiniAmp overlay
 
 Reboot and confirm `aplay -l` shows **sndrpihifiberry**.
 
-### 11.3 Install Snapclient 0.31
+### 10.3 Install Snapclient 0.31
 
 ```bash
 cd /tmp
@@ -244,7 +234,7 @@ snapclient_0.31.0-1_armhf_bookworm.deb
 sudo apt install ./snapclient_* -y
 ```
 
-### 11.4 Create a dedicated config
+### 10.4 Create a dedicated config
 
 ```bash
 sudo usermod -aG audio snapclient
@@ -257,14 +247,14 @@ buffer       = 120             # Wi‑Fi cushion (ms)
 EOF
 ```
 
-### 11.5 Enable & start
+### 10.5 Enable & start
 
 ```bash
 sudo systemctl enable --now snapclient
 journalctl -u snapclient -f   # look for “Connected to audiopi.local:1704 …”
 ```
 
-### 11.6 Join the group
+### 10.6 Join the group
 
 1. Open **Snapweb → Clients** on the main Pi.
 2. Drag **pizero-mini** onto the default group tile.
