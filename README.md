@@ -119,8 +119,9 @@ sudo apt install ./snapserver_* ./snapclient_* -y
 ```
 
 ---
+## 4 Install Steams (at least 1)
 
-## 4 · Install Shairport‑Sync (AirPlay 1)
+### 4.1 · Install Shairport‑Sync (AirPlay)
 
 ```bash
 sudo apt install shairport-sync -y   # v4.3.x
@@ -130,24 +131,61 @@ sudo apt install shairport-sync -y   # v4.3.x
 
 ---
 
+### 4.2 . librespot using raspotify (Spotify Connect - expermintal)
+I had some issues with installing librespot on debian boowkworm.
+To install libresport withouht issues we will workaround using raspotify & afteerwards disable it. 
+
+Install it like discribed here: https://github.com/dtcooper/raspotify
+
+Installation script
+```bash
+sudo apt-get -y install curl && curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
+```
+
+Disable raspotify
+
+
+```bash
+sudo systemctl disable raspotify
+sudo systemctl stop raspotify
+```
+
+
+
 ## 5 · Configure Snapserver
 
 ```bash
 sudo nano /etc/snapserver.conf
 ```
+In the strream section add your streams as follows:
+### 5.1 Airplay 1 (uses port 5000)
+More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
+```ini
+[stream]
+source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000
+```
+### 5.2 Airplay 2 (uses port 7000)
+More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
+```ini
+[stream]
+source = airplay:///shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
+```
+
+Find options for device names etc here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md
+
+### 5.3 Spotify
 
 ```ini
 [stream]
-source       = airplay:///usr/bin/shairport-sync?name=AirPlay&port=5000
-# sampleformat = 44100:16:2 #(optional)
-# codec        = flac #(optional)
-# buffer       = 300  #(optional)    # server buffer (ms)
-# chunk_ms     = 26  #(optional)
+source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
 ```
+
+
+
 
 ---
 
-## 6 · Point Snapclient at the DAC
+## 6 · Point Snapclient at the AMP
 
 ```bash
 sudo usermod -aG audio snapclient   # grant ALSA access
