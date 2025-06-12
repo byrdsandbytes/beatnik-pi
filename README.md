@@ -4,7 +4,7 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams
 
 The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
 
-**NOTE**: This is a basic setup to stream music via airplay. You ca add more streams follwing the docs here: https://github.com/badaix/snapcast
+**NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
 
 
 ## Software
@@ -185,7 +185,7 @@ source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
 
 ---
 
-## 6 · Point Snapclient at the AMP
+## 6 · Point Snapclient at the AMP 
 
 ```bash
 sudo usermod -aG audio snapclient   # grant ALSA access
@@ -303,3 +303,9 @@ journalctl -u snapclient -f   # look for “Connected to audiopi.local:1704 …�
 ---
 
 Happy listening! 🎶
+
+## Commands cheat sheet
+
+
+
+
