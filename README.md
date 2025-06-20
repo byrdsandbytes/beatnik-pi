@@ -1,4 +1,4 @@
-# Snapcast-pi
+# beatnik-pi
 
 Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams (from iOS/macOS) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
 
