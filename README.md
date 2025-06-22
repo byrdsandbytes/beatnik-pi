@@ -4,9 +4,12 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams
 
 The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
 
-**NOTE**: This repo will be renamed beatnik-pi soon.
 
 **NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
+
+## Architecture
+![Beatnik Architecture](docs/images/beatnik_architecture.png)
+
 
 
 ## Software
