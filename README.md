@@ -116,9 +116,8 @@ aplay -l   # must list "sndrpihifiberry"
 
 ```bash
 cd /tmp
-wget https://github.com/badaix/snapcast/releases/download/v0.31.0/\
-snapserver_0.31.0-1_arm64_bookworm.deb \
-snapclient_0.31.0-1_arm64_bookworm.deb
+wget https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_bookworm.deb   https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
+
 
 sudo apt install ./snapserver_* ./snapclient_* -y
 ```
