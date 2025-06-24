@@ -24,7 +24,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 ---
 
 ## Hardware 
-### Server
+### Beatnik Pi Server
 
 | Part               | Notes                                                |
 | ------------------ | ---------------------------------------------------- |
@@ -32,7 +32,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
 
-### Client
+### Beantik Pi Client
 
 | Part               | Notes                                                |
 | ------------------ | ---------------------------------------------------- |
@@ -50,15 +50,15 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 2. Select **Raspberry Pi OS Lite (64‑bit, Bookworm)**.
 3. In *OS customisation*:
 
-   * **Enable SSH**
-   * **Hostname:** `audiopi`
+   * **Enable SSH** and add your credentials (eg. user: beatnik, pw: changeMe)
+   * **Hostname:** `beatnik-server`
    * *(Optional)* enter Wi‑Fi credentials if you plan using Wi-Fi
 4. Flash the card, insert it, boot up the Pi.
 
 ### SSh into the pi 
 
 ```bash
-ssh pi@audiopi.local
+ssh beatnik@beatnik-server.local
 sudo apt update && sudo apt full-upgrade -y
 ```
 
@@ -284,7 +284,7 @@ sudo usermod -aG audio snapclient
 
 sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
 [snapclient]
-host         = audiopi.local   # master Pi
+host         = beatnik-server.local   # hostname of beatnik server pi
 sound_device = hw:0,0          # card index from `aplay -l`
 buffer       = 120             # Wi‑Fi cushion (ms)
 EOF
@@ -294,7 +294,7 @@ EOF
 
 ```bash
 sudo systemctl enable --now snapclient
-journalctl -u snapclient -f   # look for “Connected to audiopi.local:1704 …”
+journalctl -u snapclient -f   # look for “Connected to beatnik-server.local:1704 …”
 ```
 
 ### 10.6 Join the group
@@ -303,7 +303,7 @@ journalctl -u snapclient -f   # look for “Connected to audiopi.local:1704 …�
 2. Drag **pizero-mini** onto the default group tile.
 3. Adjust its volume slider — it plays in sync immediately.
 
-> Repeat for as many extra Pis as you like. Just give each one a **unique hostname** and point `host = audiopi.local` (or your server’s IP) in `/etc/snapclient.conf`.
+> Repeat for as many extra Pis as you like. Just give each one a **unique hostname** and point `host = beatnik-server.local` (or your server’s IP) in `/etc/snapclient.conf`.
 
 ---
 
