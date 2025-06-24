@@ -133,6 +133,10 @@ sudo apt install shairport-sync -y   # v4.3.x
 
 > **Keep its systemd service disabled** – Snapserver will spawn its own instance.
 
+```bash
+sudo systemctl disable shairport-sync.service
+``
+
 ---
 
 ### 4.2 . librespot using raspotify (Spotify Connect - expermintal)
