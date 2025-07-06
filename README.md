@@ -135,7 +135,7 @@ sudo apt install shairport-sync -y   # v4.3.x
 
 ```bash
 sudo systemctl disable shairport-sync.service
-``
+```
 
 ---
 
