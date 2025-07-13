@@ -16,6 +16,18 @@ sudo nano /boot/firmware/config.txt
 dtparam=audio=on
 ```
 
+Scorll down and find this line:
+
+```
+dtoverlay=vc4-kms-v3d
+```
+
+add "noaudio" and makesure it looks exactly like this:
+
+```
+dtoverlay=vc4-kms-v3d,noaudio
+```
+
 Reboot the pi:
 
 ```bash
@@ -28,7 +40,7 @@ grep -a . /proc/device-tree/hat/*
 ```
 
 Should list your HAT something like this:
-```bash
+```ini
 /proc/device-tree/hat/name:hat
 /proc/device-tree/hat/product:Raspberry Pi DigiAMP+
 /proc/device-tree/hat/product_id:0x0104
@@ -45,8 +57,8 @@ aplay -l
 
 should list something like this:
 
-```
-card 1: DigiAMP [RPi DigiAMP+], device 0: Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0 [Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0]
+```ini
+card 0: DigiAMP [RPi DigiAMP+], device 0: Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0 [Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0]
   Subdevices: 1/1
   Subdevice #0: subdevice #0
 ```
