@@ -275,12 +275,11 @@ Reboot and confirm `aplay -l` shows **sndrpihifiberry**.
 
 ```bash
 cd /tmp
-wget https://github.com/badaix/snapcast/releases/download/v0.31.0/\
-snapclient_0.31.0-1_armhf_bookworm.deb
+wget https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
 sudo apt install ./snapclient_* -y
 ```
 
-### 10.4 Create a dedicated config
+### 10.4 Create a snapclient config
 
 ```bash
 sudo usermod -aG audio snapclient
