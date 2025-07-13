@@ -1,6 +1,6 @@
 # beatnik-pi
 
-Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** streams (from iOS/macOS) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
+Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** && ** **Spotify Connect** streams (from smartphones and Laptops) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
 
 The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
 
@@ -143,14 +143,14 @@ sudo systemctl disable shairport-sync.service
 I had some issues with installing librespot on debian boowkworm.
 To install libresport withouht issues we will workaround using raspotify & afteerwards disable it. 
 
-Install it like discribed here: https://github.com/dtcooper/raspotify
 
-Installation script
+
+Run the installation script:
 ```bash
 sudo apt-get -y install curl && curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 ```
 
-Disable raspotify
+Disable raspotify: (snapcast will spawn its own instance)
 
 
 ```bash
@@ -166,6 +166,8 @@ sudo systemctl stop raspotify
 sudo nano /etc/snapserver.conf
 ```
 In the strream section add your streams as follows:
+(if you have trouble setting up your streams consult the sample snapserver.conf in this repo docs/sample-configs/sample-snapserver.conf)
+
 ### 5.1 Airplay 1 (uses port 5000)
 More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
 ```ini
@@ -206,6 +208,40 @@ sound_device = hw:0,0        # change if card index differs
 EOF
 ```
 
+### 6.1 (OPTIONAL) Check your card number and add it to the conf. 
+Check for your soundcard number:
+```bash
+ aplay -l 
+```
+
+Should list your soundcard like this:
+```ini
+**** List of PLAYBACK Hardware Devices ****
+card 0: vc4hdmi [vc4-hdmi], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: DigiAMP [RPi DigiAMP+], device 0: Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0 [Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+
+```
+
+In this example our soundcard is in slot 1 and we want to use that. So we change the snapclient config file:
+
+```bash
+sudo nano /etc/snapclient.conf
+```
+
+Change the line here:
+```bash
+sound_device = hw:0,0        # change if card index differs
+```
+Like this:
+```bash
+sound_device = hw:1,0        
+```
+
+
 ---
 
 ## 7 · Start the services
@@ -214,11 +250,18 @@ EOF
 sudo systemctl enable --now snapserver snapclient
 ```
 
-Live logs:
+Reboot the pi:
 
 ```bash
-journalctl -u snapserver -f   # “… starting /usr/bin/shairport-sync …”
+sudo reboot
+```
+
+Check live logs:
+
+```bash
+journalctl -u snapserver -f 
 journalctl -u snapclient -f   # “… Connected to … hw:0,0 …”
+
 ```
 
 ---
@@ -260,6 +303,8 @@ ssh pi@pizero-mini.local
 sudo passwd pi
 sudo apt update && sudo apt full-upgrade -y
 ```
+
+(Depending on your RAM this could take a while)
 
 ### 10.2 Enable the MiniAmp overlay
 
