@@ -101,7 +101,7 @@ dtoverlay=vc4-kms-v3d,noaudio
 Reboot, 
 
 ```
-sudo rebbot
+sudo reboot
 ```
 SSH back in,then verify:
 
