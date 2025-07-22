@@ -266,7 +266,36 @@ journalctl -u snapclient -f   # “… Connected to … hw:0,0 …”
 
 ---
 
-## 8 · Snapweb UI
+## 8 · Beatnik Controller UI (selhosted)
+For more information check the controller repo here: https://github.com/byrdsandbytes/beatnik-controller
+
+### Prequesites
+Docker & docker compose. If you have trouble setting up docker compose check our guide: [DOCKER_INSTALLATION.md](https://github.com/byrdsandbytes/beatnik-controller/docs/DOCKER_INSTALLATION.md)
+
+
+
+### 8.1 Install using docker compose
+
+Clone the repo:
+
+```bash
+git clone https://github.com/byrdsandbytes/beatnik-controller.git
+cd beatnik-controller
+```
+
+```bash
+docker compose up -d
+```
+
+This will build the Docker image and start the application in the background.
+
+### 8.2 Access the Application
+
+Open your web browser and navigate to `http://localhost:8181`, `http://beatnik-server.local:8181`  or `http://your-hostname.local:8181`. You should now see the Beatnik Controller interface.
+  
+
+
+### 8.4 (Optional find the classic snapwebclient UI here)
 
 Open **[http://audiopi.local:1780](http://audiopi.local:1780)**
 
@@ -337,7 +366,7 @@ buffer       = 120             # Wi‑Fi cushion (ms)
 EOF
 ```
 
-### 10.5 Enable & start
+### 10.5 Enable & start the client
 
 ```bash
 sudo systemctl enable --now snapclient
