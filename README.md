@@ -299,7 +299,7 @@ Open your web browser and navigate to `http://localhost:8181`, `http://beatnik-s
 
 ### 8.4 (Optional find the classic snapwebclient UI here)
 
-Open **[http://audiopi.local:1780](http://audiopi.local:1780)**
+Open **[http://beatnik-server.local:1780](http://beatnik-server.local:1780)**
 
 * **Streams** – should list *AirPlay*
 * **Clients** – should list *audiopi* with live meters & volume
