@@ -44,6 +44,30 @@ check_raspberry_pi() {
     fi
 }
 
+# Installation type selection
+select_installation_type() {
+    log_info "What would you like to install?"
+    echo "1) Full Beatnik Pi Server (Snapserver + Snapclient + AirPlay + Spotify)"
+    echo "2) Snapcast Client Only (connects to existing server)"
+    
+    while true; do
+        read -p "Enter your choice (1-2): " choice
+        case $choice in
+            1)
+                INSTALL_TYPE="server"
+                break
+                ;;
+            2)
+                INSTALL_TYPE="client"
+                break
+                ;;
+            *)
+                log_error "Invalid choice. Please enter 1 or 2."
+                ;;
+        esac
+    done
+}
+
 # Soundcard selection menu
 select_soundcard() {
     log_info "Please select your soundcard/HAT:"
@@ -51,10 +75,12 @@ select_soundcard() {
     echo "2) Raspberry Pi DAC+ (former IQAudio)"
     echo "3) Raspberry Pi DigiAmp+ (former IQAudio)"
     echo "4) HiFiBerry MiniAmp (for clients)"
-    echo "5) Other/Skip soundcard configuration"
+    echo "5) Built-in 3.5mm jack"
+    echo "6) USB Audio Device"
+    echo "7) Other/Skip soundcard configuration"
     
     while true; do
-        read -p "Enter your choice (1-5): " choice
+        read -p "Enter your choice (1-7): " choice
         case $choice in
             1)
                 SOUNDCARD="hifiberry-amp4pro"
@@ -77,12 +103,22 @@ select_soundcard() {
                 break
                 ;;
             5)
+                SOUNDCARD="builtin"
+                OVERLAY="dtparam=audio=on"
+                break
+                ;;
+            6)
+                SOUNDCARD="usb"
+                log_info "USB audio will be auto-detected. Make sure your USB audio device is connected."
+                break
+                ;;
+            7)
                 SOUNDCARD="skip"
                 log_warning "Skipping soundcard configuration. You'll need to configure it manually."
                 break
                 ;;
             *)
-                log_error "Invalid choice. Please enter 1-5."
+                log_error "Invalid choice. Please enter 1-7."
                 ;;
         esac
     done
@@ -99,7 +135,22 @@ configure_soundcard() {
     # Backup config.txt
     sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.backup.$(date +%Y%m%d_%H%M%S)
     
-    # Remove dtparam=audio=on if it exists
+    # Handle built-in audio differently
+    if [[ "$SOUNDCARD" == "builtin" ]]; then
+        # Enable built-in audio
+        if ! grep -q "^dtparam=audio=on" /boot/firmware/config.txt; then
+            echo "dtparam=audio=on" | sudo tee -a /boot/firmware/config.txt > /dev/null
+        fi
+        return
+    fi
+    
+    # Handle USB audio
+    if [[ "$SOUNDCARD" == "usb" ]]; then
+        log_info "USB audio configuration will be handled automatically."
+        return
+    fi
+    
+    # Remove dtparam=audio=on if it exists (for HAT configurations)
     sudo sed -i '/^dtparam=audio=on/d' /boot/firmware/config.txt
     
     # Add noaudio to vc4-kms-v3d if it exists
@@ -158,14 +209,24 @@ install_snapcast() {
     
     cd /tmp
     
-    # Download Snapcast packages
-    wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_bookworm.deb
-    wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
-    
-    # Install packages
-    sudo apt install ./snapserver_* ./snapclient_* -y
-    
-    log_success "Snapcast installed successfully"
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        # Download both server and client packages
+        wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_bookworm.deb
+        wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
+        
+        # Install packages
+        sudo apt install ./snapserver_* ./snapclient_* -y
+        
+        log_success "Snapcast server and client installed successfully"
+    else
+        # Download only client package
+        wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
+        
+        # Install package
+        sudo apt install ./snapclient_* -y
+        
+        log_success "Snapcast client installed successfully"
+    fi
 }
 
 # Install Shairport-Sync (AirPlay)
@@ -243,15 +304,41 @@ configure_snapclient() {
     # Add snapclient user to audio group
     sudo usermod -aG audio snapclient
     
+    # Get server hostname for client-only installations
+    if [[ "$INSTALL_TYPE" == "client" ]]; then
+        log_info "Enter the hostname or IP address of your Snapcast server:"
+        read -p "Server address: " SERVER_HOST
+        if [[ -z "$SERVER_HOST" ]]; then
+            log_warning "No server address provided. Using localhost (you can change this later in /etc/snapclient.conf)"
+            SERVER_HOST="localhost"
+        fi
+    else
+        SERVER_HOST="localhost"
+    fi
+    
+    # Detect the correct audio device
+    AUDIO_DEVICE="hw:0,0"
+    
+    # For USB audio, try to find the correct device
+    if [[ "$SOUNDCARD" == "usb" ]]; then
+        USB_DEVICE=$(aplay -l 2>/dev/null | grep -E "USB|Audio" | head -1 | sed -n 's/card \([0-9]\):.*device \([0-9]\):.*/hw:\1,\2/p')
+        if [[ -n "$USB_DEVICE" ]]; then
+            AUDIO_DEVICE="$USB_DEVICE"
+            log_info "Detected USB audio device: $AUDIO_DEVICE"
+        else
+            log_warning "USB audio device not found. Using default hw:0,0"
+        fi
+    fi
+    
     # Create snapclient configuration
-    sudo tee /etc/snapclient.conf > /dev/null <<'EOF'
+    sudo tee /etc/snapclient.conf > /dev/null <<EOF
 [snapclient]
-host = localhost
-sound_device = hw:0,0
+host = $SERVER_HOST
+sound_device = $AUDIO_DEVICE
 # buffer = 80
 EOF
     
-    log_success "Snapclient configured"
+    log_success "Snapclient configured for server: $SERVER_HOST"
 }
 
 # Check soundcard after reboot
@@ -270,14 +357,24 @@ check_soundcard() {
 start_services() {
     log_info "Enabling and starting services..."
     
-    sudo systemctl enable snapserver snapclient
-    sudo systemctl start snapserver snapclient
-    
-    log_success "Services started"
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        sudo systemctl enable snapserver snapclient
+        sudo systemctl start snapserver snapclient
+        log_success "Snapserver and Snapclient services started"
+    else
+        sudo systemctl enable snapclient
+        sudo systemctl start snapclient
+        log_success "Snapclient service started"
+    fi
 }
 
 # Install Docker and Beatnik Controller
 install_beatnik_controller() {
+    # Only offer controller installation for server installations
+    if [[ "$INSTALL_TYPE" != "server" ]]; then
+        return
+    fi
+    
     log_info "Would you like to install the Beatnik Controller web interface? (y/n)"
     read -p "Choice: " install_controller
     
@@ -308,23 +405,41 @@ install_beatnik_controller() {
 show_completion_info() {
     log_success "Installation completed successfully!"
     echo
-    log_info "Next steps:"
-    echo "1. The system will reboot to apply soundcard configuration"
-    echo "2. After reboot, test your setup:"
-    echo "   - Classic Snapweb UI: http://$(hostname).local:1780"
-    if [[ "$install_controller" =~ ^[Yy]$ ]]; then
-        echo "   - Beatnik Controller: http://$(hostname).local:8181"
+    
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        log_info "Beatnik Pi Server is ready!"
+        echo "Next steps:"
+        echo "1. The system will reboot to apply soundcard configuration"
+        echo "2. After reboot, test your setup:"
+        echo "   - Classic Snapweb UI: http://$(hostname).local:1780"
+        if [[ "$install_controller" =~ ^[Yy]$ ]]; then
+            echo "   - Beatnik Controller: http://$(hostname).local:8181"
+        fi
+        echo "3. Test AirPlay from your phone/computer"
+        echo "4. Test Spotify Connect from the Spotify app"
+        echo "5. Install additional clients on other devices using this script"
+    else
+        log_info "Snapcast Client is ready!"
+        echo "Next steps:"
+        echo "1. The system will reboot to apply soundcard configuration"
+        echo "2. After reboot, the client will automatically connect to: $SERVER_HOST"
+        echo "3. Use the Snapcast server's web interface to control this client"
+        echo "4. If the server address is wrong, edit /etc/snapclient.conf"
     fi
-    echo "3. Test AirPlay from your phone/computer"
-    echo "4. Test Spotify Connect from the Spotify app"
+    
     echo
     log_info "Useful commands:"
-    echo "   - Check services: sudo systemctl status snapserver snapclient"
-    echo "   - View logs: journalctl -u snapserver -f"
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        echo "   - Check services: sudo systemctl status snapserver snapclient"
+        echo "   - View server logs: journalctl -u snapserver -f"
+    fi
+    echo "   - Check client: sudo systemctl status snapclient"
+    echo "   - View client logs: journalctl -u snapclient -f"
     echo "   - Check soundcard: aplay -l"
+    echo "   - Test audio: speaker-test -c2 -t wav"
     echo
     
-    if [[ "$SOUNDCARD" != "skip" ]]; then
+    if [[ "$SOUNDCARD" != "skip" && "$SOUNDCARD" != "usb" ]]; then
         log_warning "System will reboot in 10 seconds to apply soundcard configuration..."
         echo "Press Ctrl+C to cancel the reboot."
         sleep 10
@@ -342,11 +457,22 @@ main() {
     check_root
     check_raspberry_pi
     
-    log_info "This script will install:"
-    echo "- Snapcast server and client"
-    echo "- Shairport-Sync (AirPlay support)"
-    echo "- Raspotify (Spotify Connect support)"
-    echo "- Configure your selected soundcard/HAT"
+    # Select installation type first
+    select_installation_type
+    
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        log_info "This script will install:"
+        echo "- Snapcast server and client"
+        echo "- Shairport-Sync (AirPlay support)"
+        echo "- Raspotify (Spotify Connect support)"
+        echo "- Configure your selected soundcard/HAT"
+        echo "- Optional: Beatnik Controller web interface"
+    else
+        log_info "This script will install:"
+        echo "- Snapcast client only"
+        echo "- Configure your selected soundcard/HAT"
+        echo "- Connect to an existing Snapcast server"
+    fi
     echo
     
     read -p "Do you want to continue? (y/n): " confirm
@@ -359,9 +485,14 @@ main() {
     update_system
     configure_soundcard
     install_snapcast
-    install_shairport_sync
-    install_raspotify
-    configure_snapserver
+    
+    # Only install server components for server installation
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        install_shairport_sync
+        install_raspotify
+        configure_snapserver
+    fi
+    
     configure_snapclient
     
     # If we needed HAT detection and haven't rebooted yet, do it now
