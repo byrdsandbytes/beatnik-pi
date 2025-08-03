@@ -12,18 +12,23 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 
 
-## Software
+## Software Components
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
-| Snapserver     | **0.31.0**  + built‑in Snapclient                          |
-| Shairport‑Sync | **4.3.x** (Debian Bookworm, AirPlay 1)                     |
-| Device overlay    | **HiFiBerry Amp4 Pro** *(swap for your own overlay if needed)* |
-| Web UI         | **Snapweb** – grouping, volume & status                    |
+| Debian     | **Bookworm** / linux operating system                          |
+| Snapserver     | **0.31.0** / recives and distributes streams                          |
+| Snapclient     | **0.31.0** / recives and plays streams                          |
+| Shairport‑Sync | **4.3.x**  / handles airplay 1+2                |
+| Libresport | **x.x**  / handles spotify connect              |
+| Device overlay    | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
+| Beatnik Controller         | **0.2.1** /Web UI & Ap– grouping, volume & status                    |
+| Docker        | **x.x** –Containerize & host controller                   |
+
 
 ---
 
-## Hardware 
+## Hardware Example
 ### Beatnik Pi Server
 
 | Part               | Notes                                                |
