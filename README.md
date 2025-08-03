@@ -33,20 +33,14 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 ## Hardware Example
 ### Beatnik Pi Server
 
-| Part               | Notes                                                |
-| ------------------ | ---------------------------------------------------- |
-| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
-| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       |
-| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
-| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
+| Part               | Notes                                                | Image |
+| ------------------ | ---------------------------------------------------- | ----- |
+| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended | ![Raspberry Pi 5](docs/images/pi_5_16gb.webp) |
+| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
+| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |       |
+| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |       |
 
 
-
-
-| Component | Image |
-| --------- | ----- |
-| **Raspberry Pi 5 (16GB)** | ![Raspberry Pi 5](docs/images/pi_5_16gb.webp) |
-| **HifiBerry Amp4 Pro** | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
 
 
 ### Beantik Pi Client
