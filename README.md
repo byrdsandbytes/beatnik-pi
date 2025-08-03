@@ -16,7 +16,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
-| Debian     | **Bookworm** / linux operating system                          |
+| Raspberry Pi OS Lite/Debian     | **Bookworm** /  operating system                          |
 | Snapserver     | **0.31.0** / recives and distributes streams                          |
 | Snapclient     | **0.31.0** / recives and plays streams                          |
 | Shairport‑Sync | **4.3.x**  / handles airplay 1+2                |
@@ -36,6 +36,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
 | **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
+| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
 
 ### Beantik Pi Client
 
@@ -44,6 +45,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **Pi Zero 2 WH**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
 | **HifiBerry Mini Amp** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
+| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
 
 ---
 
