@@ -26,6 +26,8 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | Docker        | **x.x** –Containerize & host controller                   |
 
 
+
+
 ---
 
 ## Hardware Example
@@ -38,6 +40,15 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
 
+
+
+
+| Component | Image |
+| --------- | ----- |
+| **Raspberry Pi 5 (16GB)** | ![Raspberry Pi 5](docs/images/pi_5_16gb.webp) |
+| **HifiBerry Amp4 Pro** | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
+
+
 ### Beantik Pi Client
 
 | Part               | Notes                                                |
@@ -46,6 +57,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **HifiBerry Mini Amp** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
+
 
 ---
 
