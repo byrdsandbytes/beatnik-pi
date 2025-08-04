@@ -31,7 +31,7 @@ services:
   # Shairport-Sync for AirPlay support
   # Receives AirPlay streams and writes them to a named pipe.
   shairport-sync:
-    build: https://github.com/mikebrady/shairport-sync.git
+    image: mikebrady/shairport-sync:latest
     container_name: shairport-sync
     restart: unless-stopped
     # Host network mode is required for mDNS (AirPlay discovery) to work easily.
