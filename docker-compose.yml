@@ -68,7 +68,7 @@ services:
   # This service assumes the controller is available as a Docker image.
   # You may need to adjust this based on the controller's specific setup.
   beatnik-controller:
-    image: ghcr.io/byrdsandbytes/beatnik-controller:main
+    build: https://github.com/byrdsandbytes/beatnik-controller.git
     container_name: beatnik-controller
     restart: unless-stopped
     ports:
