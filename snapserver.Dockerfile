@@ -1,5 +1,15 @@
+# Inspired by firefrei/docker-snapcast for best practices
+
+# Use ARGs to define versions for easier updates
+ARG SNAPCAST_VERSION=v0.32.0
+ARG DEBIAN_RELEASE=stable-slim
+
 # Stage 1: Build the snapserver binary
-FROM debian:stable-slim as builder
+FROM debian:${DEBIAN_RELEASE} as builder
+
+# Set ARG for this stage as well
+ARG SNAPCAST_VERSION
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Install build dependencies
 RUN apt-get update && \
@@ -18,14 +28,16 @@ RUN apt-get update && \
 
 # Clone the specific version of snapcast
 WORKDIR /usr/src
-RUN git clone https://github.com/badaix/snapcast.git
+RUN git clone --branch ${SNAPCAST_VERSION} --depth 1 https://github.com/badaix/snapcast.git
 
-# Build snapserver
+# Build snapserver with release optimizations
 WORKDIR /usr/src/snapcast
-RUN cmake . && make snapserver
+RUN cmake -DCMAKE_BUILD_TYPE=Release . && make snapserver
 
 # Stage 2: Create the final, lightweight image
-FROM debian:stable-slim
+FROM debian:${DEBIAN_RELEASE}
+
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Install only runtime dependencies
 RUN apt-get update && \
@@ -42,8 +54,24 @@ RUN apt-get update && \
 # Copy the compiled binary from the builder stage
 COPY --from=builder /usr/src/snapcast/bin/snapserver /usr/bin/snapserver
 
+# Create a non-root user and group for security
+RUN groupadd --system snapcast && \
+    useradd --system --no-create-home --gid snapcast snapcast
+
+# Create and set permissions for the directory where audio pipes will be mounted
+RUN mkdir -p /tmp/snapcast && \
+    chown -R snapcast:snapcast /tmp/snapcast
+
+# Switch to the non-root user
+USER snapcast
+
 # Expose ports
 EXPOSE 1704 1705 1780
 
-# Set the entrypoint
+# Add a healthcheck to monitor the server status
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD snapserver --version || exit 1
+
+# Set the entrypoint to run snapserver.
+# The configuration will be provided via the volume mount in docker-compose.
 ENTRYPOINT ["snapserver"]
