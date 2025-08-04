@@ -22,18 +22,17 @@ The services communicate using shared named pipes for audio, ensuring high perfo
 
 If you don't have them installed, you can use the official convenience script:
 
+Install Docker via Script
+
 ```bash
 # Install Docker
+
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
 # Add your user to the docker group to run commands without sudo
-sudo usermod -aG docker $USER
+sudo usermod -aG docker ${USER}
 newgrp docker # Apply the new group membership
-
-# Install Docker Compose (Debian/Raspberry Pi OS)
-sudo apt-get update
-sudo apt-get install -y docker-compose-plugin
 ```
 
 ## 1. Configuration
