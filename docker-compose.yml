@@ -47,7 +47,9 @@ services:
   # Librespot for Spotify Connect support
   # Receives Spotify streams and writes them to a named pipe.
   librespot:
-    image: ghcr.io/librespot-org/librespot:dev
+    build:
+      context: .
+      dockerfile: librespot.Dockerfile
     container_name: librespot
     restart: unless-stopped
     # Host network mode is required for Spotify Connect discovery.
@@ -59,6 +61,8 @@ services:
       librespot
       --name Beatnik-Spotify
       --backend pipe --device /tmp/snapcast/spotify
+      --bitrate 320
+      --enable-volume-normalisation
       --initial-volume 80
       --cache /cache
       --onevent "mkfifo /tmp/snapcast/spotify"
