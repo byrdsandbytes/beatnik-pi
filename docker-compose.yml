@@ -10,7 +10,7 @@ services:
   # Snapcast Server
   # Listens for audio on named pipes and streams it to clients.
   snapserver:
-    image: badaix/snapserver:latest
+    build: https://github.com/badaix/snapcast.git
     container_name: snapserver
     restart: unless-stopped
     ports:
@@ -30,7 +30,7 @@ services:
   # Shairport-Sync for AirPlay support
   # Receives AirPlay streams and writes them to a named pipe.
   shairport-sync:
-    image: mikebrady/shairport-sync:latest
+    build: https://github.com/mikebrady/shairport-sync.git
     container_name: shairport-sync
     restart: unless-stopped
     # Host network mode is required for mDNS (AirPlay discovery) to work easily.
@@ -46,7 +46,9 @@ services:
   # Librespot for Spotify Connect support
   # Receives Spotify streams and writes them to a named pipe.
   librespot:
-    image: librespot/librespot:latest
+    build:
+      context: https://github.com/librespot-org/librespot.git
+      dockerfile: Dockerfile
     container_name: librespot
     restart: unless-stopped
     # Host network mode is required for Spotify Connect discovery.
