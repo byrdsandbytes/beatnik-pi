@@ -1,17 +1,18 @@
 # docker-compose.yml
 # This file orchestrates the Snapcast server and its stream providers.
 
-
 volumes:
   audio_pipes:
   librespot_cache:
 
+
 services:
   # Snapcast Server
   # Listens for audio on named pipes and streams it to clients.
-  snapserver:
+  ssnapserver:
     build:
-      context: https://github.com/badaix/snapcast.git#v0.32.0
+      context: .
+      dockerfile: snapserver.Dockerfile
     container_name: snapserver
     restart: unless-stopped
     ports:
@@ -39,10 +40,7 @@ services:
     volumes:
       - audio_pipes:/tmp/snapcast
     command: >
-      shairport-sync
-      --name Beatnik-Airplay
-      --output pipe -- /tmp/snapcast/airplay
-      --on-start "mkfifo /tmp/snapcast/airplay"
+      shairport-sync --name Beatnik-Airplay --output pipe -- /tmp/snapcast/airplay --on-start "mkfifo /tmp/snapcast/airplay"
 
   # Librespot for Spotify Connect support
   # Receives Spotify streams and writes them to a named pipe.
@@ -58,14 +56,7 @@ services:
       - audio_pipes:/tmp/snapcast
       - librespot_cache:/cache
     command: >
-      librespot
-      --name Beatnik-Spotify
-      --backend pipe --device /tmp/snapcast/spotify
-      --bitrate 320
-      --enable-volume-normalisation
-      --initial-volume 80
-      --cache /cache
-      --onevent "mkfifo /tmp/snapcast/spotify"
+      librespot --name Beatnik-Spotify --backend pipe --device /tmp/snapcast/spotify --bitrate 320 --enable-volume-normalisation --initial-volume 80 --cache /cache --onevent "mkfifo /tmp/snapcast/spotify"
 
   # Beatnik Controller (Web UI)
   # This service assumes the controller is available as a Docker image.
