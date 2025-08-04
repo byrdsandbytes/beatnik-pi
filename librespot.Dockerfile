@@ -13,7 +13,7 @@ RUN git clone --depth 1 --branch dev https://github.com/librespot-org/librespot.
 # Build librespot
 # We specify the pipe backend as that's what we use to send audio to Snapserver.
 WORKDIR /librespot
-RUN cargo build --release --no-default-features --features "pipe-backend"
+RUN cargo build --release
 
 # Create a smaller final image
 FROM debian:stable-slim
