@@ -1,0 +1,76 @@
+# docker-compose.yml
+# This file orchestrates the Snapcast server and its stream providers.
+
+
+volumes:
+  audio_pipes:
+  librespot_cache:
+
+services:
+  # Snapcast Server
+  # Listens for audio on named pipes and streams it to clients.
+  snapserver:
+    image: badaix/snapserver:latest
+    container_name: snapserver
+    restart: unless-stopped
+    ports:
+      - "1704:1704" # Snapcast TCP control
+      - "1705:1705" # Snapcast TCP JSON
+      - "1780:1780" # Snapcast HTTP control (for Snapweb UI)
+    volumes:
+      - ./snapserver.conf:/etc/snapserver.conf:ro
+      - audio_pipes:/tmp/snapcast
+    devices:
+      # Grant access to the host's sound devices for local playback
+      - /dev/snd
+    depends_on:
+      - shairport-sync
+      - librespot
+
+  # Shairport-Sync for AirPlay support
+  # Receives AirPlay streams and writes them to a named pipe.
+  shairport-sync:
+    image: mikebrady/shairport-sync:latest
+    container_name: shairport-sync
+    restart: unless-stopped
+    # Host network mode is required for mDNS (AirPlay discovery) to work easily.
+    network_mode: "host"
+    volumes:
+      - audio_pipes:/tmp/snapcast
+    command: >
+      shairport-sync
+      --name Beatnik-Airplay
+      --output pipe -- /tmp/snapcast/airplay
+      --on-start "mkfifo /tmp/snapcast/airplay"
+
+  # Librespot for Spotify Connect support
+  # Receives Spotify streams and writes them to a named pipe.
+  librespot:
+    image: librespot/librespot:latest
+    container_name: librespot
+    restart: unless-stopped
+    # Host network mode is required for Spotify Connect discovery.
+    network_mode: "host"
+    volumes:
+      - audio_pipes:/tmp/snapcast
+      - librespot_cache:/cache
+    command: >
+      librespot
+      --name Beatnik-Spotify
+      --backend pipe --device /tmp/snapcast/spotify
+      --initial-volume 80
+      --cache /cache
+      --onevent "mkfifo /tmp/snapcast/spotify"
+
+  # Beatnik Controller (Web UI)
+  # This service assumes the controller is available as a Docker image.
+  # You may need to adjust this based on the controller's specific setup.
+  beatnik-controller:
+    image: ghcr.io/byrdsandbytes/beatnik-controller:main
+    container_name: beatnik-controller
+    restart: unless-stopped
+    ports:
+      - "8181:8181"
+    environment:
+      - SNAPCAST_SERVER_HOST=snapserver
+      - SNAPCAST_SERVER_PORT=1780
