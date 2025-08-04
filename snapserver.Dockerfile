@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 # Clone the specific version of snapcast
 WORKDIR /usr/src
-RUN git clone --branch v0.32.0 --depth 1 https://github.com/badaix/snapcast.git
+RUN git clone https://github.com/badaix/snapcast.git
 
 # Build snapserver
 WORKDIR /usr/src/snapcast
