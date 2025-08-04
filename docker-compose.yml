@@ -10,7 +10,8 @@ services:
   # Snapcast Server
   # Listens for audio on named pipes and streams it to clients.
   snapserver:
-    build: https://github.com/badaix/snapcast.git
+    build:
+      context: https://github.com/badaix/snapcast.git#v0.32.0
     container_name: snapserver
     restart: unless-stopped
     ports:
@@ -46,9 +47,7 @@ services:
   # Librespot for Spotify Connect support
   # Receives Spotify streams and writes them to a named pipe.
   librespot:
-    build:
-      context: https://github.com/librespot-org/librespot.git
-      dockerfile: Dockerfile
+    image: librespot/librespot:latest
     container_name: librespot
     restart: unless-stopped
     # Host network mode is required for Spotify Connect discovery.
