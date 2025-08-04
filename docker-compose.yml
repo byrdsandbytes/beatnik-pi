@@ -47,7 +47,7 @@ services:
   # Librespot for Spotify Connect support
   # Receives Spotify streams and writes them to a named pipe.
   librespot:
-    image: ghcr.io/librespot-org/librespot:latest
+    image: ghcr.io/librespot-org/librespot:dev
     container_name: librespot
     restart: unless-stopped
     # Host network mode is required for Spotify Connect discovery.
