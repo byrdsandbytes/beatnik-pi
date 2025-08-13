@@ -12,25 +12,36 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 
 
-## Software
+## Software Components
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
-| Snapserver     | **0.31.0**  + built‑in Snapclient                          |
-| Shairport‑Sync | **4.3.x** (Debian Bookworm, AirPlay 1)                     |
-| Device overlay    | **HiFiBerry Amp4 Pro** *(swap for your own overlay if needed)* |
-| Web UI         | **Snapweb** – grouping, volume & status                    |
+| Raspberry Pi OS Lite/Debian     | **Bookworm** /  operating system                          |
+| Snapserver     | **0.31.0** / recives and distributes streams                          |
+| Snapclient     | **0.31.0** / recives and plays streams                          |
+| Shairport‑Sync | **4.3.x**  / handles airplay 1+2                |
+| Libresport | **x.x**  / handles spotify connect              |
+| Device overlay    | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
+| Beatnik Controller         | **0.2.1** /Web UI & Ap– grouping, volume & status                    |
+| Docker        | **x.x** –Containerize & host controller                   |
+
+
+
 
 ---
 
-## Hardware 
+## Hardware Example
 ### Beatnik Pi Server
 
-| Part               | Notes                                                |
-| ------------------ | ---------------------------------------------------- |
-| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
-| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       |
-| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |
+| Part               | Notes                                                | Image |
+| ------------------ | ---------------------------------------------------- | ----- |
+| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended | ![Raspberry Pi 5](docs/images/pi_5_16gb.webp) |
+| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
+| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |       |
+| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |       |
+
+
+
 
 ### Beantik Pi Client
 
@@ -39,6 +50,8 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 | **Pi Zero 2 WH**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
 | **HifiBerry Mini Amp** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
+| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
+
 
 ---
 
