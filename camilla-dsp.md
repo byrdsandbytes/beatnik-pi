@@ -1,0 +1,231 @@
+# Advanced: Room Correction with CamillaDSP
+
+This tutorial guides you through setting up CamillaDSP on a Raspberry Pi Snapcast client. The goal is to process the audio stream from your Snapserver with CamillaDSP for equalization or room correction before playing it on the client's DAC.
+
+This setup uses a virtual **ALSA Loopback** device, which acts like a software audio cable to route audio between applications.
+
+### The Audio Path
+
+> Snapclient → ALSA Loopback (Input) → CamillaDSP (Processing) → ALSA Loopback (Output) → Your DAC
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- A Raspberry Pi (4 or 5 recommended) running a 64-bit version of Raspberry Pi OS (Bookworm).
+- A working Snapclient installation connected to your Snapserver.
+- A DAC (Digital-to-Analog Converter) connected to your Pi.
+- An active SSH session to your client Pi.
+
+---
+
+## Step 1: Install CamillaDSP and Dependencies
+
+First, let's get the necessary software installed on your client Pi.
+
+### 1.1. Create Directories for CamillaDSP
+
+Organize your configuration and filter files.
+
+```bash
+mkdir -p ~/camilladsp/configs ~/camilladsp/coeffs
+```
+
+### 1.2. Install ALSA Utilities
+
+This provides tools for managing your audio devices.
+
+```bash
+sudo apt-get update
+sudo apt-get install -y alsa-utils
+```
+
+### 1.3. Download and Install CamillaDSP
+
+Fetch the latest `aarch64` binary from the official releases page and place it in `/usr/local/bin/`.
+
+```bash
+wget https://github.com/HEnquist/camilladsp/releases/download/v2.0.3/camilladsp-linux-aarch64.tar.gz -P ~/camilladsp/
+sudo tar -xvf ~/camilladsp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
+```
+
+---
+
+## Step 2: Create the Virtual Audio Cable (ALSA Loopback)
+
+To route audio from Snapclient to CamillaDSP, we need to create a virtual sound card.
+
+### 2.1. Load the Kernel Module
+
+This command loads the `snd-aloop` module, which creates the loopback device.
+
+```bash
+sudo modprobe snd-aloop
+```
+
+### 2.2. Make it Permanent
+
+To ensure the module loads on every reboot, create a configuration file.
+
+```bash
+echo "snd-aloop" | sudo tee /etc/modules-load.d/snd-aloop.conf
+```
+
+### 2.3. Verify the Device
+
+Check that the virtual card was created successfully.
+
+```bash
+aplay -l
+```
+
+You should see a new card in the list, typically named `Loopback`.
+
+---
+
+## Step 3: Configure Snapclient for Loopback
+
+Instruct Snapclient to send its audio to the input of our virtual cable instead of directly to your DAC.
+
+### 3.1. Edit the Snapclient Configuration
+
+```bash
+sudo nano /etc/snapclient.conf
+```
+
+### 3.2. Set the Output Sound Device
+
+Find the `sound_device` line (it may be commented out with a `#`). Change it to point to the first subdevice of the Loopback card. Using the `plughw` plugin is more robust and helps avoid "device busy" errors.
+
+```ini
+# /etc/snapclient.conf
+
+# The soundcard to use, find the correct one with "snapclient -l"
+sound_device = plughw:Loopback,0,0
+```
+
+### 3.3. Restart Snapclient
+
+Apply the new configuration.
+
+```bash
+sudo systemctl restart snapclient
+```
+
+---
+
+## Step 4: Configure CamillaDSP
+
+Create the CamillaDSP configuration file. This will tell it to:
+1.  **Capture** audio from the output of the virtual cable.
+2.  **Process** the audio with your desired filters.
+3.  **Playback** the final audio to your real DAC.
+
+### 4.1. Create the CamillaDSP Configuration File
+
+```bash
+nano ~/camilladsp/configs/client_config.yml
+```
+
+### 4.2. Add the Configuration
+
+Copy and paste this entire block into the file. **Important:** You must change the `playback` device to match your DAC's name from the `aplay -l` command.
+
+```yaml
+# ~/camilladsp/configs/client_config.yml
+
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:Loopback,1,0" # Capture from the other end of the loopback
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "plughw:CARD=DigiAMP,DEV=0" # IMPORTANT: Set this to your real DAC
+    format: S16LE
+
+filters:
+  # This is a placeholder filter that does nothing.
+  # You can add your real EQ/filter settings here later.
+  example_filter:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 1000
+      q: 0.7
+      gain: 0.0
+
+pipeline:
+  - type: Filter
+    channel: 0
+    names:
+      - example_filter
+  - type: Filter
+    channel: 1
+    names:
+      - example_filter
+```
+
+---
+
+## Step 5: Create and Run the CamillaDSP Service
+
+To make this setup robust, we'll run CamillaDSP as a `systemd` service that automatically starts after Snapclient.
+
+### 5.1. Create the Service File
+
+```bash
+sudo nano /etc/systemd/system/camilladsp.service
+```
+
+### 5.2. Add the Service Configuration
+
+This configuration ensures `snapclient` is running before `camilladsp` starts. **Replace `<your_user>`** with your actual username (e.g., `pi`).
+
+```ini
+# /etc/systemd/system/camilladsp.service
+
+[Unit]
+Description=CamillaDSP
+# This ensures snapclient is started first
+Wants=snapclient.service
+After=snapclient.service
+
+[Service]
+Type=simple
+User=<your_user>
+ExecStart=/usr/local/bin/camilladsp /home/<your_user>/camilladsp/configs/client_config.yml -p 1234
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### 5.3. Reload, Enable, and Restart Services
+
+This applies all your changes.
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable camilladsp
+sudo systemctl restart snapclient
+sudo systemctl restart camilladsp
+```
+
+### 5.4. Check the Status
+
+Verify that both services are running without errors.
+
+```bash
+sudo systemctl status snapclient
+sudo systemctl status camilladsp
+```
+
+If both are `active (running)`, you're all set! Start playing audio from your Snapserver, and it should now be processed by CamillaDSP on your client before you hear it.
