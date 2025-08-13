@@ -16,7 +16,14 @@ Before you begin, make sure you have the following:
 To start the installation, connect to your Raspberry Pi via SSH or open a terminal on the device and run the following single command. This will download and execute the installation script.
 
 ```bash
-wget -qO - https://raw.githubusercontent.com/byrdsandbytes/snapcast-pi/main/install.sh | bash
+# 1. Download the installation script
+wget https://raw.githubusercontent.com/byrdsandbytes/snapcast-pi/master/install.sh
+
+# 2. Make the script executable
+chmod +x install.sh
+
+# 3. Run the installer
+./install.sh
 ```
 
 ---
