@@ -198,9 +198,15 @@ configure_raspberry_hat() {
 
 # Update system
 update_system() {
-    log_info "Updating system packages..."
+    log_info "Updating system package lists..."
     sudo apt update
-    sudo apt full-upgrade -y
+    
+    if [[ "$INSTALL_TYPE" == "server" ]]; then
+        log_info "Performing a full system upgrade (this may take a while)..."
+        sudo apt full-upgrade -y
+    else
+        log_info "Skipping full system upgrade for faster client installation."
+    fi
 }
 
 # Install Snapcast
