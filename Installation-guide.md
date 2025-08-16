@@ -17,7 +17,7 @@ To start the installation, connect to your Raspberry Pi via SSH or open a termin
 
 ```bash
 # 1. Download the installation script
-wget https://raw.githubusercontent.com/byrdsandbytes/snapcast-pi/master/install.sh
+wget https://raw.githubusercontent.com/byrdsandbytes/beatnik-pi/master/install.sh
 
 # 2. Make the script executable
 chmod +x install.sh
