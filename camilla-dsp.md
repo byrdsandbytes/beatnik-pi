@@ -229,3 +229,102 @@ sudo systemctl status camilladsp
 ```
 
 If both are `active (running)`, you're all set! Start playing audio from your Snapserver, and it should now be processed by CamillaDSP on your client before you hear it.
+
+
+---
+
+## Step 6: Install and Configure the Web GUI (Optional)
+
+CamillaGUI provides a powerful web interface to control CamillaDSP in real-time. This allows you to adjust volume, mute, select configurations, and view a live spectrum analyzer from any device on your network.
+
+### 6.1. Install Dependencies
+
+We only need `unzip` for the frontend files.
+
+```bash
+sudo apt-get update
+sudo apt-get install -y unzip
+```
+
+### 6.2. Download the GUI Components
+
+We'll create a dedicated directory and download the latest versions of the backend binary and the frontend web files.
+
+```bash
+# Create the directory
+mkdir -p ~/camillagui
+cd ~/camillagui
+
+# Download the backend binary for 64-bit ARM (aarch64)
+wget https://github.com/HEnquist/camillagui-backend/releases/latest/download/camillagui-backend-linux-aarch64.tar.gz
+
+# Download the frontend web interface
+wget https://github.com/HEnquist/camillagui/releases/latest/download/camillagui.zip
+
+# Extract both components
+tar -xvf camillagui-backend-linux-aarch64.tar.gz
+unzip camillagui.zip
+```
+
+### 6.3. Test the GUI Manually (Crucial Step)
+
+Before creating a service, it's vital to test that the GUI server can run correctly.
+
+1.  **Make sure you are in the `~/camillagui` directory.**
+2.  **Run the server manually:**
+    ```bash
+    ./camillagui-backend
+    ```
+3.  **Open a web browser** on your computer (on the same network) and go to:
+    `http://<your-pi-ip-address>:5000`
+
+You should see the CamillaGUI interface. If it works, you can stop the manual server by pressing `Ctrl+C` in your SSH session.
+
+### 6.4. Create the `systemd` Service for the GUI
+
+Once the manual test works, we can create a service to run it automatically.
+
+```bash
+sudo nano /etc/systemd/system/camillagui.service
+```
+
+Paste the following configuration. **Remember to replace `<your_user>`** with your actual username (e.g., `byrds` or `pi`).
+
+```ini
+# /etc/systemd/system/camillagui.service
+
+[Unit]
+Description=CamillaDSP GUI
+# Start after the main camilladsp service
+Wants=camilladsp.service
+After=camilladsp.service
+
+[Service]
+Type=simple
+User=<your_user>
+# The executable must be run from this directory to find the frontend files
+WorkingDirectory=/home/<your_user>/camillagui
+ExecStart=/home/<your_user>/camillagui/camillagui-backend
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### 6.5. Enable and Start the GUI Service
+
+Now, enable the service to start on boot and start it immediately.
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now camillagui.service
+```
+
+### 6.6. Final Verification
+
+Check that the service is running correctly:
+```bash
+sudo systemctl status camillagui.service
+```
+If it shows `active (running)`, you can now access the GUI permanently at `http://<your-pi-ip-address>:5000`.
