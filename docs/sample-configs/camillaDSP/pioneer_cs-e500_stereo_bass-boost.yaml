@@ -1,0 +1,101 @@
+#
+# CamillaDSP "Bass Boost" EQ for Pioneer CS-E500 Speakers
+#
+# This is an alternative configuration with a significant low-end boost.
+# It keeps the original EQ curve but adds a low-shelf filter for more bass.
+#
+
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:Loopback,1,0" # Capture from the virtual cable
+    format: S32LE
+  playback:
+    type: Alsa
+    channels: 2
+    # IMPORTANT: Change this to your actual sound card!
+    # This example is for a HiFiBerry Amp4.
+    device: "plughw:CARD=sndrpihifiberry,DEV=0"
+    format: S16LE
+
+# --- The Equalizer Filters ---
+filters:
+  # Master volume control. 0dB means no change. Can be controlled by a GUI.
+  MasterVolume:
+    type: Gain
+    parameters:
+      gain: 0
+      mute: false
+
+  # --- NEW BASS BOOST FILTER ---
+  # A low-shelf filter to add a solid bass boost.
+  BassBoost:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 150 # Boost frequencies below 150 Hz
+      gain: 12.0 # Add a 12 dB boost. Adjust to your taste.
+      q: 0.7
+
+  # 1. Protect the woofers from frequencies they can't reproduce.
+  Highpass:
+    type: Biquad
+    parameters:
+      type: Highpass
+      freq: 40 # Cut frequencies below 40 Hz
+      q: 0.7
+
+  # 2. Tame the mid-bass "boom" to make the bass tighter and more defined.
+  TameBassBoom:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 120 # Target the common "boomy" region
+      q: 1.5
+      gain: -3.0 # Reduce by 3 dB. Adjust to your taste.
+
+  # 3. Boost the central mid-range to improve clarity for vocals and instruments.
+  BoostMids:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 1500 # Center of the vocal presence range
+      q: 1.0
+      gain: 2.5 # Boost by 2.5 dB.
+
+  # 4. Reduce potential harshness in the lower treble.
+  TameTrebleHarshness:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 5000 # The "presence/sizzle" region
+      q: 2.0
+      gain: -2.0 # Reduce by 2 dB.
+
+# --- The Audio Pipeline ---
+# This section applies the filters to the audio stream.
+pipeline:
+  # Apply the full filter chain to the Left channel (0)
+  - type: Filter
+    channel: 0
+    names:
+      - MasterVolume
+      - Highpass
+      - TameBassBoom
+      - BassBoost # Apply the new bass boost
+      - BoostMids
+      - TameTrebleHarshness
+
+  # Apply the same full filter chain to the Right channel (1)
+  - type: Filter
+    channel: 1
+    names:
+      - MasterVolume
+      - Highpass
+      - TameBassBoom
+      - BassBoost # Apply the new bass boost
+      - BoostMids
+      - TameTrebleHarshness

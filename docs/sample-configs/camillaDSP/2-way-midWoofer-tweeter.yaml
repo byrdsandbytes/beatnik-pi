@@ -1,0 +1,123 @@
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:Loopback,1,0" # Capture from the other end of the loopback
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "plughw:CARD=sndrpihifiberry,DEV=0" # Your working playback device
+    format: S16LE
+
+mixers:
+  # Sum the stereo input to two mono outputs
+  stereo_to_mono:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      # Output 0 (Left / P3): Mix 50% of Left In and 50% of Right In
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: -6
+            mute: false
+          - channel: 1
+            gain: -6
+            mute: false
+      # Output 1 (Right / P1): Mix 50% of Left In and 50% of Right In
+      - dest: 1
+        sources:
+          - channel: 0
+            gain: -6
+            mute: false
+          - channel: 1
+            gain: -6
+            mute: false
+
+filters:
+  # Master volume control to compensate for the mixer
+  Master_Volume:
+    type: Gain
+    parameters:
+      gain: 12.0 # Start with +6dB and adjust as needed
+      inverted: false
+      mute: false
+
+  # EQ filter to add a significant bass boost
+  Bass_Boost_EQ:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 180  # Frequency to start boosting below
+      gain: 12.0  # Boost by a strong 5.0 dB
+      q: 0.7     # A gentle slope
+
+  # NEW: EQ filter to specifically target and reduce tweeter sharpness
+  Tweeter_Sharpness_Cut:
+    type: Biquad
+    parameters:
+      type: Peaking # Use a Peaking filter to create a dip
+      freq: 7000   # Target the frequency range often perceived as "sharp"
+      gain: -3.0   # Cut by 3.0 dB
+      q: 2.0       # A moderately wide cut
+
+  # High-pass filter for the tweeter
+  Tweeter_HPF:
+    type: BiquadCombo
+    parameters:
+      type: LinkwitzRileyHighpass
+      freq: 2000 # Crossover for mid-woofer
+      order: 4 # 24dB/octave slope
+
+  # Low-pass filter for the mid-woofer driver
+  Midwoofer_LPF:
+    type: BiquadCombo
+    parameters:
+      type: LinkwitzRileyLowpass
+      freq: 2000 # Crossover for mid-woofer
+      order: 4 # 24dB/octave slope
+
+pipeline:
+  # First, apply the mixer to create the mono signal
+  - type: Mixer
+    name: stereo_to_mono
+
+  # Second, apply the master volume to both channels
+  - type: Filter
+    channel: 0
+    names:
+     - Master_Volume
+  - type: Filter
+    channel: 1
+    names:
+     - Master_Volume
+
+  # Third, apply the EQ filters for tonal balance.
+  # The Mid-woofer only gets the bass boost.
+  - type: Filter
+    channel: 0
+    names:
+     - Bass_Boost_EQ
+  # The Tweeter gets the bass boost (for consistency before crossover)
+  # and the new sharpness cut.
+  - type: Filter
+    channel: 1
+    names:
+     - Bass_Boost_EQ
+     - Tweeter_Sharpness_Cut
+
+  # Next, apply the low-pass filter to the mid-woofer channel
+  - type: Filter
+    channel: 0 # Output channel 0 (Left / P3) for the Mid-woofer
+    names:
+      - Midwoofer_LPF
+
+  # Finally, apply the high-pass filter to the tweeter channel
+  - type: Filter
+    channel: 1 # Output channel 1 (Right / P1) for the Tweeter
+    names:
+      - Tweeter_HPF
