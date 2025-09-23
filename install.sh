@@ -391,6 +391,7 @@ install_beatnik_controller() {
         curl -fsSL https://get.docker.com -o get-docker.sh
         sh get-docker.sh
         sudo usermod -aG docker $USER
+        sudo newgrp docker
         
         # Install Docker Compose
         sudo apt install docker-compose -y
