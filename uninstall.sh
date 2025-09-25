@@ -159,4 +159,5 @@ main() {
     show_manual_steps
 }
 
-# Run
+# Run main uninstallation
+main "$@"
