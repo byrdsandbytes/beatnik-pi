@@ -251,18 +251,18 @@ sudo apt-get install -y unzip
 We'll create a dedicated directory and download the latest versions of the backend binary and the frontend web files.
 
 ```bash
-# Create the directory
+# Create the parent directory
 mkdir -p ~/camillagui
 cd ~/camillagui
 
 # Download the backend binary for 64-bit ARM (aarch64)
-wget https://github.com/HEnquist/camillagui-backend/releases/latest/download/camillagui-backend-linux-aarch64.tar.gz
+wget https://github.com/HEnquist/camillagui-backend/releases/download/v3.0.3/bundle_linux_aarch64.tar.gz
 
 # Download the frontend web interface
 wget https://github.com/HEnquist/camillagui/releases/latest/download/camillagui.zip
 
 # Extract both components
-tar -xvf camillagui-backend-linux-aarch64.tar.gz
+tar -xvf bundle_linux_aarch64.tar.gz
 unzip camillagui.zip
 ```
 
@@ -270,13 +270,21 @@ unzip camillagui.zip
 
 Before creating a service, it's vital to test that the GUI server can run correctly.
 
-1.  **Make sure you are in the `~/camillagui` directory.**
+1.  **Navigate into the correct backend directory:**
+    ```bash
+    cd ~/camillagui/camillagui_backend
+    ```
 2.  **Run the server manually:**
     ```bash
-    ./camillagui-backend
+    ./camillagui_backend
     ```
-3.  **Open a web browser** on your computer (on the same network) and go to:
-    `http://<your-pi-ip-address>:5000`
+3.  **Check the output.** The server will log the port it is running on. It should be `5005`.
+    ```
+    Starting server
+    Listening on 0.0.0.0:5005
+    ```
+4.  **Open a web browser** on your computer (on the same network) and go to:
+    `http://<your-pi-ip-address>:5005`
 
 You should see the CamillaGUI interface. If it works, you can stop the manual server by pressing `Ctrl+C` in your SSH session.
 
@@ -288,7 +296,7 @@ Once the manual test works, we can create a service to run it automatically.
 sudo nano /etc/systemd/system/camillagui.service
 ```
 
-Paste the following configuration. **Remember to replace `<your_user>`** with your actual username (e.g., `byrds` or `pi`).
+Paste the following configuration. **Remember to replace `<your_user>`** with your actual username (e.g., `byrds` or `pi`). This version uses the corrected paths and executable name.
 
 ```ini
 # /etc/systemd/system/camillagui.service
@@ -302,9 +310,10 @@ After=camilladsp.service
 [Service]
 Type=simple
 User=<your_user>
-# The executable must be run from this directory to find the frontend files
-WorkingDirectory=/home/<your_user>/camillagui
-ExecStart=/home/<your_user>/camillagui/camillagui-backend
+# CORRECTED: The WorkingDirectory based on the extracted folder
+WorkingDirectory=/home/<your_user>/camillagui/camillagui_backend
+# CORRECTED: The ExecStart path and executable name
+ExecStart=/home/<your_user>/camillagui/camillagui_backend/camillagui_backend
 Restart=always
 RestartSec=3
 
@@ -327,4 +336,19 @@ Check that the service is running correctly:
 ```bash
 sudo systemctl status camillagui.service
 ```
-If it shows `active (running)`, you can now access the GUI permanently at `http://<your-pi-ip-address>:5000`.
+If it shows `active (running)`, you can now access the GUI permanently at `http://<your-pi-ip-address>:5005`.
+
+---
+
+## Troubleshooting the GUI
+
+If the `camillagui.service` fails to start, it's almost always a pathing issue. Here's what to check:
+
+1.  **Confirm the Directory Name**:
+    Run `ls ~/camillagui`. Your output should show the `camillagui_backend` directory and the `camillagui` (frontend) directory. If the backend directory has a different name (e.g., includes a version number), you must update the `WorkingDirectory` and `ExecStart` paths in your `camillagui.service` file to match.
+
+2.  **Check the Service Log**:
+    Use `journalctl -u camillagui.service` to see detailed error messages. A "No such file or directory" or "code=exited, status=203/EXEC" error confirms the path in your service file is wrong.
+
+3.  **Run Manually First**:
+    Always re-run the manual test from step 6.3. If it works there, the problem is guaranteed to be in the `.service` file. If it fails there, the download or extraction may have been corrupted.
