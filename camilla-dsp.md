@@ -172,6 +172,34 @@ pipeline:
       - example_filter
 ```
 
+### 4.3 Example Playback Devices
+
+Here are a few examples of what the `device` line in your `client_config.yml` might look like for common DACs. The card name comes from the output of the `aplay -l` command.
+
+- **HiFiBerry DAC+ Pro / RPi DAC Pro:**
+  If `aplay -l` shows `card 0: Pro [RPi DAC Pro]...`, use:
+  ```yaml
+  device: "plughw:CARD=Pro,DEV=0"
+  ```
+
+- **HiFiBerry Digi/DAC/Amp series (e.g., Amp2, Amp4):**
+  If `aplay -l` shows a card name like `sndrpihifiberry`, use:
+  ```yaml
+  device: "plughw:CARD=sndrpihifiberry,DEV=0"
+  ```
+
+- **IQaudIO DAC Pro:**
+  If `aplay -l` shows a card name like `IQaudIODAC`, use:
+  ```yaml
+  device: "plughw:CARD=IQaudIODAC,DEV=0"
+  ```
+
+- **Generic USB DAC:**
+  If `aplay -l` shows a card name like `DAC`, `USB`, or the manufacturer's name, use that name:
+  ```yaml
+  device: "plughw:CARD=DAC,DEV=0"
+  ```
+
 ---
 
 ## Step 5: Create and Run the CamillaDSP Service
@@ -200,7 +228,8 @@ After=snapclient.service
 [Service]
 Type=simple
 User=<your_user>
-ExecStart=/usr/local/bin/camilladsp /home/<your_user>/camilladsp/configs/client_config.yml -p 1234
+# Enable the websocket and set the port for the GUI to connect.
+ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 /home/<your_user>/camilladsp/configs/client_config.yml
 Restart=always
 RestartSec=1
 
@@ -352,3 +381,9 @@ If the `camillagui.service` fails to start, it's almost always a pathing issue. 
 
 3.  **Run Manually First**:
     Always re-run the manual test from step 6.3. If it works there, the problem is guaranteed to be in the `.service` file. If it fails there, the download or extraction may have been corrupted.
+
+4. **Start Camilla dsp websocket manually**
+
+````
+camilladsp --address 0.0.0.0 --port 1234 ~/camilladsp/configs/client_config.yml
+````

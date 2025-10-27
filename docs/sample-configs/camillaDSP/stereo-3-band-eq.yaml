@@ -1,0 +1,73 @@
+# /docs/sample-configs/camillaDSP/stereo-3-band-eq.yaml
+#
+# This configuration provides a standard 3-band stereo equalizer (EQ)
+# with controls for Low, Mid, and High frequencies. It is intended for
+# a normal stereo setup and does NOT perform a crossover.
+#
+# Adjust the 'gain' parameter on each filter to boost or cut frequencies.
+# - Positive gain (e.g., 3.0) boosts the frequency range.
+# - Negative gain (e.g., -2.5) cuts the frequency range.
+# - A gain of 0.0 has no effect.
+
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:Loopback,1,0" # Capture from the other end of the loopback
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "plughw:CARD=sndrpihifiberry,DEV=0" # IMPORTANT: Change to your actual DAC
+    format: S16LE
+
+filters:
+  # --- 3-Band EQ Filters ---
+
+  # Low Frequency Control (Bass)
+  # A Lowshelf filter affects all frequencies below its 'freq' value.
+  Low_EQ:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 250     # Affects frequencies below 250 Hz
+      gain: 0.0     # Adjust this value to boost/cut bass
+      q: 0.7        # A gentle slope
+
+  # Mid Frequency Control
+  # A Peaking filter affects frequencies centered around its 'freq' value.
+  Mid_EQ:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 1500    # Affects frequencies around 1500 Hz (1.5 kHz)
+      gain: 0.0     # Adjust this value to boost/cut mids
+      q: 1.0        # A medium-width band
+
+  # High Frequency Control (Treble)
+  # A Highshelf filter affects all frequencies above its 'freq' value.
+  High_EQ:
+    type: Biquad
+    parameters:
+      type: Highshelf
+      freq: 5000    # Affects frequencies above 5000 Hz (5 kHz)
+      gain: 0.0     # Adjust this value to boost/cut treble
+      q: 0.7        # A gentle slope
+
+pipeline:
+  # Apply the EQ filters to both Left (0) and Right (1) channels.
+  # The order doesn't matter here as they operate on different frequencies.
+  - type: Filter
+    channel: 0
+    names:
+      - Low_EQ
+      - Mid_EQ
+      - High_EQ
+  - type: Filter
+    channel: 1
+    names:
+      - Low_EQ
+      - Mid_EQ
+      - High_EQ
