@@ -1,0 +1,107 @@
+# /docs/sample-configs/camillaDSP/stereo-eq-with-volume-balance.yaml
+#
+# This configuration provides a 3-band stereo equalizer (EQ) with
+# an added master volume control and a left/right balance control.
+#
+# - Master_Volume: Adjust the 'gain' to control the overall output level.
+# - Balance: Adjust the 'gain' for each channel in the mixer to shift the
+#   stereo image. For example, reducing gain on channel 0 (Left) will
+#   shift the balance to the right.
+
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:Loopback,1,0" # Capture from the other end of the loopback
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "plughw:CARD=sndrpihifiberry,DEV=0" # IMPORTANT: Change to your actual DAC
+    format: S16LE
+
+mixers:
+  # Balance control mixer
+  Balance:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      # Left output channel
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 0.0 # Adjust for balance
+            mute: false
+      # Right output channel
+      - dest: 1
+        sources:
+          - channel: 1
+            gain: 0.0 # Adjust for balance
+            mute: false
+
+filters:
+  # Master volume control
+  Master_Volume:
+    type: Gain
+    parameters:
+      gain: 0.0     # Adjust overall volume
+      inverted: false
+      mute: false
+
+  # --- 3-Band EQ Filters ---
+  Low_EQ:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 250
+      gain: 0.0
+      q: 0.7
+
+  Mid_EQ:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 1500
+      gain: 0.0
+      q: 1.0
+
+  High_EQ:
+    type: Biquad
+    parameters:
+      type: Highshelf
+      freq: 5000
+      gain: 0.0
+      q: 0.7
+
+pipeline:
+  # The order of operations is important here.
+  # 1. Apply balance adjustment.
+  - type: Mixer
+    name: Balance
+
+  # 2. Apply master volume to both channels.
+  - type: Filter
+    channel: 0
+    names:
+      - Master_Volume
+  - type: Filter
+    channel: 1
+    names:
+      - Master_Volume
+
+  # 3. Apply EQ to each channel.
+  - type: Filter
+    channel: 0
+    names:
+      - Low_EQ
+      - Mid_EQ
+      - High_EQ
+  - type: Filter
+    channel: 1
+    names:
+      - Low_EQ
+      - Mid_EQ
+      - High_EQ
