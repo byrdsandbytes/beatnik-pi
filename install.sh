@@ -29,6 +29,18 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Get OS codename (e.g., bookworm, trixie)
+get_os_codename() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        OS_CODENAME=$VERSION_CODENAME
+        log_info "Detected OS Codename: $OS_CODENAME"
+    else
+        log_error "Cannot determine OS version. /etc/os-release not found."
+        exit 1
+    fi
+}
+
 # Check if running as root
 check_root() {
     if [[ $EUID -eq 0 ]]; then
@@ -211,14 +223,14 @@ update_system() {
 
 # Install Snapcast
 install_snapcast() {
-    log_info "Installing Snapcast 0.31.0..."
+    log_info "Installing Snapcast 0.31.0 for $OS_CODENAME..."
     
     cd /tmp
     
     if [[ "$INSTALL_TYPE" == "server" ]]; then
         # Download both server and client packages
-        wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_bookworm.deb
-        wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
+        wget -q "https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_${OS_CODENAME}.deb"
+        wget -q "https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_${OS_CODENAME}.deb"
         
         # Install packages
         sudo apt install ./snapserver_* ./snapclient_* -y
@@ -226,7 +238,7 @@ install_snapcast() {
         log_success "Snapcast server and client installed successfully"
     else
         # Download only client package
-        wget -q https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
+        wget -q "https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_${OS_CODENAME}.deb"
         
         # Install package
         sudo apt install ./snapclient_* -y
@@ -463,6 +475,7 @@ main() {
     
     check_root
     check_raspberry_pi
+    get_os_codename
     
     # Select installation type first
     select_installation_type
