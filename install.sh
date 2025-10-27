@@ -29,6 +29,18 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Get latest Snapcast version
+get_latest_snapcast_version() {
+    log_info "Fetching latest Snapcast version..."
+    SNAPCAST_VERSION_TAG=$(curl -s https://api.github.com/repos/badaix/snapcast/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [ -z "$SNAPCAST_VERSION_TAG" ]; then
+        log_error "Failed to fetch latest Snapcast version. Please check your internet connection."
+        exit 1
+    fi
+    SNAPCAST_VERSION=${SNAPCAST_VERSION_TAG#v} # Remove 'v' prefix
+    log_info "Latest Snapcast version is $SNAPCAST_VERSION"
+}
+
 # Get OS codename (e.g., bookworm, trixie)
 get_os_codename() {
     if [ -f /etc/os-release ]; then
@@ -223,14 +235,14 @@ update_system() {
 
 # Install Snapcast
 install_snapcast() {
-    log_info "Installing Snapcast 0.31.0 for $OS_CODENAME..."
+    log_info "Installing Snapcast $SNAPCAST_VERSION for $OS_CODENAME..."
     
     cd /tmp
     
     if [[ "$INSTALL_TYPE" == "server" ]]; then
         # Download both server and client packages
-        wget -q "https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_${OS_CODENAME}.deb"
-        wget -q "https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_${OS_CODENAME}.deb"
+        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapserver_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
         
         # Install packages
         sudo apt install ./snapserver_* ./snapclient_* -y
@@ -238,7 +250,7 @@ install_snapcast() {
         log_success "Snapcast server and client installed successfully"
     else
         # Download only client package
-        wget -q "https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_${OS_CODENAME}.deb"
+        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
         
         # Install package
         sudo apt install ./snapclient_* -y
@@ -476,6 +488,7 @@ main() {
     check_root
     check_raspberry_pi
     get_os_codename
+    get_latest_snapcast_version
     
     # Select installation type first
     select_installation_type
