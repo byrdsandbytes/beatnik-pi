@@ -1,0 +1,107 @@
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "hw:Loopback,1,0"
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "plughw:CARD=DigiAMP,DEV=0" # IMPORTANT: Set this to your real DAC
+    format: S16LE
+
+mixers:
+  # Sum the stereo input to two mono outputs
+  stereo_to_mono:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      # Output 0
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: -6
+          - channel: 1
+            gain: -6
+      # Output 1
+      - dest: 1
+        sources:
+          - channel: 0
+            gain: -6
+          - channel: 1
+            gain: -6
+
+filters:
+  # Master volume control
+  Master_Volume:
+    type: Gain
+    parameters:
+      gain: 12.0
+      inverted: false
+      mute: false
+
+  # EQ filter to add a significant bass boost for the mid-woofer
+  Bass_Boost_EQ:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 180  # Frequency to start boosting below
+      gain: 12.0 # Boost by a strong 12.0 dB
+      q: 0.7     # A gentle slope
+
+  # This filter is defined but not used.
+  # Add it to the pipeline if the tweeter still sounds sharp.
+  Tweeter_Sharpness_Cut:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 7000
+      gain: -3.0
+      q: 2.0
+
+  # High-pass filter for the tweeter
+  Tweeter_HPF:
+    type: BiquadCombo
+    parameters:
+      type: LinkwitzRileyHighpass
+      freq: 3000 # 3kHz crossover
+      order: 4   # 24dB/octave slope
+
+  # Low-pass filter for the mid-woofer driver
+  Midwoofer_LPF:
+    type: BiquadCombo
+    parameters:
+      type: LinkwitzRileyLowpass
+      freq: 3000 # 3kHz crossover
+      order: 4   # 24dB/octave slope
+
+pipeline:
+  # First, apply the mixer to create the mono signal
+  - type: Mixer
+    name: stereo_to_mono
+
+  # Second, apply the master volume to both channels
+  - type: Filter
+    channel: 0
+    names:
+      - Master_Volume
+  - type: Filter
+    channel: 1
+    names:
+      - Master_Volume
+
+  # Third, apply just the high-pass filter to the TWEETER channel
+  - type: Filter
+    channel: 0 # Output channel 0 (Tweeter)
+    names:
+      - Tweeter_HPF
+
+  # Finally, apply bass boost and low-pass filter to the MID-WOOFER channel
+  - type: Filter
+    channel: 1 # Output channel 1 (Mid-woofer)
+    names:
+      - Bass_Boost_EQ
+      - Midwoofer_LPF
