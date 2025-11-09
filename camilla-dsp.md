@@ -142,7 +142,7 @@ devices:
   capture:
     type: Alsa
     channels: 2
-    device: "hw:Loopback,1,0" # Capture from the other end of the loopback
+    device: "plughw:Loopback,1,0" # Use plughw for robust capture
     format: S16LE
   playback:
     type: Alsa
