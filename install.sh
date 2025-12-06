@@ -32,7 +32,7 @@ log_error() {
 # Get latest Snapcast version
 get_latest_snapcast_version() {
     log_info "Fetching latest Snapcast version..."
-    SNAPCAST_VERSION_TAG=$(curl -s https://api.github.com/repos/badaix/snapcast/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    SNAPCAST_VERSION_TAG=$(curl -sL https://api.github.com/repos/badaix/snapcast/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     if [ -z "$SNAPCAST_VERSION_TAG" ]; then
         log_error "Failed to fetch latest Snapcast version. Please check your internet connection."
         exit 1
