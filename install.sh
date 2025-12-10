@@ -412,12 +412,19 @@ install_beatnik_controller() {
         log_info "Installing Docker..."
         
         # Install Docker
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sh get-docker.sh
-        sudo usermod -aG docker $USER
+        if ! command -v docker &> /dev/null; then
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+            sudo usermod -aG docker $USER
+        else
+            log_info "Docker is already installed. Skipping installation."
+        fi
         
-        # Install Docker Compose
-        sudo apt install docker-compose -y
+        # Install Docker Compose Plugin (instead of standalone docker-compose)
+        # The get-docker.sh script usually installs docker-compose-plugin, so we check first
+        if ! docker compose version &> /dev/null; then
+             sudo apt install docker-compose-plugin -y
+        fi
         
         log_info "Installing Beatnik Controller..."
         
