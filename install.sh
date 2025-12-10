@@ -437,6 +437,10 @@ install_beatnik_controller() {
         
         # Run docker compose using sg to pick up the new group membership
         if command -v sg &> /dev/null; then
+            # Ensure docker service is running
+            if ! systemctl is-active --quiet docker; then
+                sudo systemctl start docker
+            fi
             sg docker -c "docker compose up -d"
         else
             sudo docker compose up -d
