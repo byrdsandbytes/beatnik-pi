@@ -412,7 +412,9 @@ install_beatnik_controller() {
         log_info "Installing Docker..."
         
         # Install Docker
-        if ! command -v docker &> /dev/null; then
+        # Check if docker is installed and the service exists
+        if ! command -v docker &> /dev/null || ! systemctl cat docker.service &> /dev/null; then
+            log_info "Installing Docker..."
             curl -fsSL https://get.docker.com -o get-docker.sh
             sh get-docker.sh
             sudo usermod -aG docker $USER
