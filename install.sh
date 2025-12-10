@@ -398,6 +398,127 @@ start_services() {
     fi
 }
 
+# Install and Configure CamillaDSP
+install_camilladsp() {
+    log_info "Would you like to install CamillaDSP for Room Correction/EQ? (y/n)"
+    read -p "Choice: " install_camilla
+    
+    if [[ ! "$install_camilla" =~ ^[Yy]$ ]]; then
+        return
+    fi
+
+    log_info "Installing CamillaDSP..."
+
+    # 1. Dependencies and Directories
+    mkdir -p ~/camilladsp/configs ~/camilladsp/coeffs
+    sudo apt-get update
+    sudo apt-get install -y alsa-utils unzip
+
+    # 2. Install CamillaDSP Binary (v2.0.3)
+    CAMILLA_VERSION="v2.0.3"
+    wget -q "https://github.com/HEnquist/camilladsp/releases/download/${CAMILLA_VERSION}/camilladsp-linux-aarch64.tar.gz" -P /tmp
+    sudo tar -xvf /tmp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
+    rm /tmp/camilladsp-linux-aarch64.tar.gz
+
+    # 3. Setup Loopback
+    log_info "Setting up ALSA Loopback..."
+    sudo modprobe snd-aloop
+    echo "snd-aloop" | sudo tee /etc/modules-load.d/snd-aloop.conf > /dev/null
+
+    # 4. Configure Snapclient to use Loopback
+    log_info "Configuring Snapclient to use Loopback..."
+    if grep -q "sound_device" /etc/snapclient.conf; then
+        sudo sed -i 's|^sound_device = .*|sound_device = plughw:Loopback,0,0|' /etc/snapclient.conf
+    else
+        echo "sound_device = plughw:Loopback,0,0" | sudo tee -a /etc/snapclient.conf
+    fi
+
+    # 5. Configure CamillaDSP
+    log_info "Generating CamillaDSP configuration..."
+    
+    # Determine playback device based on SOUNDCARD variable
+    case "$SOUNDCARD" in
+        "hifiberry-amp4pro"|"hifiberry-miniamp")
+            PLAYBACK_DEVICE="plughw:CARD=sndrpihifiberry,DEV=0"
+            ;;
+        "raspberry-dacplus"|"raspberry-digiampplus")
+            PLAYBACK_DEVICE="plughw:CARD=IQaudIODAC,DEV=0"
+            ;;
+        "builtin")
+            PLAYBACK_DEVICE="plughw:CARD=Headphones,DEV=0"
+            ;;
+        "usb")
+             PLAYBACK_DEVICE="plughw:CARD=Device,DEV=0" # Generic fallback
+             log_warning "For USB devices, you might need to adjust the playback device in ~/camilladsp/configs/client_config.yml"
+            ;;
+        *)
+            PLAYBACK_DEVICE="plughw:CARD=Headphones,DEV=0"
+            ;;
+    esac
+
+    cat > ~/camilladsp/configs/client_config.yml <<EOF
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: "plughw:Loopback,1,0"
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: "$PLAYBACK_DEVICE"
+    format: S16LE
+
+filters:
+  example_filter:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 1000
+      q: 0.7
+      gain: 0.0
+
+pipeline:
+  - type: Filter
+    channel: 0
+    names:
+      - example_filter
+  - type: Filter
+    channel: 1
+    names:
+      - example_filter
+EOF
+    # Ensure user ownership
+    chown $USER:$USER ~/camilladsp/configs/client_config.yml
+
+    # 6. Service
+    log_info "Creating CamillaDSP service..."
+    sudo tee /etc/systemd/system/camilladsp.service > /dev/null <<EOF
+[Unit]
+Description=CamillaDSP
+Wants=snapclient.service
+After=snapclient.service
+
+[Service]
+Type=simple
+User=$USER
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 /home/$USER/camilladsp/configs/client_config.yml
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable camilladsp
+    
+    log_success "CamillaDSP installed and configured."
+}
+
 # Install Docker and Beatnik Controller
 install_beatnik_controller() {
     # Only offer controller installation for server installations
@@ -556,6 +677,7 @@ main() {
     fi
     
     check_soundcard
+    install_camilladsp
     start_services
     install_beatnik_controller
     show_completion_info
