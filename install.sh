@@ -415,7 +415,6 @@ install_beatnik_controller() {
         curl -fsSL https://get.docker.com -o get-docker.sh
         sh get-docker.sh
         sudo usermod -aG docker $USER
-        sudo newgrp docker
         
         # Install Docker Compose
         sudo apt install docker-compose -y
@@ -423,9 +422,18 @@ install_beatnik_controller() {
         log_info "Installing Beatnik Controller..."
         
         # Clone and setup Beatnik Controller
+        if [ -d "beatnik-controller" ]; then
+            rm -rf beatnik-controller
+        fi
         git clone https://github.com/byrdsandbytes/beatnik-controller.git
         cd beatnik-controller
-        docker compose up -d
+        
+        # Run docker compose using sg to pick up the new group membership
+        if command -v sg &> /dev/null; then
+            sg docker -c "docker compose up -d"
+        else
+            sudo docker compose up -d
+        fi
         
         log_success "Beatnik Controller installed. Access it at http://$(hostname).local:8181"
         cd ..
