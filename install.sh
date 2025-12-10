@@ -515,48 +515,6 @@ EOF
 
     sudo systemctl daemon-reload
     sudo systemctl enable camilladsp
-
-    # 7. GUI
-    log_info "Would you like to install the CamillaDSP Web GUI? (y/n)"
-    read -p "Choice: " install_gui
-    if [[ "$install_gui" =~ ^[Yy]$ ]]; then
-        INSTALL_CAMILLA_GUI="true"
-        log_info "Installing CamillaDSP GUI..."
-        mkdir -p ~/camillagui
-        
-        # Backend
-        wget -q "https://github.com/HEnquist/camillagui-backend/releases/download/v3.0.3/bundle_linux_aarch64.tar.gz" -P /tmp
-        tar -xvf /tmp/bundle_linux_aarch64.tar.gz -C ~/camillagui/
-        rm /tmp/bundle_linux_aarch64.tar.gz
-        
-        # Frontend
-        wget -q "https://github.com/HEnquist/camillagui/releases/latest/download/camillagui.zip" -P /tmp
-        unzip -o /tmp/camillagui.zip -d ~/camillagui/
-        rm /tmp/camillagui.zip
-        
-        # Service
-        sudo tee /etc/systemd/system/camillagui.service > /dev/null <<EOF
-[Unit]
-Description=CamillaDSP GUI
-Wants=camilladsp.service
-After=camilladsp.service
-
-[Service]
-Type=simple
-User=$USER
-WorkingDirectory=/home/$USER/camillagui
-ExecStart=/home/$USER/camillagui/camillagui
-Restart=always
-RestartSec=3
-
-[Install]
-WantedBy=multi-user.target
-EOF
-        sudo systemctl daemon-reload
-        sudo systemctl enable camillagui
-        
-        log_success "CamillaDSP GUI installed."
-    fi
     
     log_success "CamillaDSP installed and configured."
 }
@@ -629,9 +587,6 @@ show_completion_info() {
         echo "   - Classic Snapweb UI: http://$(hostname).local:1780"
         if [[ "$install_controller" =~ ^[Yy]$ ]]; then
             echo "   - Beatnik Controller: http://$(hostname).local:8181"
-        fi
-        if [[ "$INSTALL_CAMILLA_GUI" == "true" ]]; then
-            echo "   - CamillaDSP GUI: http://$(hostname).local:5005"
         fi
         echo "3. Test AirPlay from your phone/computer"
         echo "4. Test Spotify Connect from the Spotify app"
