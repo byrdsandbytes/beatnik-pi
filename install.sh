@@ -241,19 +241,19 @@ install_snapcast() {
     
     if [[ "$INSTALL_TYPE" == "server" ]]; then
         # Download both server and client packages
-        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapserver_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
-        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q -O snapserver.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapserver_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q -O snapclient.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
         
         # Install packages
-        sudo apt install ./snapserver_* ./snapclient_* -y
+        sudo apt install ./snapserver.deb ./snapclient.deb -y
         
         log_success "Snapcast server and client installed successfully"
     else
         # Download only client package
-        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q -O snapclient.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
         
         # Install package
-        sudo apt install ./snapclient_* -y
+        sudo apt install ./snapclient.deb -y
         
         log_success "Snapcast client installed successfully"
     fi
