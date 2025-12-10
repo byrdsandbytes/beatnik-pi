@@ -241,19 +241,19 @@ install_snapcast() {
     
     if [[ "$INSTALL_TYPE" == "server" ]]; then
         # Download both server and client packages
-        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapserver_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
-        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q -O snapserver.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapserver_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q -O snapclient.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
         
         # Install packages
-        sudo apt install ./snapserver_* ./snapclient_* -y
+        sudo apt install ./snapserver.deb ./snapclient.deb -y
         
         log_success "Snapcast server and client installed successfully"
     else
         # Download only client package
-        wget -q "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
+        wget -q -O snapclient.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
         
         # Install package
-        sudo apt install ./snapclient_* -y
+        sudo apt install ./snapclient.deb -y
         
         log_success "Snapcast client installed successfully"
     fi
@@ -412,20 +412,41 @@ install_beatnik_controller() {
         log_info "Installing Docker..."
         
         # Install Docker
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sh get-docker.sh
-        sudo usermod -aG docker $USER
-        sudo newgrp docker
+        # Check if docker is installed and the service exists
+        if ! command -v docker &> /dev/null || ! systemctl cat docker.service &> /dev/null; then
+            log_info "Installing Docker..."
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+            sudo usermod -aG docker $USER
+        else
+            log_info "Docker is already installed. Skipping installation."
+        fi
         
-        # Install Docker Compose
-        sudo apt install docker-compose -y
+        # Install Docker Compose Plugin (instead of standalone docker-compose)
+        # The get-docker.sh script usually installs docker-compose-plugin, so we check first
+        if ! docker compose version &> /dev/null; then
+             sudo apt install docker-compose-plugin -y
+        fi
         
         log_info "Installing Beatnik Controller..."
         
         # Clone and setup Beatnik Controller
+        if [ -d "beatnik-controller" ]; then
+            rm -rf beatnik-controller
+        fi
         git clone https://github.com/byrdsandbytes/beatnik-controller.git
         cd beatnik-controller
-        docker compose up -d
+        
+        # Run docker compose using sg to pick up the new group membership
+        if command -v sg &> /dev/null; then
+            # Ensure docker service is running
+            if ! systemctl is-active --quiet docker; then
+                sudo systemctl start docker
+            fi
+            sg docker -c "docker compose up -d"
+        else
+            sudo docker compose up -d
+        fi
         
         log_success "Beatnik Controller installed. Access it at http://$(hostname).local:8181"
         cd ..
