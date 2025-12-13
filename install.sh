@@ -99,12 +99,14 @@ select_soundcard() {
     echo "2) Raspberry Pi DAC+ (former IQAudio)"
     echo "3) Raspberry Pi DigiAmp+ (former IQAudio)"
     echo "4) HiFiBerry MiniAmp (for clients)"
-    echo "5) Built-in 3.5mm jack"
-    echo "6) USB Audio Device"
-    echo "7) Other/Skip soundcard configuration"
+    echo "5) HiFiBerry Digi+ / Digi 2 Standard"
+    echo "6) HiFiBerry Digi+ Pro / Digi 2 Pro"
+    echo "7) Built-in 3.5mm jack"
+    echo "8) USB Audio Device"
+    echo "9) Other/Skip soundcard configuration"
     
     while true; do
-        read -p "Enter your choice (1-7): " choice
+        read -p "Enter your choice (1-9): " choice
         case $choice in
             1)
                 SOUNDCARD="hifiberry-amp4pro"
@@ -127,22 +129,32 @@ select_soundcard() {
                 break
                 ;;
             5)
+                SOUNDCARD="hifiberry-digi"
+                OVERLAY="dtoverlay=hifiberry-digi"
+                break
+                ;;
+            6)
+                SOUNDCARD="hifiberry-digi-pro"
+                OVERLAY="dtoverlay=hifiberry-digi-pro"
+                break
+                ;;
+            7)
                 SOUNDCARD="builtin"
                 OVERLAY="dtparam=audio=on"
                 break
                 ;;
-            6)
+            8)
                 SOUNDCARD="usb"
                 log_info "USB audio will be auto-detected. Make sure your USB audio device is connected."
                 break
                 ;;
-            7)
+            9)
                 SOUNDCARD="skip"
                 log_warning "Skipping soundcard configuration. You'll need to configure it manually."
                 break
                 ;;
             *)
-                log_error "Invalid choice. Please enter 1-7."
+                log_error "Invalid choice. Please enter 1-9."
                 ;;
         esac
     done
@@ -438,7 +450,7 @@ install_camilladsp() {
     
     # Determine playback device based on SOUNDCARD variable
     case "$SOUNDCARD" in
-        "hifiberry-amp4pro"|"hifiberry-miniamp")
+        "hifiberry-amp4pro"|"hifiberry-miniamp"|"hifiberry-digi"|"hifiberry-digi-pro")
             PLAYBACK_DEVICE="plughw:CARD=sndrpihifiberry,DEV=0"
             ;;
         "raspberry-dacplus"|"raspberry-digiampplus")
