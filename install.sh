@@ -683,12 +683,6 @@ main() {
     configure_snapclient
     
     install_camilladsp
-
-    # If we needed HAT detection and haven't rebooted yet, do it now
-    if [[ "$NEEDS_HAT_DETECTION" == "true" ]]; then
-        log_warning "Rebooting to enable HAT detection..."
-        sudo reboot
-    fi
     
     check_soundcard
     start_services
