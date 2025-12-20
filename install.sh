@@ -682,6 +682,8 @@ main() {
     
     configure_snapclient
     
+    install_camilladsp
+
     # If we needed HAT detection and haven't rebooted yet, do it now
     if [[ "$NEEDS_HAT_DETECTION" == "true" ]]; then
         log_warning "Rebooting to enable HAT detection..."
@@ -689,7 +691,6 @@ main() {
     fi
     
     check_soundcard
-    install_camilladsp
     start_services
     install_beatnik_controller
     show_completion_info
