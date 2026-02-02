@@ -506,7 +506,26 @@ filters:
       slope: 6
       gain: 0.0
 
+mixers:
+  stereo:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 0
+            inverted: false
+      - dest: 1
+        sources:
+          - channel: 1
+            gain: 0
+            inverted: false
+
 pipeline:
+  - type: Mixer
+    name: stereo
   - type: Filter
     channel: 0
     names:
