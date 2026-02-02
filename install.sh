@@ -484,23 +484,60 @@ devices:
     format: S16LE
 
 filters:
-  example_filter:
+  bass:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 100
+      slope: 6
+      gain: 0.0
+  mid:
     type: Biquad
     parameters:
       type: Peaking
       freq: 1000
       q: 0.7
       gain: 0.0
+  high:
+    type: Biquad
+    parameters:
+      type: Highshelf
+      freq: 5000
+      slope: 6
+      gain: 0.0
+
+mixers:
+  stereo:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 0
+            inverted: false
+      - dest: 1
+        sources:
+          - channel: 1
+            gain: 0
+            inverted: false
 
 pipeline:
+  - type: Mixer
+    name: stereo
   - type: Filter
     channel: 0
     names:
-      - example_filter
+      - bass
+      - mid
+      - high
   - type: Filter
     channel: 1
     names:
-      - example_filter
+      - bass
+      - mid
+      - high
 EOF
     # Ensure user ownership
     chown $USER:$USER ~/camilladsp/configs/client_config.yml
