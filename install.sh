@@ -575,6 +575,9 @@ install_beatnik_controller() {
         return
     fi
     
+    # Switch to user home directory to ensure repo isn't installed in /tmp
+    cd "/home/$USER" || exit 1
+
     log_info "Would you like to install the Beatnik Controller web interface? (y/n)"
     read -p "Choice: " install_controller
     
