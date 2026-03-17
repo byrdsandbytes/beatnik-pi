@@ -1,0 +1,94 @@
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  capture:
+    type: Alsa
+    channels: 2
+    device: plughw:Loopback,1,0
+    format: S16LE
+  playback:
+    type: Alsa
+    channels: 2
+    device: plughw:CARD=sndrpihifiberry,DEV=0
+    format: S32LE
+
+filters:
+  # 1. Subsonic Filter: Protects 50-year-old woofers from deep rumble
+  subsonic_filter:
+    type: Biquad
+    parameters:
+      type: HighpassFO
+      freq: 30.0
+
+  # 2. Low Shelf: Gently extends the low-end
+  bass_boost:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 60.0
+      slope: 6.0
+      gain: 3.0
+
+  # 3. Peaking: Tames potential lower-midrange "boxiness"
+  low_mid_tame:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 250.0
+      q: 1.5
+      gain: -2.0
+
+  # 4. Peaking: Smooths out the vintage mid-forward "shout"
+  mid_tame:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 2000.0
+      q: 2.0
+      gain: -1.5
+
+  # 5. High Shelf: Wakes up the vintage tweeters
+  treble_adjust:
+    type: Biquad
+    parameters:
+      type: Highshelf
+      freq: 8000.0
+      slope: 6.0
+      gain: 1.5
+
+mixers:
+  stereo:
+    channels:
+      in: 2
+      out: 2
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 0
+            inverted: false
+      - dest: 1
+        sources:
+          - channel: 1
+            gain: 0
+            inverted: false
+
+pipeline:
+  - type: Mixer
+    name: stereo
+  - type: Filter
+    channel: 0
+    names:
+      - subsonic_filter
+      - bass_boost
+      - low_mid_tame
+      - mid_tame
+      - treble_adjust
+  - type: Filter
+    channel: 1
+    names:
+      - subsonic_filter
+      - bass_boost
+      - low_mid_tame
+      - mid_tame
+      - treble_adjust
