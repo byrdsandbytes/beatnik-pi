@@ -1,6 +1,8 @@
 # Beatnik OS Installation Guide (Raspberry Pi Imager 2.x)
 
-This guide explains how to flash our pre-configured **Beatnik OS** image using the **Raspberry Pi Imager v2** and our custom repository file.
+This guide explains how to flash our pre-configured **Beatnik OS** image using the **Raspberry Pi Imager v2** and the bratnik custom repository json file.
+
+*NOTE: Raspberry Pi Imager v2 handles images differen than previous versions (1.X). In v2 you just need to download the beatnik-repo.json file and it will download the OS from here during flashing: https://github.com/byrdsandbytes/beatnik-pi/releases).*
 
 ## Prerequisites
 
