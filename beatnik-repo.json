@@ -95,14 +95,14 @@
   },
   "os_list": [
     {
-      "name": "Beatnik OS v0.4.9",
+      "name": "Beatnik OS v0.5.0",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
       "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
-      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.4.9/beatnik-os-v0.4.9.img.xz",
-      "extract_size": 6799688192,
-      "extract_sha256": "380597362c9e48994ff442bd1a7576c0a4360dfbfaecec4fe4b2fff101fd9ccc",
-      "image_download_size": 1025885536,
-      "image_download_sha256": "3522d4d71abb3050d0418f2c93821b74096b371ee585ba2403af26f13205d07c",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.5.0/beatnik-os-v0.5.0.img.xz",
+      "extract_size": 6870725120,
+      "extract_sha256": "bd855932a0575d389c807d2d8229654ba09424e91b98e49b2a558cb20dc4964f",
+      "image_download_size": 1035664484,
+      "image_download_sha256": "4bfb834e47081bee62a74bc183f93e52e91c0b0d10c1c5951e8cef61ab8ba34f",
       "release_date": "2026-01-30",
       "init_format": "systemd",
        "devices": [
