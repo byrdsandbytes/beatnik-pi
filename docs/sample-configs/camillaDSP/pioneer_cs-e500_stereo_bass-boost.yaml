@@ -8,6 +8,8 @@
 devices:
   samplerate: 48000
   chunksize: 1024
+  enable_rate_adjust: true
+  target_level: 1024
   capture:
     type: Alsa
     channels: 2

@@ -139,10 +139,12 @@ Copy and paste this entire block into the file. **Important:** You must change t
 devices:
   samplerate: 48000
   chunksize: 1024
+  enable_rate_adjust: true
+  target_level: 1024
   capture:
     type: Alsa
     channels: 2
-    device: "plughw:Loopback,1,0" # Use plughw for robust capture
+    device: "hw:Loopback,1,0"
     format: S16LE
   playback:
     type: Alsa
