@@ -440,9 +440,9 @@ install_camilladsp() {
     # 4. Configure Snapclient to use Loopback
     log_info "Configuring Snapclient to use Loopback..."
     if grep -q "sound_device" /etc/snapclient.conf; then
-        sudo sed -i 's|^sound_device = .*|sound_device = plughw:Loopback,0,0|' /etc/snapclient.conf
+        sudo sed -i 's|^sound_device = .*|sound_device = hw:Loopback,0,0|' /etc/snapclient.conf
     else
-        echo "sound_device = plughw:Loopback,0,0" | sudo tee -a /etc/snapclient.conf
+        echo "sound_device = hw:Loopback,0,0" | sudo tee -a /etc/snapclient.conf
     fi
 
     # 5. Configure CamillaDSP
@@ -472,10 +472,12 @@ install_camilladsp() {
 devices:
   samplerate: 48000
   chunksize: 1024
+        enable_rate_adjust: true
+        target_level: 1024
   capture:
     type: Alsa
     channels: 2
-    device: "plughw:Loopback,1,0"
+            device: "hw:Loopback,1,0"
     format: S16LE
   playback:
     type: Alsa
