@@ -6,9 +6,9 @@ This guide provides step-by-step instructions for installing Beatnik Pi using th
 
 Before you begin, make sure you have the following:
 
-- A **Raspberry Pi** (Pi 4 or 5 recommended for a server).
+- A **Raspberry Pi** (Pi 3, 4 or 5 recommended for a server).
 - An **SD card** flashed with the latest **Raspberry Pi OS** (64-bit recommended).
-- A stable **internet connection** (Ethernet is recommended).
+- A stable **internet connection** (Ethernet is always mor stable but wifi works).
 - Your chosen **soundcard or HAT** physically connected to the Raspberry Pi.
 
 ## Quick Installation Command
@@ -41,6 +41,7 @@ You will first be asked what you want to install:
     - Snapcast Client (to play audio on the server device itself)
     - AirPlay and Spotify Connect support
     - Optional Beatnik Controller web interface
+    - Optional Camilla DSP
 
 2.  **Snapcast Client Only**: Choose this for all your other Raspberry Pis that will act as speakers in other rooms. It installs only the Snapcast client, which will connect to your main server.
 
