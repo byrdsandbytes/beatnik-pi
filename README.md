@@ -30,6 +30,10 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 
 ## Hardware Example
 
+**Memory Crisis**
+(Updated: 04.04.2026)
+As we all get to enjoy a RAM / Memory shortrage due to the AI Bubble, a Silly Economy and Investor Greed (if you NVIDIA Stocks in your ETF your part of the problem). Here's the min RAM requirements: [**Computing & Hardware Requirements**](hardware-requirements.md).
+
 ### Beatnik Pi Server
 
 
