@@ -38,11 +38,6 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 
 ## Hardware Example
 
-<p align="center">
-  <img src="docs/images/beatnik_case_sample_1.jpg" alt="Case Sample" width="45%" style="margin-right: 2%;" />
-  <img src="docs/images/beatnik_b_case_explanation.webp" alt="Case Explanation" width="45%" />
-</p>
-
 **Memory Crisis**
 (Updated: 19.04.2026)- "Don't panic"
 As we all get to enjoy a RAM / Memory shortrage, here's the min RAM requirements: [**Computing & Hardware Requirements**](hardware-requirements.md).
@@ -355,6 +350,8 @@ This will build the Docker image and start the application in the background.
 ##### Access the Application
 
 Open your web browser and navigate to `http://localhost`, `http://beatnik-server.local`  or `http://your-hostname.local`. You should now see the Beatnik Controller interface.
+
+<img src="docs/images/beatnik_screenshot_safari.webp" alt="Beatnik Web UI in Safari" width="600"/>
   
 
 
