@@ -17,6 +17,7 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 
 
 ## Software Components
+![Beatnik Controller](docs/images/iphone15_screen.webp)
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
@@ -316,6 +317,8 @@ journalctl -u snapclient -f   # “… Connected to … hw:0,0 …”
 ### 8 · Beatnik Controller App & UI
 
 The easiest way to control your Beatnik audio system is by using our mobile applications:
+
+![Beatnik Controller App iOS](docs/images/iphone15_screen.webp)
 
 **iOS**: https://apps.apple.com/ch/app/beatnik-audio/id6748608916
 
