@@ -82,14 +82,6 @@ The easiest way to get Beatnik Running is to flash BeatnikOS using the Raspberry
 To Flash BeatnikOS using the Raspberry PI Imager follow the guide here: [Beatnik OS Installation Guide](beatnik-os-installation-guide.md)
 
 
-
-#### Beatnik Cotroller App:
-**iOS**: https://apps.apple.com/ch/app/beatnik-audio/id6748608916
-
-**Anroid**: https://play.google.com/store/apps/details?id=ch.byrds.beatnik
-
-
-
 ### B) Shell Script 
 To install Beatnik using Shell script follow the shell installation guide here: [Shell Script Installation Guide](shell-script-Installation-guide.md)
 
@@ -321,15 +313,22 @@ journalctl -u snapclient -f   # “… Connected to … hw:0,0 …”
 
 ---
 
-### 8 · Beatnik Controller UI (selhosted)
-For more information check the controller repo here: https://github.com/byrdsandbytes/beatnik-controller
+### 8 · Beatnik Controller App & UI
 
-### Prequesites
+The easiest way to control your Beatnik audio system is by using our mobile applications:
+
+**iOS**: https://apps.apple.com/ch/app/beatnik-audio/id6748608916
+
+**Android**: https://play.google.com/store/apps/details?id=ch.byrds.beatnik
+
+#### 8.1 Self-Hosted Web UI (Docker)
+
+If you prefer a self-hosted web interface, you can run the Beatnik Controller UI via Docker. For more information check the controller repo here: https://github.com/byrdsandbytes/beatnik-controller
+
+##### Prerequisites
 Docker & docker compose. If you have trouble setting up docker compose check our guide: [DOCKER_INSTALLATION.md](https://github.com/byrdsandbytes/beatnik-controller/docs/DOCKER_INSTALLATION.md)
 
-
-
-#### 8.1 Install using docker compose
+##### Install using docker compose
 
 Clone the repo:
 
@@ -344,13 +343,13 @@ docker compose up -d
 
 This will build the Docker image and start the application in the background.
 
-#### 8.2 Access the Application
+##### Access the Application
 
 Open your web browser and navigate to `http://localhost`, `http://beatnik-server.local`  or `http://your-hostname.local`. You should now see the Beatnik Controller interface.
   
 
 
-#### 8.4 (Optional find the classic snapwebclient UI here)
+#### 8.2 (Optional find the classic snapwebclient UI here)
 
 Open **[http://beatnik-server.local:1780](http://beatnik-server.local:1780)**
 
@@ -432,7 +431,7 @@ journalctl -u snapclient -f   # look for “Connected to beatnik-server.local:17
 
 ---
 
-Happy listening! 🎶
+Happy listening. 🎈
 
 ## Commands cheat sheet
 
