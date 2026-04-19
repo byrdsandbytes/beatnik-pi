@@ -1,8 +1,12 @@
 # beatnik-pi
 
+
+
 Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spotify Connect** streams (from any smartphone and Laptop / PC) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
 
 The Hardware I have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
+
+**NOTE**: Docs are beeing restructured atm. I did change quite alot. Current Version 0.5 is a mix of old & new. Version 0.6 will be document well.
 
 
 **NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
@@ -16,23 +20,25 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
-| Raspberry Pi OS Lite/Debian     | **Bookworm** /  operating system                          |
-| Snapserver     | **0.31.0** / recives and distributes streams                          |
-| Snapclient     | **0.31.0** / recives and plays streams                          |
-| Shairport‑Sync | **4.3.x**  / handles airplay 1+2                |
-| Libresport | **x.x**  / handles spotify connect              |
-| Device overlay    | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
-| Beatnik Controller         | **0.5.0** /Web UI & App – grouping, volume & status                    |
-| Docker        | **x.x** –Containerize & host controller                   |
-| CamillaDSP  | **x.x** / Digital Signal Processig / Equalizing / Room Correction
+| [Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems/) | **Bookworm** /  operating system                          |
+| [Snapserver](https://github.com/badaix/snapcast)     | **0.31.0** / recives and distributes streams                          |
+| [Snapclient](https://github.com/badaix/snapcast)     | **0.31.0** / recives and plays streams                          |
+| [Shairport‑Sync](https://github.com/mikebrady/shairport-sync) | **4.3.x** / handles airplay 1+2                |
+| [Librespot](https://github.com/librespot-org/librespot) | **x.x** / handles spotify connect              |
+| [Device overlay](https://www.hifiberry.com/)    | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
+| [Beatnik Controller](https://github.com/byrdsandbytes/beatnik-controller) | **0.5.0** / Web UI & App – grouping, volume & status                    |
+| Beatnik Hardware API | **0.5.0** / sound card managment |
+| Beatnik BLENO | **0.5.0** / Wifi Provisioning using Bluetooth and LED Button |
+| [Docker](https://www.docker.com/)        | **x.x** – Containerize & host controller                   |
+| [CamillaDSP](https://github.com/HEnquist/camilladsp)  | **x.x** / Digital Signal Processig / Equalizing / Room Correction |
 
 ---
 
 ## Hardware Example
 
 **Memory Crisis**
-(Updated: 04.04.2026)
-As we all get to enjoy a RAM / Memory shortrage due to the AI Bubble, a Silly Economy and Investor Greed (if you NVIDIA Stocks in your ETF your part of the problem). Here's the min RAM requirements: [**Computing & Hardware Requirements**](hardware-requirements.md).
+(Updated: 19.04.2026)- "Don't panic"
+As we all get to enjoy a RAM / Memory shortrage, here's the min RAM requirements: [**Computing & Hardware Requirements**](hardware-requirements.md).
 
 ### Beatnik Pi Server
 

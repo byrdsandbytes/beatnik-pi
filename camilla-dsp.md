@@ -14,7 +14,7 @@ This setup uses a virtual **ALSA Loopback** device, which acts like a software a
 
 Before you begin, ensure you have:
 
-- A Raspberry Pi (4 or 5 recommended) running a 64-bit version of Raspberry Pi OS (Bookworm).
+- A Raspberry Pi running a 64-bit version of Raspberry Pi OS (Bookworm).
 - A working Snapclient installation connected to your Snapserver.
 - A DAC (Digital-to-Analog Converter) connected to your Pi.
 - An active SSH session to your client Pi.

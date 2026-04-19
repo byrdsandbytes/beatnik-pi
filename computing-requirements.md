@@ -2,14 +2,18 @@
 
 ## Recommended Computing Resources
 
-### Beatnik Pi Server
-The server handles stream processing (Snapserver, Shairport-Sync, Librespot), manages WebSocket connections, hosts a Docker container and serves an Angular web app, requiring more resources. Like all endpoints, it runs CamillaDSP for DSP processing and acts as the primary master room client.
+TLDR; Server = 1GB -> Currently pi 3B+, Client -> 3A+ because 5 GHz Wi-Fi is strongly preferred over 2.4 GHz.
+(Updated 19.04.2026)
 
-* **Absolute Minimum:** Raspberry Pi 3A+ (4 Cores CPU, 512MB RAM). However, this is explicitly *not recommended* due to potential memory constraints under load.
+### Beatnik Pi Server
+The server handles stream processing (Snapserver, Shairport-Sync, Librespot), manages WebSocket connections, hosts a Docker container that serves the beatnik controller Angular web app, requiring more resources. Like all endpoints, it runs CamillaDSP for DSP processing for your amp or DAC. Having a bit headroom for future features is recommended.
+
+* **Absolute Minimum:** Raspberry Pi 3A+ (4 Cores CPU, 512MB RAM). However, this is explicitly *not recommended* due to potential memory constraints under load. (Things like Signal Visuals in the app may be laggy)
 * **Better Choice:** Raspberry Pi 3B+ (4 Cores CPU, 1GB RAM).
 * **Recommended / "Sweet Spot":** **Raspberry Pi 4B with 2-4GB RAM** (4 Cores @ 1.5/1.8 GHz).
 * **Overkill:** Anything over 8GB RAM is unnecessary unless you plan to host numerous other memory-intensive services on the same device.
-* **Storage:** A high-quality 32GB Micro SD Card (Raspberry Pi Foundation or SanDisk Extreme recommended).
+* **Storage:** A high-quality 32GB Micro SD Card (Raspberry Pi Foundation (currently overpriced) recommended). A shitty SD Card will cause headaches.
+* **Network:** 5 GHz Wi-Fi is strongly preferred (or Ethernet) for stability and bandwidth.
 
 ### Beatnik Pi Client
 Clients receive the audio streams, pass them through CamillaDSP for local processing, and play them back. This requires less CPU and RAM than the server workload.
@@ -17,6 +21,7 @@ Clients receive the audio streams, pass them through CamillaDSP for local proces
 * **Minimum Requirement:** Raspberry Pi Zero 2 W (4 Cores @ 1.0 GHz, 512MB RAM). 
 * **Recommended / Preferred:** **Raspberry Pi 3A+** (4 Cores @ 1.4 GHz, 512MB RAM), for better performance handling the connection and basic audio tasks.
 * **Storage:** A high-quality 32GB Micro SD Card (Raspberry Pi Foundation or SanDisk Extreme recommended).
+* **Network:** 5 GHz Wi-Fi is preferred for reliable stream reception.
 
 
 ### **Raspberry Pi Models Overview**
@@ -35,6 +40,4 @@ Clients receive the audio streams, pass them through CamillaDSP for local proces
 | **Pi Zero W / WH** | Zero | 1 Core @ 1.0 GHz | 512MB | 2.4 GHz Only | None |
 | **Pi Zero** | Zero | 1 Core @ 1.0 GHz | 512MB | None | None |
 
-> **Important Caveats:**
-> * **Raspberry Pi 4 CPU:** Earlier revisions of the Pi 4 shipped locked at 1.5 GHz. Newer board revisions and recent firmware updates officially push this to 1.8 GHz.
-> ** **Raspberry Pi 3 B+ Ethernet:** While it features a "Gigabit" Ethernet port, it is bottlenecked internally by the board's USB 2.0 bus. Its actual maximum throughput is around 300 Mbps.
+
