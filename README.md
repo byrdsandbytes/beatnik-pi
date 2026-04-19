@@ -27,8 +27,8 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 | [Librespot](https://github.com/librespot-org/librespot) | **x.x** / handles spotify connect              |
 | [Device overlay](https://www.hifiberry.com/)    | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
 | [Beatnik Controller](https://github.com/byrdsandbytes/beatnik-controller) | **0.5.0** / Web UI & App – grouping, volume & status                    |
-| Beatnik Hardware API | **0.5.0** / sound card managment |
-| Beatnik BLENO | **0.5.0** / Wifi Provisioning using Bluetooth and LED Button |
+| [Beatnik Hardware API](https://github.com/byrdsandbytes/beatnik-hardware-api) | **0.5.0** / sound card managment |
+| [Beatnik BLENO](https://github.com/byrdsandbytes/beatnik-bleno) | **0.5.0** / Wifi Provisioning using Bluetooth and LED Button |
 | [Docker](https://www.docker.com/)        | **x.x** – Containerize & host controller                   |
 | [CamillaDSP](https://github.com/HEnquist/camilladsp)  | **x.x** / Digital Signal Processig / Equalizing / Room Correction |
 
@@ -79,7 +79,9 @@ The easiest way to get Beatnik Running is to flash BeatnikOS using the Raspberry
 
 ### A) BeatnikOS
 
-To Flash BeatnikOS using the Raspberry PI Imager follow the guide here:
+To Flash BeatnikOS using the Raspberry PI Imager follow the guide here: [Beatnik OS Installation Guide](beatnik-os-installation-guide.md)
+
+
 
 #### Beatnik Cotroller App:
 **iOS**: https://apps.apple.com/ch/app/beatnik-audio/id6748608916
@@ -89,7 +91,7 @@ To Flash BeatnikOS using the Raspberry PI Imager follow the guide here:
 
 
 ### B) Shell Script 
-To install Beatnik using Shell script follow the shell installation guide here:
+To install Beatnik using Shell script follow the shell installation guide here: [Shell Script Installation Guide](shell-script-Installation-guide.md)
 
 
 ### C) Bare Metal Installation
