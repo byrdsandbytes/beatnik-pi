@@ -12,12 +12,12 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 **NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
 
 ## Architecture
-<img src="docs/images/beatnik_architecture.png" alt="Beatnik Architecture" width="400"/>
+![Beatnik Architecture](docs/images/beatnik_architecture.png)
 
 
 
 ## Software Components
-![Beatnik Controller](docs/images/iphone15_screen.webp)
+
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
@@ -32,10 +32,16 @@ The Hardware I have choosen here is to power some biger passive Speakers using A
 | [Beatnik BLENO](https://github.com/byrdsandbytes/beatnik-bleno) | **0.5.0** / Wifi Provisioning using Bluetooth and LED Button |
 | [Docker](https://www.docker.com/)        | **x.x** – Containerize & host controller                   |
 | [CamillaDSP](https://github.com/HEnquist/camilladsp)  | **x.x** / Digital Signal Processig / Equalizing / Room Correction |
+![Beatnik Controller](docs/images/iphone15_screen.webp)
 
 ---
 
 ## Hardware Example
+
+<p align="center">
+  <img src="docs/images/beatnik_case_sample_1.jpg" alt="Case Sample" width="45%" style="margin-right: 2%;" />
+  <img src="docs/images/beatnik_b_case_explanation.webp" alt="Case Explanation" width="45%" />
+</p>
 
 **Memory Crisis**
 (Updated: 19.04.2026)- "Don't panic"
