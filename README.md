@@ -98,14 +98,14 @@ Install everything from scratch if you want full control. Find the installation 
 3. In *OS customisation*:
 
    * **Enable SSH** and add your credentials (eg. user: beatnik, pw: changeMe)
-   * **Hostname:** `beatnik-server`
+   * **Hostname:** `beatnik-001`
    * *(Optional)* enter Wi‑Fi credentials if you plan using Wi-Fi
 4. Flash the card, insert it, boot up the Pi.
 
 #### SSh into the pi 
 
 ```bash
-ssh beatnik@beatnik-server.local
+ssh beatnik@beatnik-001.local
 sudo apt update && sudo apt full-upgrade -y
 ```
 
@@ -206,6 +206,12 @@ Disable raspotify: (snapcast will spawn its own instance)
 sudo systemctl disable raspotify
 sudo systemctl stop raspotify
 ```
+
+---
+
+#### 4.3 · Analog Line-In (ADC)
+If you have a soundcard with an Analog-to-Digital Converter (like the HiFiBerry DAC+ ADC Pro, etc.), you can set it up to stream analog audio (e.g., from a turntable or CD player) to your Snapcast clients. 
+For a step-by-step setup guide, see: [How to Use an ADC as a Line-In for Snapcast](adc-line-in.md).
 
 
 
@@ -349,7 +355,7 @@ This will build the Docker image and start the application in the background.
 
 ##### Access the Application
 
-Open your web browser and navigate to `http://localhost`, `http://beatnik-server.local`  or `http://your-hostname.local`. You should now see the Beatnik Controller interface.
+Open your web browser and navigate to `http://beatnik-001.local`  or `http://your-hostname.local`. You should now see the Beatnik Controller interface.
 
 <img src="docs/images/beatnik_screenshot_safari.webp" alt="Beatnik Web UI in Safari" width="600"/>
   
@@ -357,10 +363,9 @@ Open your web browser and navigate to `http://localhost`, `http://beatnik-server
 
 #### 8.2 (Optional find the classic snapwebclient UI here)
 
-Open **[http://beatnik-server.local:1780](http://beatnik-server.local:1780)**
+Open **[http://beatnik-001.local:1780](http://beatnik-001.local:1780)**
 
-* **Streams** – should list *AirPlay*
-* **Clients** – should list *audiopi* with live meters & volume
+
 
 ---
 
@@ -420,7 +425,7 @@ sudo usermod -aG audio snapclient
 
 sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
 [snapclient]
-host         = beatnik-server.local   # hostname of beatnik server pi
+host         = beatnik-001.local   # hostname of beatnik server pi
 sound_device = hw:0,0          # card index from `aplay -l`
 buffer       = 120             # Wi‑Fi cushion (ms)
 EOF
@@ -430,10 +435,10 @@ EOF
 
 ```bash
 sudo systemctl enable --now snapclient
-journalctl -u snapclient -f   # look for “Connected to beatnik-server.local:1704 …”
+journalctl -u snapclient -f   # look for “Connected to beatnik-001.local:1704 …”
 ```
 
-> Repeat for as many extra Pis as you like. Just give each one a **unique hostname** and point `host = beatnik-server.local` (or your server’s IP) in `/etc/snapclient.conf`.
+> Repeat for as many extra Pis as you like. Just give each one a **unique hostname** and point `host = beatnik-001.local` (or your server’s IP) in `/etc/snapclient.conf`.
 
 ---
 
