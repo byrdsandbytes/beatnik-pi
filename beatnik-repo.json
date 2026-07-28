@@ -2,13 +2,10 @@
   "imager": {
     "latest_version": "2.0.3",
     "url": "https://www.raspberrypi.com/software/",
-     "devices": [
+    "devices": [
       {
         "name": "Raspberry Pi 5",
-        "tags": [
-          "pi5-64bit",
-          "pi5-32bit"
-        ],
+        "tags": ["pi5-64bit", "pi5-32bit"],
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_5.png",
         "description": "Raspberry Pi 5, 500 / 500+, and Compute Module 5",
         "matching_type": "exclusive",
@@ -16,10 +13,7 @@
       },
       {
         "name": "Raspberry Pi 4",
-        "tags": [
-          "pi4-64bit",
-          "pi4-32bit"
-        ],
+        "tags": ["pi4-64bit", "pi4-32bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_4.png",
         "description": "Raspberry Pi 4 Model B, 400, and Compute Module 4 / 4S",
@@ -28,10 +22,7 @@
       },
       {
         "name": "Raspberry Pi 3",
-        "tags": [
-          "pi3-64bit",
-          "pi3-32bit"
-        ],
+        "tags": ["pi3-64bit", "pi3-32bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_3.png",
         "description": "Raspberry Pi 3 Model A+ / B / B+ and Compute Module 3 / 3+",
@@ -40,9 +31,7 @@
       },
       {
         "name": "Raspberry Pi 2",
-        "tags": [
-          "pi2-32bit"
-        ],
+        "tags": ["pi2-32bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_2.png",
         "description": "Raspberry Pi 2 Model B",
@@ -51,9 +40,7 @@
       },
       {
         "name": "Raspberry Pi 1",
-        "tags": [
-          "pi1-32bit"
-        ],
+        "tags": ["pi1-32bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_1B+.png",
         "description": "Raspberry Pi 1 Model A / A+ / B / B+ and Compute Module 1",
@@ -62,10 +49,7 @@
       },
       {
         "name": "Raspberry Pi Zero 2 W",
-        "tags": [
-          "pi3-64bit",
-          "pi3-32bit"
-        ],
+        "tags": ["pi3-64bit", "pi3-32bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero_2_W.png",
         "description": "Raspberry Pi Zero 2 W",
@@ -74,9 +58,7 @@
       },
       {
         "name": "Raspberry Pi Zero",
-        "tags": [
-          "pi1-32bit"
-        ],
+        "tags": ["pi1-32bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero.png",
         "description": "Raspberry Pi Zero, Zero W, and Zero WH",
@@ -95,17 +77,17 @@
   },
   "os_list": [
     {
-      "name": "Beatnik OS v0.5.0",
+      "name": "Beatnik OS v0.6.0",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
       "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
-      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.5.0/beatnik-os-v0.5.0.img.xz",
-      "extract_size": 6870725120,
-      "extract_sha256": "bd855932a0575d389c807d2d8229654ba09424e91b98e49b2a558cb20dc4964f",
-      "image_download_size": 1035664484,
-      "image_download_sha256": "4bfb834e47081bee62a74bc183f93e52e91c0b0d10c1c5951e8cef61ab8ba34f",
-      "release_date": "2026-03-28",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.6.0/beatnik-os-v0.6.0.img.xz",
+      "extract_size": 7017181696,
+      "extract_sha256": "1b2f1f5cf09255a0a09dcb590de6623cb2591dce57ae0a96f900e8fc82c65fee",
+      "image_download_size": 1089301008,
+      "image_download_sha256": "f71efc52a2521a441a20941faff090331e0b00855c8007c9d5ca0be81ab157cd",
+      "release_date": "2026-07-28",
       "init_format": "systemd",
-       "devices": [
+      "devices": [
         "pi5-64bit",
         "pi5-32bit",
         "pi4-64bit",
@@ -116,6 +98,7 @@
         "pi1-32bit"
       ]
     },
+    
     {
       "name": "Beatnik OS v0.5.3",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
@@ -127,7 +110,7 @@
       "image_download_sha256": "c654d8906194c257f3311b35c67df2a3f45cdb17e87b5d8e95c1bc5728f08e56",
       "release_date": "2026-04-29",
       "init_format": "systemd",
-       "devices": [
+      "devices": [
         "pi5-64bit",
         "pi5-32bit",
         "pi4-64bit",
@@ -138,5 +121,6 @@
         "pi1-32bit"
       ]
     }
+    
   ]
 }
