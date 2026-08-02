@@ -1,6 +1,10 @@
-# beatnik-pi
+# Beatnik Pi & BeatnikOS
 
-Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spotify Connect** streams (from any smartphone and Laptop / PC) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
+<img src="docs/images/b_amp_pro_back.webp" alt="Beatnik B Amp" width="49%"> <img src="docs/images/mulitroomControll.webp" alt="Beatnik Controller" width="49%">
+
+Turn a **Raspberry Pi** into a [Snapcast](https://github.com/badaix/snapcast) server that accepts **AirPlay** & **Spotify Connect** streams (from any smartphone and Laptop / PC) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
+
+You can then manage your Raspberry Pi(s) using the Beatnik Controller App for [iOS](https://apps.apple.com/us/app/beatnik-audio/id6748608916) or [Android](https://play.google.com/store/apps/details?id=ch.byrds.beatnik&hl=en) or the selfhosted [Docker web app](https://github.com/byrdsandbytes/beatnik-controller/pkgs/container/beatnik-controller).
 
 The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
 
