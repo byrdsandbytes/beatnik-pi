@@ -398,9 +398,34 @@ journalctl -u snapclient -f   # look for “Connected to beatnik-server.local:17
 
 ---
 
-Happy listening! 🎶
+Happy listening! 🎈
 
-## Commands cheat sheet
+
+## Acknowledgments & Tech Stack
+
+This project utilizes the following open-source software and hardware projects:
+
+* **[Snapcast](https://github.com/badaix/snapcast)** for synchronous multi-room audio distribution.
+* **[Shairport Sync](https://github.com/mikebrady/shairport-sync)** for AirPlay 1 & 2 receiver support.
+* **[librespot](https://github.com/librespot-org/librespot)** & **[Raspotify](https://github.com/dtcooper/raspotify)** for Spotify Connect integration.
+* **[Mopidy](https://mopidy.com/)** & **[MPD](https://www.musicpd.org/)** for extensible music server capabilities.
+* **[CamillaDSP](https://github.com/HEnquist/camilladsp)** for audio processing and equalization.
+* **[HiFiBerry](https://www.hifiberry.com/)** for audio hardware (DACs, Amps) and Linux overlay support.
+* **[ALSA](https://www.alsa-project.org/)** for the core Linux audio framework.
+* **[Raspberry Pi](https://www.raspberrypi.com/)** & **[Raspberry Pi Imager](https://www.raspberrypi.com/software/)** for hardware infrastructure and OS flashing.
+* **[Docker](https://www.docker.com/)** for containerization.
+* **[Caddy](https://caddyserver.com/)** for web server and reverse proxy capabilities.
+* **[Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems/)**, **[Debian](https://www.debian.org/)** & **[Linux](https://www.kernel.org/)** for the underlying operating system environment.
+
+A special thanks to the countless community members, bloggers, and forum contributors who have written tutorials and guides explaining these technologies. This project wouldn't exist without that shared knowledge.
+
+Thank you for making Beatnik possible.
+
+---
+
+
+
+
 
 
 

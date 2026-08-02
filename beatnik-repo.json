@@ -80,7 +80,7 @@
       "name": "Beatnik OS v0.6.0",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
       "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
-      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.6.0/beatnik-os-v0.6.0.img.xz",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.6.0/beatnik-os-v0.6.img.xz",
       "extract_size": 7017181696,
       "extract_sha256": "1b2f1f5cf09255a0a09dcb590de6623cb2591dce57ae0a96f900e8fc82c65fee",
       "image_download_size": 1089301008,
