@@ -76,6 +76,28 @@
     ]
   },
   "os_list": [
+     {
+      "name": "Beatnik OS v0.6.1",
+      "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
+      "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.6.1/beatnik-os-v0.6.1.img.xz",
+      "extract_size": 7012377088,
+      "extract_sha256": "6d1c4dfe9120d8a218dd90b0f220b368bc480bb394537dd57fa1df7b40fe5e91",
+      "image_download_size": 1091573964,
+      "image_download_sha256": "b0042967424d893e6c7269c4814b6f15d48d3b205990ca7bd49b90dfb89efe22",
+      "release_date": "2026-08-04",
+      "init_format": "systemd",
+      "devices": [
+        "pi5-64bit",
+        "pi5-32bit",
+        "pi4-64bit",
+        "pi4-32bit",
+        "pi3-64bit",
+        "pi3-32bit",
+        "pi2-32bit",
+        "pi1-32bit"
+      ]
+    },
     {
       "name": "Beatnik OS v0.6.0",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
