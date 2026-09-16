@@ -110,7 +110,7 @@ sudo nmcli connection modify "$(nmcli -g NAME connection show --active | head -n
 Audio streaming requires consistent packet delivery rather than raw bandwidth. Run a continuous ping test from the client to the server:
 
 ```bash
-ping -c 50 beatnik-server.local
+ping -c 50 beatnik-XXX.local (replace XXX with your Server)
 ```
 
 ### Analyze the Results:
@@ -164,6 +164,8 @@ journalctl -u snapclient -f
 ## 7. Increase the Snapclient Buffer Cushion
 
 If you have an inherently noisy Wi-Fi environment and cannot eliminate minor jitter, you can increase the client's internal playback buffer.
+
+For a full breakdown of server-side latency targets, chunk sizes, and client cushion settings, check the [snapserver-buffering-config.md](snapserver-buffering-config.md) guide.
 
 1. Open the Snapclient configuration:
    ```bash
