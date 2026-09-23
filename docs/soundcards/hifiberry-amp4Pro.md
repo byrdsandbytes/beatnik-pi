@@ -47,7 +47,7 @@ aplay -l   # must list "sndrpihifiberry"
 ```
 
 ## Specs
-- Output: 2 x 60W
+- Output: 2 x 30W
 
 
 ## Links

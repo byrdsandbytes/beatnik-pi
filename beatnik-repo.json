@@ -1,0 +1,148 @@
+{
+  "imager": {
+    "latest_version": "2.0.3",
+    "url": "https://www.raspberrypi.com/software/",
+    "devices": [
+      {
+        "name": "Raspberry Pi 5",
+        "tags": ["pi5-64bit", "pi5-32bit"],
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_5.png",
+        "description": "Raspberry Pi 5, 500 / 500+, and Compute Module 5",
+        "matching_type": "exclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi 4",
+        "tags": ["pi4-64bit", "pi4-32bit"],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_4.png",
+        "description": "Raspberry Pi 4 Model B, 400, and Compute Module 4 / 4S",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi 3",
+        "tags": ["pi3-64bit", "pi3-32bit"],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_3.png",
+        "description": "Raspberry Pi 3 Model A+ / B / B+ and Compute Module 3 / 3+",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi 2",
+        "tags": ["pi2-32bit"],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_2.png",
+        "description": "Raspberry Pi 2 Model B",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi 1",
+        "tags": ["pi1-32bit"],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_1B+.png",
+        "description": "Raspberry Pi 1 Model A / A+ / B / B+ and Compute Module 1",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi Zero 2 W",
+        "tags": ["pi3-64bit", "pi3-32bit"],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero_2_W.png",
+        "description": "Raspberry Pi Zero 2 W",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "Raspberry Pi Zero",
+        "tags": ["pi1-32bit"],
+        "default": false,
+        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero.png",
+        "description": "Raspberry Pi Zero, Zero W, and Zero WH",
+        "matching_type": "inclusive",
+        "capabilities": []
+      },
+      {
+        "name": "No filtering",
+        "tags": [],
+        "default": false,
+        "description": "Show every possible image",
+        "matching_type": "inclusive",
+        "capabilities": []
+      }
+    ]
+  },
+  "os_list": [
+     {
+      "name": "Beatnik OS v0.6.1",
+      "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
+      "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.6.1/beatnik-os-v0.6.1.img.xz",
+      "extract_size": 7012377088,
+      "extract_sha256": "6d1c4dfe9120d8a218dd90b0f220b368bc480bb394537dd57fa1df7b40fe5e91",
+      "image_download_size": 1091573964,
+      "image_download_sha256": "b0042967424d893e6c7269c4814b6f15d48d3b205990ca7bd49b90dfb89efe22",
+      "release_date": "2026-08-04",
+      "init_format": "systemd",
+      "devices": [
+        "pi5-64bit",
+        "pi5-32bit",
+        "pi4-64bit",
+        "pi4-32bit",
+        "pi3-64bit",
+        "pi3-32bit",
+        "pi2-32bit",
+        "pi1-32bit"
+      ]
+    },
+    {
+      "name": "Beatnik OS v0.6.0",
+      "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
+      "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.6.0/beatnik-os-v0.6.img.xz",
+      "extract_size": 7017181696,
+      "extract_sha256": "1b2f1f5cf09255a0a09dcb590de6623cb2591dce57ae0a96f900e8fc82c65fee",
+      "image_download_size": 1089301008,
+      "image_download_sha256": "f71efc52a2521a441a20941faff090331e0b00855c8007c9d5ca0be81ab157cd",
+      "release_date": "2026-07-28",
+      "init_format": "systemd",
+      "devices": [
+        "pi5-64bit",
+        "pi5-32bit",
+        "pi4-64bit",
+        "pi4-32bit",
+        "pi3-64bit",
+        "pi3-32bit",
+        "pi2-32bit",
+        "pi1-32bit"
+      ]
+    },
+    
+    {
+      "name": "Beatnik OS v0.5.3",
+      "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
+      "icon": "https://cdn.shopify.com/s/files/1/0945/4508/4681/files/icon_foreground.png",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.5.3/beatnik-os-v0.5.3.img.xz",
+      "extract_size": 6868820480,
+      "extract_sha256": "0b5c3d4ac5ebef03a18147591e56bc31834c1b8e332d2b0cbdcf9385a1b7d2e8",
+      "image_download_size": 1034791332,
+      "image_download_sha256": "c654d8906194c257f3311b35c67df2a3f45cdb17e87b5d8e95c1bc5728f08e56",
+      "release_date": "2026-04-29",
+      "init_format": "systemd",
+      "devices": [
+        "pi5-64bit",
+        "pi5-32bit",
+        "pi4-64bit",
+        "pi4-32bit",
+        "pi3-64bit",
+        "pi3-32bit",
+        "pi2-32bit",
+        "pi1-32bit"
+      ]
+    }
+    
+  ]
+}
