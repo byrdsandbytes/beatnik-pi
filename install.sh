@@ -412,17 +412,14 @@ start_services() {
 
 # Install and Configure CamillaDSP
 install_camilladsp() {
-    log_info "Would you like to install CamillaDSP for Room Correction/EQ? (y/n)"
-    read -p "Choice: " install_camilla
-    
-    if [[ ! "$install_camilla" =~ ^[Yy]$ ]]; then
-        return
-    fi
-
     log_info "Installing CamillaDSP..."
 
-    # 1. Dependencies and Directories
-    mkdir -p ~/camilladsp/configs ~/camilladsp/coeffs
+    # 1. Clone configs/coeffs from the CamillaDSP config repo into the user's home directory
+    CAMILLADSP_DIR="/home/$USER/camilladsp"
+    if [ -d "$CAMILLADSP_DIR" ]; then
+        rm -rf "$CAMILLADSP_DIR"
+    fi
+    git clone https://github.com/byrdsandbytes/camilladsp.git "$CAMILLADSP_DIR"
     sudo apt-get update
     sudo apt-get install -y alsa-utils unzip
 
@@ -461,14 +458,14 @@ install_camilladsp() {
             ;;
         "usb")
              PLAYBACK_DEVICE="plughw:CARD=Device,DEV=0" # Generic fallback
-             log_warning "For USB devices, you might need to adjust the playback device in ~/camilladsp/configs/client_config.yml"
+             log_warning "For USB devices, you might need to adjust the playback device in $CAMILLADSP_DIR/configs/client_config.yml"
             ;;
         *)
             PLAYBACK_DEVICE="plughw:CARD=Headphones,DEV=0"
             ;;
     esac
 
-    cat > ~/camilladsp/configs/client_config.yml <<EOF
+    cat > "$CAMILLADSP_DIR/configs/client_config.yml" <<EOF
 devices:
   samplerate: 48000
   chunksize: 1024
@@ -542,7 +539,7 @@ pipeline:
       - high
 EOF
     # Ensure user ownership
-    chown $USER:$USER ~/camilladsp/configs/client_config.yml
+    chown $USER:$USER "$CAMILLADSP_DIR/configs/client_config.yml"
 
     # 6. Service
     log_info "Creating CamillaDSP service..."
@@ -556,7 +553,7 @@ After=snapclient.service
 Type=simple
 User=$USER
 ExecStartPre=/bin/sleep 2
-ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 /home/$USER/camilladsp/configs/client_config.yml
+ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 $CAMILLADSP_DIR/configs/client_config.yml
 Restart=always
 RestartSec=5
 
@@ -628,6 +625,43 @@ install_beatnik_controller() {
     fi
 }
 
+# Install the Beatnik Hardware API (Node.js service for hardware control/status)
+install_beatnik_hardware_api() {
+    log_info "Installing Beatnik Hardware API..."
+
+    mkdir -p "/home/$USER/beatnik-hardware-api"
+    cd "/home/$USER/beatnik-hardware-api" || exit 1
+
+    # setup.sh installs Node.js 22 via NVM, pulls the latest release and installs the systemd service
+    wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
+    chmod +x setup.sh
+    ./setup.sh
+
+    log_success "Beatnik Hardware API installed. Test it at http://$(hostname).local:3000/api/hardware/status"
+    cd "/home/$USER" || exit 1
+}
+
+# Install the Beatnik Bleno service (BLE setup/control)
+install_beatnik_bleno() {
+    log_info "Would you like to install the Beatnik Bleno service (Bluetooth setup/control)? (y/n)"
+    read -p "Choice: " install_bleno
+
+    if [[ "$install_bleno" =~ ^[Yy]$ ]]; then
+        log_info "Installing Beatnik Bleno..."
+
+        mkdir -p "/home/$USER/beatnik-bleno"
+        cd "/home/$USER/beatnik-bleno" || exit 1
+
+        # setup.sh installs Node.js 22 via NVM, pulls the latest release and installs the systemd service
+        wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
+        chmod +x setup.sh
+        ./setup.sh
+
+        log_success "Beatnik Bleno installed. Check status with: sudo systemctl status beatnik-bleno.service"
+        cd "/home/$USER" || exit 1
+    fi
+}
+
 # Display final information
 show_completion_info() {
     log_success "Installation completed successfully!"
@@ -642,6 +676,10 @@ show_completion_info() {
         if [[ "$install_controller" =~ ^[Yy]$ ]]; then
             echo "   - Beatnik Controller: http://$(hostname).local:8181"
         fi
+        echo "   - Beatnik Hardware API: http://$(hostname).local:3000/api/hardware/status"
+        if [[ "$install_bleno" =~ ^[Yy]$ ]]; then
+            echo "   - Beatnik Bleno: sudo systemctl status beatnik-bleno.service"
+        fi
         echo "3. Test AirPlay from your phone/computer"
         echo "4. Test Spotify Connect from the Spotify app"
         echo "5. Install additional clients on other devices using this script"
@@ -652,6 +690,10 @@ show_completion_info() {
         echo "2. After reboot, the client will automatically connect to: $SERVER_HOST"
         echo "3. Use the Snapcast server's web interface to control this client"
         echo "4. If the server address is wrong, edit /etc/snapclient.conf"
+        echo "5. Beatnik Hardware API: http://$(hostname).local:3000/api/hardware/status"
+        if [[ "$install_bleno" =~ ^[Yy]$ ]]; then
+            echo "6. Beatnik Bleno: sudo systemctl status beatnik-bleno.service"
+        fi
     fi
     
     echo
@@ -695,12 +737,18 @@ main() {
         echo "- Shairport-Sync (AirPlay support)"
         echo "- Raspotify (Spotify Connect support)"
         echo "- Configure your selected soundcard/HAT"
+        echo "- CamillaDSP (Room Correction/EQ)"
+        echo "- Beatnik Hardware API"
         echo "- Optional: Beatnik Controller web interface"
+        echo "- Optional: Beatnik Bleno service"
     else
         log_info "This script will install:"
         echo "- Snapcast client only"
         echo "- Configure your selected soundcard/HAT"
         echo "- Connect to an existing Snapcast server"
+        echo "- CamillaDSP (Room Correction/EQ)"
+        echo "- Beatnik Hardware API"
+        echo "- Optional: Beatnik Bleno service"
     fi
     echo
     
@@ -729,6 +777,8 @@ main() {
     check_soundcard
     start_services
     install_beatnik_controller
+    install_beatnik_hardware_api
+    install_beatnik_bleno
     show_completion_info
 }
 
