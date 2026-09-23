@@ -35,3 +35,7 @@ This document outlines the network requirements necessary to support a multi-roo
 | **1780, 1788** | TCP | Internal VLAN | **Snapweb Client** - Web-based interface and control for Snapcast. |
 | **4070, 80, 443** | TCP | In/Outbound WAN | **Spotify Connect** - Local inbound (4070) and Outbound WAN (80, 443) for Spotify streaming. |
 
+---
+
+For troubleshooting audio dropouts, jitter, Wi-Fi signal issues, or late chunks, see the [network-debugging.md](network-debugging.md).
+
