@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Beatnik OS - real first-boot hook.
-# Runs once via beatnik-firstboot.service on actual Raspberry Pi hardware
-# (real systemd, real network, real Docker) - things that can't run safely
-# inside the QEMU chroot used during image provisioning (ci/provision.sh).
-# Installs Docker + the Beatnik Controller web UI for the account created by
-# Raspberry Pi Imager, then disables itself so it never runs again.
+# Docker Compose needs a live daemon, so starting the Beatnik Controller
+# (already installed under /home/beatnik at build time, see provision.sh) can
+# only happen here, once, on the Pi's actual first boot. Everything else is
+# already in place by the time this runs.
 
 set -euo pipefail
 
+BEATNIK_USER="beatnik"
 MARKER=/etc/beatnik/firstboot.done
 LOG_TAG="beatnik-firstboot"
 
@@ -26,38 +26,8 @@ if [ -f "$MARKER" ]; then
     exit 0
 fi
 
-# Find the real login user created by Raspberry Pi Imager (first uid >= 1000).
-REAL_USER=$(getent passwd | awk -F: '$3>=1000 && $3<60000 {print $1; exit}')
-if [ -z "$REAL_USER" ]; then
-    log "No regular user account found yet, skipping Docker/Controller setup."
-    exit 0
-fi
-REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
-log "Provisioning for user: $REAL_USER ($REAL_HOME)"
-
-if ! command -v docker &> /dev/null; then
-    log "Installing Docker..."
-    curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-    sh /tmp/get-docker.sh
-    rm -f /tmp/get-docker.sh
-    usermod -aG docker "$REAL_USER"
-fi
-
-if ! docker compose version &> /dev/null; then
-    apt-get update
-    apt-get install -y docker-compose-plugin
-fi
-
-command -v git &> /dev/null || { apt-get update && apt-get install -y git; }
-
 systemctl enable --now docker.service
 
-CONTROLLER_DIR="$REAL_HOME/beatnik-controller"
-rm -rf "$CONTROLLER_DIR"
-git clone https://github.com/byrdsandbytes/beatnik-controller.git "$CONTROLLER_DIR"
-chown -R "$REAL_USER:$REAL_USER" "$CONTROLLER_DIR"
-
-cd "$CONTROLLER_DIR"
-docker compose up -d
+su - "$BEATNIK_USER" -c 'cd ~/beatnik-controller && docker compose up -d'
 
 log "Beatnik Controller started. Access it at http://$(hostname).local:8181"

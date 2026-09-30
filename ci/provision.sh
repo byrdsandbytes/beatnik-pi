@@ -3,11 +3,14 @@
 # Beatnik OS - CI image provisioning script
 # Runs INSIDE a QEMU-emulated chroot (pguyot/arm-runner-action) against a
 # pristine Raspberry Pi OS Lite (arm64) image, as root. There is no running
-# systemd (PID 1) here, and no end-user account exists yet (Raspberry Pi
-# Imager creates that on first real boot) - so this script only ever uses
-# `systemctl enable` (offline/symlink-based) and never `start`/`stop`, and it
-# runs CamillaDSP/hardware services as the fixed `snapclient` system account
-# (created by the snapclient .deb) instead of a not-yet-existing login user.
+# systemd (PID 1) here - so this script only ever uses `systemctl enable`
+# (offline/symlink-based) and never `start`/`stop`.
+#
+# Mirrors the manual golden-master process: a fixed `beatnik` account is
+# created and locked at build time (Raspberry Pi Imager's userconf-service
+# resets its password on first boot if the end user picks that same
+# username; otherwise it stays locked and unused). Everything Beatnik-specific
+# lives under its home directory, same as when a person runs install.sh by hand.
 #
 # Default build target: Beatnik Pi Server + HiFiBerry Amp4 Pro.
 
@@ -30,6 +33,9 @@ log_error()   { echo -e "${RED}[ERROR]${NC} $1"; }
 INSTALL_TYPE="server"
 SOUNDCARD="hifiberry-amp4pro"
 OVERLAY="dtoverlay=hifiberry-amp4pro"
+
+BEATNIK_USER="beatnik"
+BEATNIK_HOME="/home/$BEATNIK_USER"
 
 # Fresh raspios images mount the boot partition at /boot/firmware; fall back
 # to /boot for older layouts so this script doesn't depend on action internals.
@@ -65,6 +71,31 @@ get_latest_snapcast_version() {
     fi
     SNAPCAST_VERSION=${SNAPCAST_VERSION_TAG#v}
     log_info "Latest Snapcast version is $SNAPCAST_VERSION"
+}
+
+create_beatnik_user() {
+    log_info "Creating $BEATNIK_USER account..."
+    if ! id "$BEATNIK_USER" &>/dev/null; then
+        useradd -m -s /bin/bash "$BEATNIK_USER"
+    fi
+    for grp in sudo audio gpio i2c spi dialout plugdev netdev video render bluetooth; do
+        getent group "$grp" >/dev/null 2>&1 && usermod -aG "$grp" "$BEATNIK_USER"
+    done
+    echo "$BEATNIK_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/010-beatnik-nopasswd
+    chmod 440 /etc/sudoers.d/010-beatnik-nopasswd
+    # Locked until Raspberry Pi Imager sets a real password on first boot; if the end
+    # user picks a different username instead, this account just stays locked/unused.
+    passwd -l "$BEATNIK_USER"
+    log_success "$BEATNIK_USER account created and locked"
+}
+
+install_firstrun_tools() {
+    log_info "Installing first-boot configuration tools..."
+    retry apt-get install -y raspberrypi-sys-mods raspberrypi-net-mods
+    for unit in regenerate_ssh_host_keys.service sshswitch.service userconf-service.service; do
+        systemctl enable "$unit" 2>/dev/null || log_warning "Could not enable $unit (may not exist on this image)"
+    done
+    log_success "First-boot tools ready"
 }
 
 configure_soundcard() {
@@ -156,7 +187,7 @@ install_camilladsp() {
 
     retry apt-get install -y git alsa-utils unzip
 
-    CAMILLADSP_DIR="/opt/beatnik/camilladsp"
+    CAMILLADSP_DIR="$BEATNIK_HOME/camilladsp"
     rm -rf "$CAMILLADSP_DIR"
     git clone https://github.com/byrdsandbytes/camilladsp.git "$CAMILLADSP_DIR"
 
@@ -246,7 +277,7 @@ pipeline:
       - mid
       - high
 EOF
-    chown -R snapclient:snapclient "$CAMILLADSP_DIR"
+    chown -R "$BEATNIK_USER:$BEATNIK_USER" "$CAMILLADSP_DIR"
 
     tee /etc/systemd/system/camilladsp.service > /dev/null <<EOF
 [Unit]
@@ -256,7 +287,7 @@ After=snapclient.service
 
 [Service]
 Type=simple
-User=snapclient
+User=$BEATNIK_USER
 ExecStartPre=/bin/sleep 2
 ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 $CAMILLADSP_DIR/configs/client_config.yml
 Restart=always
@@ -272,31 +303,53 @@ EOF
 
 install_beatnik_hardware_api() {
     log_info "Installing Beatnik Hardware API..."
-    mkdir -p /opt/beatnik/hardware-api
-    cd /opt/beatnik/hardware-api
-    wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
-    chmod +x setup.sh
-    # XDG_CONFIG_HOME must be pinned too, or NVM inherits the host runner's
-    # /home/runner/.config path instead of installing under /root.
-    retry env HOME=/root XDG_CONFIG_HOME=/root/.config ./setup.sh \
+    local cmd='set -e
+mkdir -p ~/beatnik-hardware-api
+cd ~/beatnik-hardware-api
+wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
+chmod +x setup.sh
+./setup.sh'
+    # su - gives a real login environment (correct $HOME/$USER), same as running it by hand.
+    retry su - "$BEATNIK_USER" -c "$cmd" \
         || log_warning "Beatnik Hardware API setup failed after retries, continuing"
     log_success "Beatnik Hardware API installed"
 }
 
 install_beatnik_bleno() {
     log_info "Installing Beatnik Bleno..."
-    mkdir -p /opt/beatnik/bleno
-    cd /opt/beatnik/bleno
-    wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
-    chmod +x setup.sh
-    retry env HOME=/root XDG_CONFIG_HOME=/root/.config ./setup.sh \
+    local cmd='set -e
+mkdir -p ~/beatnik-bleno
+cd ~/beatnik-bleno
+wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
+chmod +x setup.sh
+./setup.sh'
+    retry su - "$BEATNIK_USER" -c "$cmd" \
         || log_warning "Beatnik Bleno setup failed after retries, continuing"
     systemctl enable beatnik-bleno.service 2>/dev/null || true
     log_success "Beatnik Bleno installed"
 }
 
+install_beatnik_controller() {
+    log_info "Installing Docker + Beatnik Controller..."
+    if ! command -v docker &>/dev/null; then
+        retry sh -c 'curl -fsSL https://get.docker.com -o /tmp/get-docker.sh && sh /tmp/get-docker.sh' \
+            || log_warning "Docker install failed after retries, continuing"
+    fi
+    getent group docker >/dev/null 2>&1 && usermod -aG docker "$BEATNIK_USER"
+    # Enabled only - actually starting Docker and running `docker compose up -d`
+    # needs a live daemon, so that happens once on the Pi's real first boot.
+    systemctl enable docker.service 2>/dev/null || true
+
+    local cmd="set -e
+rm -rf ~/beatnik-controller
+git clone https://github.com/byrdsandbytes/beatnik-controller.git ~/beatnik-controller"
+    su - "$BEATNIK_USER" -c "$cmd" \
+        || log_warning "Beatnik Controller clone failed, continuing"
+    log_success "Docker installed and Beatnik Controller cloned"
+}
+
 install_firstboot_hook() {
-    log_info "Installing first-boot hook (Docker + Beatnik Controller)..."
+    log_info "Installing first-boot hook (starts Beatnik Controller via Docker Compose)..."
     mkdir -p /opt/beatnik
     install -m 755 "$SCRIPT_DIR/firstboot.sh" /opt/beatnik/firstboot.sh
     install -m 644 "$SCRIPT_DIR/beatnik-firstboot.service" /etc/systemd/system/beatnik-firstboot.service
@@ -308,6 +361,8 @@ main() {
     get_os_codename
     get_latest_snapcast_version
     update_system
+    create_beatnik_user
+    install_firstrun_tools
     configure_soundcard
     install_snapcast
     install_shairport_sync
@@ -317,6 +372,7 @@ main() {
     install_camilladsp
     install_beatnik_hardware_api
     install_beatnik_bleno
+    install_beatnik_controller
     install_firstboot_hook
     log_success "Provisioning complete"
 }
