@@ -48,12 +48,14 @@ jobs:
           fi
 
       # Mitigates transient "Cannot allocate memory" apt errors seen under QEMU emulation.
+      # Uses a distinct filename since ubuntu-latest runners already ship an active
+      # /swapfile - reusing that path fails with "fallocate: Text file busy".
       - name: Add swap space
         run: |
-          sudo fallocate -l 4G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
+          sudo fallocate -l 4G /swapfile-ci
+          sudo chmod 600 /swapfile-ci
+          sudo mkswap /swapfile-ci
+          sudo swapon /swapfile-ci
 
       - name: Build Raspberry Pi OS image
         id: build_image
