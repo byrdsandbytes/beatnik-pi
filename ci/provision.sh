@@ -42,6 +42,20 @@ get_os_codename() {
     log_info "Detected OS Codename: $OS_CODENAME"
 }
 
+# apt (and third-party installers calling it) occasionally hit transient
+# "Cannot allocate memory" errors under QEMU emulation; retry before giving up.
+retry() {
+    local attempts=3 n=1
+    until "$@"; do
+        if (( n >= attempts )); then
+            return 1
+        fi
+        log_warning "Command failed (attempt $n/$attempts), retrying in 5s: $*"
+        n=$((n + 1))
+        sleep 5
+    done
+}
+
 get_latest_snapcast_version() {
     log_info "Fetching latest Snapcast version..."
     SNAPCAST_VERSION_TAG=$(curl -sL https://api.github.com/repos/badaix/snapcast/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -67,7 +81,7 @@ configure_soundcard() {
 
 update_system() {
     log_info "Updating package lists..."
-    apt-get update
+    retry apt-get update
 }
 
 install_snapcast() {
@@ -75,23 +89,23 @@ install_snapcast() {
     cd /tmp
     wget -q -O snapserver.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapserver_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
     wget -q -O snapclient.deb "https://github.com/badaix/snapcast/releases/download/${SNAPCAST_VERSION_TAG}/snapclient_${SNAPCAST_VERSION}-1_arm64_${OS_CODENAME}.deb"
-    apt-get install -y ./snapserver.deb ./snapclient.deb
+    retry apt-get install -y ./snapserver.deb ./snapclient.deb
     systemctl enable snapserver.service snapclient.service
     log_success "Snapcast server and client installed"
 }
 
 install_shairport_sync() {
     log_info "Installing Shairport-Sync for AirPlay support..."
-    apt-get install -y shairport-sync
+    retry apt-get install -y shairport-sync
     systemctl disable shairport-sync.service
     log_success "Shairport-Sync installed and disabled"
 }
 
 install_raspotify() {
     log_info "Installing Raspotify for Spotify Connect support..."
-    apt-get install -y curl
-    curl -sL https://dtcooper.github.io/raspotify/install.sh | sh \
-        || log_warning "Raspotify installer reported an error, continuing"
+    retry apt-get install -y curl
+    retry sh -c 'curl -sL https://dtcooper.github.io/raspotify/install.sh | sh' \
+        || log_warning "Raspotify installer failed after retries, continuing"
     systemctl disable raspotify.service 2>/dev/null || true
     log_success "Raspotify installed and disabled"
 }
@@ -140,7 +154,7 @@ EOF
 install_camilladsp() {
     log_info "Installing CamillaDSP..."
 
-    apt-get install -y git alsa-utils unzip
+    retry apt-get install -y git alsa-utils unzip
 
     CAMILLADSP_DIR="/opt/beatnik/camilladsp"
     rm -rf "$CAMILLADSP_DIR"
@@ -262,7 +276,10 @@ install_beatnik_hardware_api() {
     cd /opt/beatnik/hardware-api
     wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
     chmod +x setup.sh
-    HOME=/root ./setup.sh || log_warning "Beatnik Hardware API setup reported an error, continuing"
+    # XDG_CONFIG_HOME must be pinned too, or NVM inherits the host runner's
+    # /home/runner/.config path instead of installing under /root.
+    retry env HOME=/root XDG_CONFIG_HOME=/root/.config ./setup.sh \
+        || log_warning "Beatnik Hardware API setup failed after retries, continuing"
     log_success "Beatnik Hardware API installed"
 }
 
@@ -272,7 +289,8 @@ install_beatnik_bleno() {
     cd /opt/beatnik/bleno
     wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
     chmod +x setup.sh
-    HOME=/root ./setup.sh || log_warning "Beatnik Bleno setup reported an error, continuing"
+    retry env HOME=/root XDG_CONFIG_HOME=/root/.config ./setup.sh \
+        || log_warning "Beatnik Bleno setup failed after retries, continuing"
     systemctl enable beatnik-bleno.service 2>/dev/null || true
     log_success "Beatnik Bleno installed"
 }
