@@ -47,6 +47,14 @@ jobs:
             echo "prerelease=${{ github.event.inputs.prerelease }}" >> "$GITHUB_OUTPUT"
           fi
 
+      # Mitigates transient "Cannot allocate memory" apt errors seen under QEMU emulation.
+      - name: Add swap space
+        run: |
+          sudo fallocate -l 4G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+
       - name: Build Raspberry Pi OS image
         id: build_image
         uses: pguyot/arm-runner-action@v2
