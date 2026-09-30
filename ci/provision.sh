@@ -78,7 +78,7 @@ create_beatnik_user() {
     if ! id "$BEATNIK_USER" &>/dev/null; then
         useradd -m -s /bin/bash "$BEATNIK_USER"
     fi
-    for grp in sudo audio gpio i2c spi dialout plugdev netdev video render bluetooth; do
+    for grp in sudo audio gpio i2c spi dialout plugdev netdev video render bluetooth adm systemd-journal; do
         getent group "$grp" >/dev/null 2>&1 && usermod -aG "$grp" "$BEATNIK_USER"
     done
     echo "$BEATNIK_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/010-beatnik-nopasswd
@@ -112,7 +112,19 @@ configure_soundcard() {
 
 update_system() {
     log_info "Updating package lists..."
-    retry apt-get update
+    local attempts=3 n=1
+    until apt-get update; do
+        if (( n >= attempts )); then
+            log_error "apt-get update failed after $attempts attempts"
+            return 1
+        fi
+        # A failed update can leave a truncated/corrupted list file that apt then
+        # treats as "up to date" forever, so a plain retry alone never recovers.
+        log_warning "apt-get update failed (attempt $n/$attempts); clearing apt cache and retrying in 5s..."
+        rm -rf /var/lib/apt/lists/*
+        n=$((n + 1))
+        sleep 5
+    done
 }
 
 install_snapcast() {
@@ -162,11 +174,11 @@ source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airpl
 
 [stream]
 # AirPlay 2 (port 7000)
-source = airplay:///shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
+source = airplay:///usr/bin/shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
 
 [stream]
 # Spotify Connect
-source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
+source = spotify:///usr/bin/librespot?name=Spotify&devicename=Beatnik-Spotify
 EOF
     log_success "Snapserver configured"
 }
