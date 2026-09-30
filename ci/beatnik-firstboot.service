@@ -1,0 +1,14 @@
+[Unit]
+Description=Beatnik OS first boot setup (Docker + Beatnik Controller)
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=!/etc/beatnik/firstboot.done
+
+[Service]
+Type=oneshot
+ExecStart=/opt/beatnik/firstboot.sh
+RemainAfterExit=yes
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

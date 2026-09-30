@@ -1,0 +1,99 @@
+name: Build Beatnik OS Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version tag, e.g. v1.0.0"
+        required: true
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Raspberry Pi OS image
+        id: build_image
+        uses: pguyot/arm-runner-action@v2
+        with:
+          base_image: raspios_lite_arm64:latest
+          cpu: cortex-a53
+          image_additional_mb: 3000
+          commands: |
+            chmod +x ci/provision.sh ci/firstboot.sh
+            ./ci/provision.sh
+
+      - name: Install xz
+        run: sudo apt-get update && sudo apt-get install -y xz-utils
+
+      - name: Rename image
+        id: rename
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          IMG="beatnik-os-${VERSION}.img"
+          mv "${{ steps.build_image.outputs.image }}" "$IMG"
+          echo "img=$IMG" >> "$GITHUB_OUTPUT"
+
+      - name: Checksum uncompressed image
+        id: raw
+        run: |
+          IMG="${{ steps.rename.outputs.img }}"
+          echo "sha256=$(sha256sum "$IMG" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          echo "size=$(stat -c%s "$IMG")" >> "$GITHUB_OUTPUT"
+
+      - name: Compress image
+        run: xz -z -9 -T 0 -v "${{ steps.rename.outputs.img }}"
+
+      - name: Checksum compressed image
+        id: xz
+        run: |
+          XZFILE="${{ steps.rename.outputs.img }}.xz"
+          echo "file=$XZFILE" >> "$GITHUB_OUTPUT"
+          echo "sha256=$(sha256sum "$XZFILE" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          echo "size=$(stat -c%s "$XZFILE")" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release (draft)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.version }}
+          name: "Beatnik OS ${{ steps.ver.outputs.version }}"
+          files: ${{ steps.xz.outputs.file }}
+          draft: true
+
+      - name: Update beatnik-repo.json
+        run: |
+          python3 ci/update_repo_json.py \
+            --version "${{ steps.ver.outputs.version }}" \
+            --xz-size "${{ steps.xz.outputs.size }}" \
+            --xz-sha256 "${{ steps.xz.outputs.sha256 }}" \
+            --img-size "${{ steps.raw.outputs.size }}" \
+            --img-sha256 "${{ steps.raw.outputs.sha256 }}"
+
+      - name: Commit beatnik-repo.json to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git stash
+          git checkout main
+          git stash pop
+          git add beatnik-repo.json
+          git commit -m "chore: add ${{ steps.ver.outputs.version }} to beatnik-repo.json" || echo "No changes to commit"
+          git push origin main
