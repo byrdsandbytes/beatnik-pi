@@ -137,10 +137,11 @@ EOF
 install_camilladsp() {
     log_info "Installing CamillaDSP..."
 
+    apt-get install -y git alsa-utils unzip
+
     CAMILLADSP_DIR="/opt/beatnik/camilladsp"
     rm -rf "$CAMILLADSP_DIR"
     git clone https://github.com/byrdsandbytes/camilladsp.git "$CAMILLADSP_DIR"
-    apt-get install -y alsa-utils unzip
 
     CAMILLA_VERSION="v2.0.3"
     wget -q "https://github.com/HEnquist/camilladsp/releases/download/${CAMILLA_VERSION}/camilladsp-linux-aarch64.tar.gz" -P /tmp
