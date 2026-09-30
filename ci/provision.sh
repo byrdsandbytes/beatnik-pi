@@ -13,6 +13,9 @@
 
 set -euo pipefail
 
+# Resolve before any function below does `cd` and invalidates a relative path.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -277,8 +280,8 @@ install_beatnik_bleno() {
 install_firstboot_hook() {
     log_info "Installing first-boot hook (Docker + Beatnik Controller)..."
     mkdir -p /opt/beatnik
-    install -m 755 "$(dirname "$0")/firstboot.sh" /opt/beatnik/firstboot.sh
-    install -m 644 "$(dirname "$0")/beatnik-firstboot.service" /etc/systemd/system/beatnik-firstboot.service
+    install -m 755 "$SCRIPT_DIR/firstboot.sh" /opt/beatnik/firstboot.sh
+    install -m 644 "$SCRIPT_DIR/beatnik-firstboot.service" /etc/systemd/system/beatnik-firstboot.service
     systemctl enable beatnik-firstboot.service
     log_success "First-boot hook installed"
 }
