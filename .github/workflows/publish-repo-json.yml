@@ -1,0 +1,52 @@
+name: Publish beatnik-repo.json
+
+# Runs only once a release is actually published (not on draft creation), so the
+# download link in beatnik-repo.json is never live before the asset itself is public.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-repo-json:
+    if: github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Fetch build metadata from the release assets
+        id: meta
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          META_URL=$(echo '${{ toJson(github.event.release.assets) }}' | jq -r --arg name "beatnik-os-${VERSION}.meta.json" '.[] | select(.name == $name) | .browser_download_url')
+          if [ -z "$META_URL" ]; then
+            echo "No build metadata asset found on release ${VERSION}" >&2
+            exit 1
+          fi
+          curl -sL "$META_URL" -o meta.json
+          echo "img_size=$(jq -r .img_size meta.json)" >> "$GITHUB_OUTPUT"
+          echo "img_sha256=$(jq -r .img_sha256 meta.json)" >> "$GITHUB_OUTPUT"
+          echo "xz_size=$(jq -r .xz_size meta.json)" >> "$GITHUB_OUTPUT"
+          echo "xz_sha256=$(jq -r .xz_sha256 meta.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Update beatnik-repo.json
+        run: |
+          python3 ci/update_repo_json.py \
+            --version "${{ github.event.release.tag_name }}" \
+            --xz-size "${{ steps.meta.outputs.xz_size }}" \
+            --xz-sha256 "${{ steps.meta.outputs.xz_sha256 }}" \
+            --img-size "${{ steps.meta.outputs.img_size }}" \
+            --img-sha256 "${{ steps.meta.outputs.img_sha256 }}"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add beatnik-repo.json
+          git commit -m "chore: add ${{ github.event.release.tag_name }} to beatnik-repo.json" || echo "No changes to commit"
+          git push origin master
