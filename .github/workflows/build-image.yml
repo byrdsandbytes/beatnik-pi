@@ -10,6 +10,10 @@ on:
         description: "Create a real release and commit beatnik-repo.json"
         type: boolean
         default: false
+      prerelease:
+        description: "Mark the GitHub release as a prerelease"
+        type: boolean
+        default: false
   push:
     tags:
       - "v*.*.*"
@@ -24,15 +28,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Resolve version and publish flag
+      - name: Resolve version, publish and prerelease flags
         id: ver
         run: |
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
-            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            VERSION="${GITHUB_REF_NAME}"
+            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
             echo "publish=true" >> "$GITHUB_OUTPUT"
+            # semver pre-release suffix, e.g. v1.0.0-rc1 or v1.0.0-beta.2
+            if [[ "${VERSION}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-.+ ]]; then
+              echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
             echo "publish=${{ github.event.inputs.publish }}" >> "$GITHUB_OUTPUT"
+            echo "prerelease=${{ github.event.inputs.prerelease }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build Raspberry Pi OS image
@@ -84,17 +96,38 @@ jobs:
           path: ${{ steps.xz.outputs.file }}
           retention-days: 7
 
+      # Consumed by publish-repo-json.yml once the release is actually published,
+      # so beatnik-repo.json is never updated before the asset is publicly downloadable.
+      - name: Write build metadata
+        id: meta
+        run: |
+          META_FILE="${{ steps.rename.outputs.img }}.meta.json"
+          cat > "$META_FILE" <<EOF
+          {
+            "version": "${{ steps.ver.outputs.version }}",
+            "img_size": ${{ steps.raw.outputs.size }},
+            "img_sha256": "${{ steps.raw.outputs.sha256 }}",
+            "xz_size": ${{ steps.xz.outputs.size }},
+            "xz_sha256": "${{ steps.xz.outputs.sha256 }}"
+          }
+          EOF
+          echo "file=$META_FILE" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub release (draft)
         if: steps.ver.outputs.publish == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.ver.outputs.version }}
           name: "Beatnik OS ${{ steps.ver.outputs.version }}"
-          files: ${{ steps.xz.outputs.file }}
+          files: |
+            ${{ steps.xz.outputs.file }}
+            ${{ steps.meta.outputs.file }}
           draft: true
+          prerelease: ${{ steps.ver.outputs.prerelease == 'true' }}
 
-      - name: Update beatnik-repo.json
-        if: steps.ver.outputs.publish == 'true'
+      # Preview only - not committed here. beatnik-repo.json is only committed by
+      # publish-repo-json.yml once you actually click "Publish release" on GitHub.
+      - name: Update beatnik-repo.json (preview)
         run: |
           python3 ci/update_repo_json.py \
             --version "${{ steps.ver.outputs.version }}" \
@@ -103,15 +136,9 @@ jobs:
             --img-size "${{ steps.raw.outputs.size }}" \
             --img-sha256 "${{ steps.raw.outputs.sha256 }}"
 
-      - name: Commit beatnik-repo.json to main
-        if: steps.ver.outputs.publish == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git stash
-          git checkout main
-          git stash pop
-          git add beatnik-repo.json
-          git commit -m "chore: add ${{ steps.ver.outputs.version }} to beatnik-repo.json" || echo "No changes to commit"
-          git push origin main
+      - name: Upload beatnik-repo.json artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: beatnik-repo.json
+          path: beatnik-repo.json
+          retention-days: 7
