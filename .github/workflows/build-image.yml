@@ -6,6 +6,10 @@ on:
       version:
         description: "Release version tag, e.g. v1.0.0"
         required: true
+      publish:
+        description: "Create a real release and commit beatnik-repo.json"
+        type: boolean
+        default: false
   push:
     tags:
       - "v*.*.*"
@@ -20,20 +24,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Resolve version
+      - name: Resolve version and publish flag
         id: ver
         run: |
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
             echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
           else
             echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+            echo "publish=${{ github.event.inputs.publish }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build Raspberry Pi OS image
         id: build_image
         uses: pguyot/arm-runner-action@v2
         with:
-          base_image: raspios_lite_arm64:latest
+          # Pinned to Bookworm (Legacy track); raspios_lite_arm64:latest now resolves to Trixie.
+          base_image: https://downloads.raspberrypi.com/raspios_oldstable_lite_arm64/images/raspios_oldstable_lite_arm64-2026-09-15/2026-09-15-raspios-bookworm-arm64-lite.img.xz
           cpu: cortex-a53
           image_additional_mb: 3000
           commands: |
@@ -69,7 +76,16 @@ jobs:
           echo "sha256=$(sha256sum "$XZFILE" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
           echo "size=$(stat -c%s "$XZFILE")" >> "$GITHUB_OUTPUT"
 
+      - name: Upload build artifact (test runs)
+        if: steps.ver.outputs.publish != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.rename.outputs.img }}.xz
+          path: ${{ steps.xz.outputs.file }}
+          retention-days: 7
+
       - name: Create GitHub release (draft)
+        if: steps.ver.outputs.publish == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.ver.outputs.version }}
@@ -78,6 +94,7 @@ jobs:
           draft: true
 
       - name: Update beatnik-repo.json
+        if: steps.ver.outputs.publish == 'true'
         run: |
           python3 ci/update_repo_json.py \
             --version "${{ steps.ver.outputs.version }}" \
@@ -87,6 +104,7 @@ jobs:
             --img-sha256 "${{ steps.raw.outputs.sha256 }}"
 
       - name: Commit beatnik-repo.json to main
+        if: steps.ver.outputs.publish == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
