@@ -48,6 +48,8 @@ if ! docker compose version &> /dev/null; then
     apt-get install -y docker-compose-plugin
 fi
 
+command -v git &> /dev/null || { apt-get update && apt-get install -y git; }
+
 systemctl enable --now docker.service
 
 CONTROLLER_DIR="$REAL_HOME/beatnik-controller"
