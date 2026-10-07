@@ -75,8 +75,14 @@ There are 3 different paths to install the software:
 [BeatnikOS Installation Guide](docs/installation-beatnik-os.md) | [Shell Script Installation Guide](docs/installation-shell-script.md) | [Bare Metal Installation Guide](docs/installation-manual-bare-metal.md)
 
 ## Usage
+The Beatnik Controller app is available for both iOS and Android devices, as well as selfhosted WebApp. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
 
 ### iOS  & Android App
+- **iOS:** [Download from the App Store](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://apps.apple.com/ch/app/beatnik-audio/)
+- **Android:** [Download from Google Play](https://play.google.com/store/apps/details?id=ch.byrds.beatnik)
+- **Source Code:** [GitHub Repository](https://github.com/byrdsandbytes/beatnik-controller)
+
+
 <img src="docs/images/app_mulitroomControll.webp" alt="Beatnik Controller App - Multiroom Volume Control" />
 <img src="docs/images/app_camillaDSP.webp" alt="Beatnik Controller App CamillaDSP" />
 
@@ -84,12 +90,11 @@ There are 3 different paths to install the software:
 
 
 
-The Beatnik Controller app is available for both iOS and Android devices. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
 
-- **iOS:** [Download from the App Store](https://apps.apple.com/)
-- **Android:** [Download from Google Play](https://play.google.com/store)
 
-### Web UI
+
+
+### Selfhosted WebApp
 
 <img src="docs/images/webApp001.webp" alt="Beatnik Controller Web UI" />
 <img src="docs/images/webApp002.webp" alt="Beatnik Controller Web UI - Speaker Grouping" />
