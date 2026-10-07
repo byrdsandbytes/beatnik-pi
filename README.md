@@ -7,6 +7,19 @@ The Hardware if have choosen here is to power some biger passive Speakers direct
 
 **NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
 
+## Overview
+
+- [Architecture](#architecture)
+- [Software Components](#software-components)
+- [Hardware Examples](#hardware-examples)
+  - [Beatnik Server (Amp Pro)](#beatnik-server-amp-pro)
+  - [Beatnik Client (Amp Light)](#beatnik-client-amp-light)
+- [Software Installation](#software-installation)
+- [Usage](#usage)
+  - [iOS & Android App](#ios--android-app)
+  - [Selfhosted WebApp](#selfhosted-webapp)
+- [Acknowledgments & Tech Stack](#acknowledgments--tech-stack)
+
 ## Architecture
 ![Beatnik Architecture](docs/images/beatnik_architecture.png)
 
