@@ -22,6 +22,9 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spo
 
 ## Introduction
 
+### Free Open Source Software (FOSS)
+It may does not look like a typical FOSS project at first glance, but all the core components used in Beatnik Pi as well as the Beatnik Software are open source and freely available for anyone to use and modify. 
+
 ### DAC or Amp
 Beatnik allows you to build DACs (Digital-to-Analog Converter) or  Amps (Amplifier) depending on your speaker setup and audio requirements.
 
