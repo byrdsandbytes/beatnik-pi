@@ -1,14 +1,62 @@
-# beatnik-pi
+# Beatnik Pi
 
 Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spotify Connect** streams (from any smartphone and Laptop / PC) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
 
-The Hardware if have choosen here is to power some biger passive Speakers using Amp4 and some smaller passive Speakers using the miniAmp.
+## Overview
+
+- [Overview](#overview)
+- [Introduction](#introduction)
+  - [DAC or Amp](#dac-or-amp)
+  - [Architecture](#architecture)
+  - [Extending the setup](#extending-the-setup)
+- [Software Installation](#software-installation)
+- [Software Components](#software-components)
+- [Hardware Examples](#hardware-examples)
+  - [Beatnik Server (Amp Pro)](#beatnik-server-amp-pro)
+  - [Beatnik Client (Amp Light)](#beatnik-client-amp-light)
+- [Usage](#usage)
+  - [iOS & Android App](#ios--android-app)
+  - [Selfhosted WebApp](#selfhosted-webapp)
+- [Acknowledgments & Tech Stack](#acknowledgments--tech-stack)
 
 
-**NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
+## Introduction
 
-## Architecture
+### DAC or Amp
+Beatnik allows you to build DACs (Digital-to-Analog Converter) or  Amps (Amplifier) depending on your speaker setup and audio requirements.
+
+
+<img src="docs/images/DacVsAMP_scale.webp" alt="DAC vs AMP" >
+
+
+The Hardware if have choosen in the [example](#hardware-examples) is to power some biger passive Speakers directly using Amp4 pro and some smaller passive Speakers using the Amp2 in a second room.
+
+If you have active speakers, existing amplifiers, or other audio equipment, you would wanna build a DAC setup to connect directly to your existing hardware.
+
+### Architecture
 ![Beatnik Architecture](docs/images/beatnik_architecture.png)
+
+### Extending the setup
+
+You can combine as many devices as you like to create simple or complex **multi-room audio setup**.
+Currently we tested up to 23 devices in combination/Sync.
+
+### Streams
+We currently have reached stable state for both AirPlay (1 & 2) and Spotify Connect Streams. We have POCs (Proof of Concepts) for Line-In, MPD, Mopidy as well. We're currently testing an will release those in the near future.
+Meanwhile you can experiment with additional streams by following the Snapcast documentation: https://github.com/badaix/snapcast
+
+---
+
+## Software Installation
+
+There are 3 different paths to install the software:
+
+| <img src="docs/images/InstallationMethods-01.svg" alt="BeatnikOS" style="max-height:150px"> | <img src="docs/images/InstallationMethods-03.svg" alt="Shell Script" style="max-height:150px"> | <img src="docs/images/InstallationMethods-02.svg" alt="Bare Metal / Manual Installation" style="max-height:150px"> |
+| :---: | :---: | :---: |
+| **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
+| Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
+| Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
+[BeatnikOS Installation Guide](installation-beatnik-os.md) | [Shell Script Installation Guide](installation-shell-script.md) | [Bare Metal Installation Guide](installation-manual-bare-metal.md)
 
 
 
@@ -16,447 +64,89 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
-| Raspberry Pi OS Lite/Debian     | **Bookworm** /  operating system                          |
-| Snapserver     | **0.31.0** / recives and distributes streams                          |
-| Snapclient     | **0.31.0** / recives and plays streams                          |
-| Shairport‑Sync | **4.3.x**  / handles airplay 1+2                |
-| Libresport | **x.x**  / handles spotify connect              |
-| Device overlay    | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* || CamillaDSP     | **2.0.3** / audio processing, EQ & room correction                    |
-| Beatnik Hardware API | **x.x** / soundcard management & hardware control, works together with CamillaDSP || Beatnik Controller         | **0.2.1** /Web UI & Ap– grouping, volume & status                    |
-| Docker        | **x.x** –Containerize & host controller                   |
+| Raspberry Pi OS Lite/Debian | **Bookworm** / operating system |
+| Snapserver     | **0.31.0** / receives and distributes streams |
+| Snapclient     | **0.31.0** / receives and plays streams |
+| Shairport‑Sync | **4.3.x** / handles AirPlay 1+2 |
+| Librespot      | **x.x** / handles Spotify Connect |
+| Device overlay | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
+| CamillaDSP     | **2.0.3** / audio processing, EQ & room correction |
+| Beatnik Hardware API | **x.x** / soundcard management & hardware control, works together with CamillaDSP |
+| Beatnik Controller | **0.2.1** / Web UI & App – grouping, volume & status |
+| Beatnik Bleno  | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
+| Docker         | **x.x** – Containerize & host controller |
 
 
 
 
 ---
 
-## Hardware Example
-### Beatnik Pi Server
+## Hardware Examples
+### Beatnik Server (Amp Pro)
 
 | Part               | Notes                                                | Image |
 | ------------------ | ---------------------------------------------------- | ----- |
-| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended | ![Raspberry Pi 5](docs/images/pi_5_16gb.webp) |
-| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
-| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |       |
-| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |       |
+| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | <img src="docs/images/pi_4b_1gb.webp" alt="Raspberry Pi 4B" width="200"> |
+| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | <img src="docs/images/hifiBerry_amp4.webp" alt="HifiBerry Amp4 Pro" width="200"> |
+| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | <img src="docs/images/sd_high-endurance_64.webp" alt="Micro SD Card" width="200"> |
+| **Beatnik Unibody Case** *(optional)*  | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress. | <img src="docs/images/amp_case_hero.webp" alt="Beatnik Unibody Case" width="200"> |
+| **Beatnik RGB Button** *(optional)* | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | <img src="docs/images/beatnik_button.webp" alt="Beatnik RGB Button" width="200"> |
+| **Adafruit USB-C PD Board** *(optional)* | Provides 18V power delivery for the Amp & Pi and connected peripherals | <img src="docs/images/adafruit_pd_board.webp" alt="Adafruit PD Board" width="200"> |
+| **65 W USB-C Power Supply** *(optional)*   | Amp4 is powered via PD Board and the pi via GPIO            |       |
+| **Binding Posts** *(optional)* | Provides connection points for external speakers | <img src="docs/images/binding_posts.webp" alt="Binding Posts" width="200"> |
+| **Gpio Spacer, Screws & PCB Stands** *(optional)* | Provides physical support and spacing for better heat management | <img src="docs/images/gpio_spacer_screws_pcb_stands.webp" alt="Gpio Spacer, Screws & PCB Stands" width="200"> |
 
 
 
 
-### Beantik Pi Client
+### Beatnik Client (Amp Light)
 
 | Part               | Notes                                                |
 | ------------------ | ---------------------------------------------------- |
-| **Pi Zero 2 WH**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
-| **HifiBerry Mini Amp** | Just Plug it on your GPIOs       |
+| **Pi 3B**           | 1GB recommended but 512MB will work for most client usecases |
+| **HifiBerry Amp 2** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
-
-
 ---
 
 
 
-## 1 · Flash OS & SSH into the Pi
+## Usage
+The Beatnik Controller app is available for both iOS and Android devices, as well as selfhosted WebApp. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
 
-1. **Download** [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
-2. Select **Raspberry Pi OS Lite (64‑bit, Bookworm)**.
-3. In *OS customisation*:
+### iOS  & Android App
+- **iOS:** [Download from the App Store](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://apps.apple.com/ch/app/beatnik-audio/)
+- **Android:** [Download from Google Play](https://play.google.com/store/apps/details?id=ch.byrds.beatnik)
+- **Source Code:** [GitHub Repository](https://github.com/byrdsandbytes/beatnik-controller)
 
-   * **Enable SSH** and add your credentials (eg. user: beatnik, pw: changeMe)
-   * **Hostname:** `beatnik-server`
-   * *(Optional)* enter Wi‑Fi credentials if you plan using Wi-Fi
-4. Flash the card, insert it, boot up the Pi.
 
-### SSh into the pi 
+<img src="docs/images/app_mulitroomControll.webp" alt="Beatnik Controller App - Multiroom Volume Control" />
+<img src="docs/images/app_camillaDSP.webp" alt="Beatnik Controller App CamillaDSP" />
 
-```bash
-ssh beatnik@beatnik-server.local
-sudo apt update && sudo apt full-upgrade -y
-```
+<img src="docs/images/app_soundcard_pick.webp" alt="Beatnik Controller App - Soundcard Selection" />
 
----
 
-## 2 · Activate Drivers (HIFI Berry Amp 4 example)
 
-**NOTE:** If you're using a diffent soundcard (DAC/amp) check the [soundcard folder in the docs](./docs/soundcards)
 
-Based on hifi berry docs: https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/
 
-```bash
-sudo nano /boot/firmware/config.txt
-```
+### Selfhosted WebApp
 
+<img src="docs/images/webApp001.webp" alt="Beatnik Controller Web UI" />
+<img src="docs/images/webApp002.webp" alt="Beatnik Controller Web UI - Speaker Grouping" />
+<img src="docs/images/webApp003.webp" alt="Beatnik Controller Web UI - EQ Settings" />
 
+The Beatnik Controller Web UI allows you to manage your Beatnik audio system from any web browser. You can group speakers, adjust volume, configure EQ settings, and monitor the status of your devices.
 
-**Remove** the line: 
-```
-dtparam=audio=on
-```
+Your beatnik server spawns a web interface (using docker) that you can access through your browser to manage and control your audio system without needing to use the mobile app.
 
-Add **instead**:
+- **Access:** Open a web browser and navigate to the IP address or hostname of your Beatnik server.
+eg. `http://192.168.1.100` or `http://beatnik-042.local/`
 
-```ini
-dtoverlay=hifiberry-amp4pro
-```
-Scorll down and find this line:
+Make sure your browser is on the same network as your Beatnik server and has network access to your local network.
 
-```
-dtoverlay=vc4-kms-v3d
-```
 
-add "noaudio" and makesure it looks exactly like this:
 
-```
-dtoverlay=vc4-kms-v3d,noaudio
-```
 
-
-
-Reboot, 
-
-```
-sudo reboot
-```
-SSH back in,then verify:
-
-```bash
-aplay -l   # must list "sndrpihifiberry"
-```
-
-
----
-
-## 3 · Install Snapcast 0.31
-
-```bash
-cd /tmp
-wget https://github.com/badaix/snapcast/releases/download/v0.31.0/snapserver_0.31.0-1_arm64_bookworm.deb   https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
-
-
-sudo apt install ./snapserver_* ./snapclient_* -y
-```
-
----
-## 4 Install Streams (at least 1)
-
-### 4.1 · Install Shairport‑Sync (AirPlay)
-
-```bash
-sudo apt install shairport-sync -y   # v4.3.x
-```
-
-> **Keep its systemd service disabled** – Snapserver will spawn its own instance.
-
-```bash
-sudo systemctl disable shairport-sync.service
-```
-
----
-
-### 4.2 . librespot using raspotify (Spotify Connect - expermintal)
-I had some issues with installing librespot on debian boowkworm.
-To install libresport withouht issues we will workaround using raspotify & afteerwards disable it. 
-
-
-
-Run the installation script:
-```bash
-sudo apt-get -y install curl && curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
-```
-
-Disable raspotify: (snapcast will spawn its own instance)
-
-
-```bash
-sudo systemctl disable raspotify
-sudo systemctl stop raspotify
-```
-
-
-
-## 5 · Configure Snapserver
-
-```bash
-sudo nano /etc/snapserver.conf
-```
-In the strream section add your streams as follows:
-(if you have trouble setting up your streams consult the sample snapserver.conf in this repo docs/sample-configs/sample-snapserver.conf)
-
-### 5.1 Airplay 1 (uses port 5000)
-More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
-```ini
-[stream]
-source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000
-```
-### 5.2 Airplay 2 (uses port 7000)
-More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
-```ini
-[stream]
-source = airplay:///shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
-```
-
-Find options for device names etc here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md
-
-### 5.3 Spotify
-
-```ini
-[stream]
-source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
-```
-
-
-
-
----
-
-## 6 · Point Snapclient at CamillaDSP (via ALSA Loopback)
-
-Audio is processed by CamillaDSP before it reaches your amp (see [step 9](#9--beatnik-hardware-api) & [camilla-dsp.md](./camilla-dsp.md)), so Snapclient must send its audio into a virtual **ALSA Loopback** device instead of directly to your amp's sound card.
-
-```bash
-sudo usermod -aG audio snapclient   # grant ALSA access
-
-# Create the virtual loopback cable Snapclient -> CamillaDSP
-sudo modprobe snd-aloop
-echo "snd-aloop" | sudo tee /etc/modules-load.d/snd-aloop.conf > /dev/null
-
-sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
-[snapclient]
-host         = localhost
-sound_device = plughw:Loopback,0,0
-# buffer       = 80            # optional client buffer (ms)
-EOF
-```
-
-### 6.1 Find your amp's card number for CamillaDSP
-
-CamillaDSP (not Snapclient) needs to know your amp's real soundcard, since it sits between the Loopback device and the amp. Check for your soundcard number:
-```bash
- aplay -l 
-```
-
-Should list your soundcard like this:
-```ini
-**** List of PLAYBACK Hardware Devices ****
-card 0: vc4hdmi [vc4-hdmi], device 0: MAI PCM i2s-hifi-0 [MAI PCM i2s-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-card 1: DigiAMP [RPi DigiAMP+], device 0: Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0 [Raspberry Pi DigiAMP+ HiFi pcm512x-hifi-0]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-
-```
-
-In this example our amp is card 1 (`DigiAMP`). Use that card name/number as the `playback` device in CamillaDSP's config — continue with [camilla-dsp.md](./camilla-dsp.md) to finish wiring CamillaDSP's capture (`hw:Loopback,1,0`) to this playback device.
-
-
----
-
-## 7 · Start the services
-
-```bash
-sudo systemctl enable --now snapserver snapclient
-```
-
-Reboot the pi:
-
-```bash
-sudo reboot
-```
-
-Check live logs:
-
-```bash
-journalctl -u snapserver -f 
-journalctl -u snapclient -f   # “… Connected to … hw:0,0 …”
-
-```
-
----
-
-## 8 · Beatnik Controller UI (selhosted)
-For more information check the controller repo here: https://github.com/byrdsandbytes/beatnik-controller
-
-### Prequesites
-Docker & docker compose. If you have trouble setting up docker compose check our guide: [DOCKER_INSTALLATION.md](https://github.com/byrdsandbytes/beatnik-controller/docs/DOCKER_INSTALLATION.md)
-
-
-
-### 8.1 Install using docker compose
-
-Clone the repo:
-
-```bash
-git clone https://github.com/byrdsandbytes/beatnik-controller.git
-cd beatnik-controller
-```
-
-```bash
-docker compose up -d
-```
-
-This will build the Docker image and start the application in the background.
-
-### 8.2 Access the Application
-
-Open your web browser and navigate to `http://localhost:8181`, `http://beatnik-server.local:8181`  or `http://your-hostname.local:8181`. You should now see the Beatnik Controller interface.
-  
-
-
-### 8.4 (Optional find the classic snapwebclient UI here)
-
-Open **[http://beatnik-server.local:1780](http://beatnik-server.local:1780)**
-
-* **Streams** – should list *AirPlay*
-* **Clients** – should list *audiopi* with live meters & volume
-
----
-
-## 9 · Beatnik Hardware API
-
-The Beatnik Hardware API is a small Node.js service that exposes hardware control & status (e.g. amp status) over HTTP. Full details are in the [beatnik-hardware-api repo](https://github.com/byrdsandbytes/beatnik-hardware-api).
-
-> **Soundcard management:** The Hardware API takes over soundcard management (device selection & output routing) in combination with CamillaDSP (see [step 5](#5--configure-snapserver) & [camilla-dsp.md](./camilla-dsp.md)). CamillaDSP handles the audio processing/EQ pipeline, while the Hardware API coordinates which soundcard/output it routes to, so install both together rather than configuring the soundcard manually afterwards.
-
-### Prerequisites
-
-* **Node.js 22** — installed automatically via NVM by the setup script below (or manually, see the repo's guide, if you prefer)
-
-### 9.1 Install (recommended: production setup script)
-
-```bash
-mkdir -p ~/beatnik-hardware-api
-cd ~/beatnik-hardware-api
-wget https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
-chmod +x setup.sh
-./setup.sh
-```
-
-The script downloads the latest release artifact, installs Node.js 22 via NVM (if not already present), installs production dependencies, and installs/starts the `beatnik-hardware.service` systemd unit.
-
-> Prefer building from source instead? See **Method 2: Manual Source Installation** in the [beatnik-hardware-api installation guide](https://github.com/byrdsandbytes/beatnik-hardware-api).
-
-### 9.2 Check status
-
-```bash
-sudo systemctl status beatnik-hardware.service
-curl http://localhost:3000/api/hardware/status
-```
-
----
-
-## 10 · Beatnik Bleno Service (optional)
-
-The Beatnik Bleno service exposes Beatnik over Bluetooth Low Energy (BLE) for setup/control. Full details are in the [beatnik-bleno repo](https://github.com/byrdsandbytes/beatnik-bleno).
-
-### Prerequisites
-
-* **Node.js 22** — installed automatically via NVM by the setup script below (or manually, see the repo's guide, if you prefer)
-
-### 10.1 Install (recommended: production setup script)
-
-```bash
-mkdir -p ~/beatnik-bleno
-cd ~/beatnik-bleno
-wget https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
-chmod +x setup.sh
-./setup.sh
-```
-
-The script downloads the latest release artifact, installs Node.js 22 via NVM (if not already present), installs production dependencies, and installs/starts the `beatnik-bleno.service` systemd unit.
-
-> Prefer building from source instead? See **Method 2: Manual Source Installation** in the [beatnik-bleno installation guide](https://github.com/byrdsandbytes/beatnik-bleno).
-
-### 10.2 Check status
-
-```bash
-sudo systemctl status beatnik-bleno.service
-sudo journalctl -u beatnik-bleno.service -f   # verify Bluetooth advertising and connections
-```
-
----
-
-## 11 · AirPlay test
-
-* **macOS / appple  music**  → **AirPlay** 
-* **iPhone / iPad** → apple music → **AirPlay** 
-Snapweb flips to *playing* and audio starts after ≈ 0.4 s.
-
----
-
-## 12 · Add more rooms
-
-On another Pi (e.g. Pi Zero 2 W + MiniAmp):
-
-### 12.1 Flash & first boot
-
-*Imager settings*
-
-```
-OS           : Raspberry Pi OS Lite (32‑bit, Bookworm)
-Hostname     : pizero-mini          # must be unique
-SSH          : enabled
-Wi‑Fi        : your credentials
-```
-
-```bash
-ssh pi@pizero-mini.local
-sudo passwd pi
-sudo apt update && sudo apt full-upgrade -y
-```
-
-(Depending on your RAM this could take a while)
-
-### 12.2 Enable the MiniAmp overlay
-
-```bash
-sudo nano /boot/firmware/config.txt
-# add:
-dtoverlay=hifiberry-dac           # MiniAmp overlay
-```
-
-Reboot and confirm `aplay -l` shows **sndrpihifiberry**.
-
-### 12.3 Install Snapclient 0.31
-
-```bash
-cd /tmp
-wget https://github.com/badaix/snapcast/releases/download/v0.31.0/snapclient_0.31.0-1_arm64_bookworm.deb
-sudo apt install ./snapclient_* -y
-```
-
-### 12.4 Create a snapclient config
-
-```bash
-sudo usermod -aG audio snapclient
-
-sudo tee /etc/snapclient.conf >/dev/null <<'EOF'
-[snapclient]
-host         = beatnik-server.local   # hostname of beatnik server pi
-sound_device = hw:0,0          # card index from `aplay -l`
-buffer       = 120             # Wi‑Fi cushion (ms)
-EOF
-```
-
-### 12.5 Enable & start the client
-
-```bash
-sudo systemctl enable --now snapclient
-journalctl -u snapclient -f   # look for “Connected to beatnik-server.local:1704 …”
-```
-
-### 12.6 Join the group
-
-1. Open **Snapweb → Clients** on the main Pi.
-2. Drag **pizero-mini** onto the default group tile.
-3. Adjust its volume slider — it plays in sync immediately.
-
-> Repeat for as many extra Pis as you like. Just give each one a **unique hostname** and point `host = beatnik-server.local` (or your server’s IP) in `/etc/snapclient.conf`.
-
----
-
-Happy listening! 🎈
 
 
 ## Acknowledgments & Tech Stack
@@ -480,6 +170,8 @@ A special thanks to the countless community members, bloggers, and forum contrib
 Thank you for making Beatnik possible.
 
 ---
+Have a nice Sunday. 🎈
+
 
 
 
