@@ -30,30 +30,44 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 ---
 
-## Hardware Example
-### Beatnik Pi Server
+## Hardware Examples
+### Beatnik Server (Amp Pro)
 
 | Part               | Notes                                                | Image |
 | ------------------ | ---------------------------------------------------- | ----- |
-| **Pi 5**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended | ![Raspberry Pi 5](docs/images/pi_5_16gb.webp) |
+| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | ![Raspberry Pi 5](docs/images/pi_4b_1GB.webp) |
 | **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
-| **Power Supply**   | Amp4 is powered via DC and the pi via GPIO            |       |
-| **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |       |
+| **Beatnik Unibody Case**   | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |       |
+| **Beatnik RGB Button** | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | ![Beatnik RGB Button](docs/images/beatnik_rgb_button.webp) |
+| **Adafruit USB-C PD Board** | Provides 18V power delivery for the Amp & Pi and connected peripherals | ![Adafruit PD Board](docs/images/adafruit_pd_board.webp) |
+| **65 W USB-C Power Supply**   | Amp4 is powered via PD Board and the pi via GPIO            |       |
+| **Binding Posts** | Provides connection points for external speakers | ![Binding Posts](docs/images/binding_posts.webp) |
+| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | ![Micro SD Card](docs/images/micro_sd_card.webp) |
+| **Gpio Spacer & PCB Stands** | Provides physical support and spacing for better heat management | ![Gpio Spacer & PCB Stands](docs/images/gpio_spacer_pcb_stands.webp) |
 
 
 
 
-### Beantik Pi Client
+### Beatnik Client (Amp Light)
 
 | Part               | Notes                                                |
 | ------------------ | ---------------------------------------------------- |
-| **Pi Zero 2 WH**           | Raspberry Pi OS Lite **64‑bit Bookworm** recommended |
-| **HifiBerry Mini Amp** | Just Plug it on your GPIOs       |
+| **Pi 3B**           | 1GB recommended but 512MB will work for most client usecases |
+| **HifiBerry Amp 2** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
-
-
 ---
+
+## Software Installation
+
+### Overview
+There are 3 different paths to install the software:
+
+| ![BeatnikOS](docs/images/InstallationMethods-01.svg) | ![Shell Script](docs/images/InstallationMethods-02.svg) | ![Bare Metal / Manual Installation](docs/images/InstallationMethods-03.svg) |
+| :---: | :---: | :---: |
+| **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
+| Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
+| Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
 
 
 
