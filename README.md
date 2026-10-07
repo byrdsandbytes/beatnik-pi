@@ -9,11 +9,11 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spo
   - [DAC or Amp](#dac-or-amp)
   - [Architecture](#architecture)
   - [Extending the setup](#extending-the-setup)
+- [Software Installation](#software-installation)
 - [Software Components](#software-components)
 - [Hardware Examples](#hardware-examples)
   - [Beatnik Server (Amp Pro)](#beatnik-server-amp-pro)
   - [Beatnik Client (Amp Light)](#beatnik-client-amp-light)
-- [Software Installation](#software-installation)
 - [Usage](#usage)
   - [iOS & Android App](#ios--android-app)
   - [Selfhosted WebApp](#selfhosted-webapp)
@@ -33,7 +33,7 @@ The Hardware if have choosen in the [example](#hardware-examples) is to power so
 
 If you have active speakers, existing amplifiers, or other audio equipment, you would wanna build a DAC setup to connect directly to your existing hardware.
 
-## Architecture
+### Architecture
 ![Beatnik Architecture](docs/images/beatnik_architecture.png)
 
 ### Extending the setup
@@ -45,7 +45,18 @@ Currently we tested up to 23 devices in combination/Sync.
 We currently have reached stable state for both AirPlay (1 & 2) and Spotify Connect Streams. We have POCs (Proof of Concepts) for Line-In, MPD, Mopidy as well. We're currently testing an will release those in the near future.
 Meanwhile you can experiment with additional streams by following the Snapcast documentation: https://github.com/badaix/snapcast
 
+---
 
+## Software Installation
+
+There are 3 different paths to install the software:
+
+| <img src="docs/images/InstallationMethods-01.svg" alt="BeatnikOS" style="max-height:150px"> | <img src="docs/images/InstallationMethods-03.svg" alt="Shell Script" style="max-height:150px"> | <img src="docs/images/InstallationMethods-02.svg" alt="Bare Metal / Manual Installation" style="max-height:150px"> |
+| :---: | :---: | :---: |
+| **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
+| Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
+| Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
+[BeatnikOS Installation Guide](installation-beatnik-os.md) | [Shell Script Installation Guide](installation-shell-script.md) | [Bare Metal Installation Guide](installation-manual-bare-metal.md)
 
 
 
@@ -98,17 +109,7 @@ Meanwhile you can experiment with additional streams by following the Snapcast d
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
 ---
 
-## Software Installation
 
-### Overview
-There are 3 different paths to install the software:
-
-| <img src="docs/images/InstallationMethods-01.svg" alt="BeatnikOS" style="max-height:150px"> | <img src="docs/images/InstallationMethods-03.svg" alt="Shell Script" style="max-height:150px"> | <img src="docs/images/InstallationMethods-02.svg" alt="Bare Metal / Manual Installation" style="max-height:150px"> |
-| :---: | :---: | :---: |
-| **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
-| Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
-| Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
-[BeatnikOS Installation Guide](installation-beatnik-os.md) | [Shell Script Installation Guide](installation-shell-script.md) | [Bare Metal Installation Guide](installation-manual-bare-metal.md)
 
 ## Usage
 The Beatnik Controller app is available for both iOS and Android devices, as well as selfhosted WebApp. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
@@ -123,8 +124,6 @@ The Beatnik Controller app is available for both iOS and Android devices, as wel
 <img src="docs/images/app_camillaDSP.webp" alt="Beatnik Controller App CamillaDSP" />
 
 <img src="docs/images/app_soundcard_pick.webp" alt="Beatnik Controller App - Soundcard Selection" />
-
-
 
 
 
@@ -145,20 +144,7 @@ eg. `http://192.168.1.100` or `http://beatnik-042.local/`
 
 Make sure your browser is on the same network as your Beatnik server and has network access to your local network.
 
-## Development Roadmap
 
-- **Short-term goals:**
-  - Improve stability and performance of AirPlay and Spotify Connect streams.
-  - Release support for Line-In, MPD, and Mopidy streams.
-  - Improve the user experience and interface of the mobile app.
-
-  - Improve documentation and guides for users and developers.
-
-- **Long-term goals:**
-  - Expand hardware compatibility with additional DACs and Amps.
-  - Enhance the web interface with more advanced audio management features.
-  - Add support for additional audio streams and formats.
-  - Easier Integration with third-party services and platforms.
 
 
 

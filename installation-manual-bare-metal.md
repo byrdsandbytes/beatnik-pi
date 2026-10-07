@@ -1,4 +1,4 @@
-
+# Beatnik Manual / Bare Metal Installation
 
 ## 1 · Flash OS & SSH into the Pi
 
