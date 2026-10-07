@@ -74,6 +74,36 @@ There are 3 different paths to install the software:
 | Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
 [BeatnikOS Installation Guide](docs/installation-beatnik-os.md) | [Shell Script Installation Guide](docs/installation-shell-script.md) | [Bare Metal Installation Guide](docs/installation-manual-bare-metal.md)
 
+## Usage
+
+### iOS  & Android App
+<img src="docs/images/app_mulitroomControll.webp" alt="Beatnik Controller App - Multiroom Volume Control" />
+<img src="docs/images/app_camillaDSP.webp" alt="Beatnik Controller App CamillaDSP" />
+
+<img src="docs/images/app_soundcard_pick.webp" alt="Beatnik Controller App - Soundcard Selection" />
+
+
+
+The Beatnik Controller app is available for both iOS and Android devices. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
+
+- **iOS:** [Download from the App Store](https://apps.apple.com/)
+- **Android:** [Download from Google Play](https://play.google.com/store)
+
+### Web UI
+
+<img src="docs/images/webApp001.webp" alt="Beatnik Controller Web UI" />
+<img src="docs/images/webApp002.webp" alt="Beatnik Controller Web UI - Speaker Grouping" />
+<img src="docs/images/webApp003.webp" alt="Beatnik Controller Web UI - EQ Settings" />
+
+The Beatnik Controller Web UI allows you to manage your Beatnik audio system from any web browser. You can group speakers, adjust volume, configure EQ settings, and monitor the status of your devices.
+
+Your beatnik server spawns a web interface (using docker) that you can access through your browser to manage and control your audio system without needing to use the mobile app.
+
+- **Access:** Open a web browser and navigate to the IP address or hostname of your Beatnik server.
+eg. `http://192.168.1.100` or `http://beatnik-042.local/`
+
+Make sure your browser is on the same network as your Beatnik server and has network access to your local network.
+
 
 
 ## Acknowledgments & Tech Stack
