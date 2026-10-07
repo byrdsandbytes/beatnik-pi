@@ -38,16 +38,15 @@ The Hardware if have choosen here is to power some biger passive Speakers direct
 
 | Part               | Notes                                                | Image |
 | ------------------ | ---------------------------------------------------- | ----- |
-| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | <img src="docs/images/pi_4b_1gb.webp" alt="Raspberry Pi 4B" width="120"> |
-| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | <img src="docs/images/hifiBerry_amp4.webp" alt="HifiBerry Amp4 Pro" width="120"> |
-| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | <img src="docs/images/sd_high-endurance_64.webp" alt="Micro SD Card" width="120"> |
-| **Beatnik Unibody Case** *(optional)*  | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress. | <img src="docs/images/amp_case_hero.webp" alt="Beatnik Unibody Case" width="120"> |
-| **Beatnik RGB Button** *(optional)* | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | <img src="docs/images/beatnik_button.webp" alt="Beatnik RGB Button" width="120"> |
-| **Adafruit USB-C PD Board** *(optional)* | Provides 18V power delivery for the Amp & Pi and connected peripherals | <img src="docs/images/adafruit_pd_board.webp" alt="Adafruit PD Board" width="120"> |
+| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | <img src="docs/images/pi_4b_1gb.webp" alt="Raspberry Pi 4B" width="200"> |
+| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | <img src="docs/images/hifiBerry_amp4.webp" alt="HifiBerry Amp4 Pro" width="200"> |
+| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | <img src="docs/images/sd_high-endurance_64.webp" alt="Micro SD Card" width="200"> |
+| **Beatnik Unibody Case** *(optional)*  | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress. | <img src="docs/images/amp_case_hero.webp" alt="Beatnik Unibody Case" width="200"> |
+| **Beatnik RGB Button** *(optional)* | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | <img src="docs/images/beatnik_button.webp" alt="Beatnik RGB Button" width="200"> |
+| **Adafruit USB-C PD Board** *(optional)* | Provides 18V power delivery for the Amp & Pi and connected peripherals | <img src="docs/images/adafruit_pd_board.webp" alt="Adafruit PD Board" width="200"> |
 | **65 W USB-C Power Supply** *(optional)*   | Amp4 is powered via PD Board and the pi via GPIO            |       |
-| **Binding Posts** *(optional)* | Provides connection points for external speakers | <img src="docs/images/binding_posts.webp" alt="Binding Posts" width="120"> |
-
-| **Gpio Spacer, Screws & PCB Stands** *(optional)* | Provides physical support and spacing for better heat management | <img src="docs/images/gpio_spacer_screws_pcb_stands.webp" alt="Gpio Spacer, Screws & PCB Stands" width="120"> |
+| **Binding Posts** *(optional)* | Provides connection points for external speakers | <img src="docs/images/binding_posts.webp" alt="Binding Posts" width="200"> |
+| **Gpio Spacer, Screws & PCB Stands** *(optional)* | Provides physical support and spacing for better heat management | <img src="docs/images/gpio_spacer_screws_pcb_stands.webp" alt="Gpio Spacer, Screws & PCB Stands" width="200"> |
 
 
 
