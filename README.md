@@ -84,7 +84,7 @@ There are 3 different paths to install the software:
 | **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
 | Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
 | Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
-[BeatnikOS Installation Guide](docs/installation-beatnik-os.md) | [Shell Script Installation Guide](docs/installation-shell-script.md) | [Bare Metal Installation Guide](docs/installation-manual-bare-metal.md)
+[BeatnikOS Installation Guide](docs/installation-beatnik-os.md) | [Shell Script Installation Guide](docs/installation-shell-script.md) | [Bare Metal Installation Guide](installation-manual-bare-metal.md)
 
 ## Usage
 The Beatnik Controller app is available for both iOS and Android devices, as well as selfhosted WebApp. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
