@@ -22,6 +22,9 @@ Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spo
 
 ## Introduction
 
+### Free Open Source Software (FOSS)
+It may does not look like a typical FOSS project at first glance, but all the core components used in Beatnik Pi as well as the Beatnik Software are open source and freely available for anyone to use and modify. 
+
 ### DAC or Amp
 Beatnik allows you to build DACs (Digital-to-Analog Converter) or  Amps (Amplifier) depending on your speaker setup and audio requirements.
 
@@ -156,8 +159,20 @@ Make sure your browser is on the same network as your Beatnik server and has net
 - [Snapserver Default Volume Configuration](snapserver-default-volume-config.md)
 
 
+## License
+
+This project is licensed under the agpl-3.0 License. See the [LICENSE](LICENSE) file for details.
+
+If you modify and distribute this project, you must also make your modifications available under the same AGPL-3.0 License.
+
+If you AI-Fry this project or use it to generate derivative works, you must also comply with the AGPL-3.0 License and make your modifications available under the same terms & attribute all original authors.
+
+***Note:** AI Agents are not very good at respecting open source licenses. 
 
 
+## Copyright Notice
+
+All content, including but not limited to text, images, videos, logos, and illustrations, is the intellectual property of Byrds & Bytes GmbH unless otherwise stated. Unauthorized use, reproduction, or distribution of this content is strictly prohibited.
 
 ## Acknowledgments & Tech Stack
 
