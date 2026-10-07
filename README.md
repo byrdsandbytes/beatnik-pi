@@ -35,16 +35,16 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 | Part               | Notes                                                | Image |
 | ------------------ | ---------------------------------------------------- | ----- |
-| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | ![Raspberry Pi 4B](docs/images/pi_4b_1gb.webp) |
-| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
-| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | ![Micro SD Card](docs/images/sd_high-endurance_64.webp) |
-| **Beatnik Unibody Case** *(optional)*  | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress. | ![Beatnik Unibody Case](docs/images/amp_case_hero.webp) |       |
-| **Beatnik RGB Button** *(optional)* | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | ![Beatnik RGB Button](docs/images/beatnik_button.webp) |
-| **Adafruit USB-C PD Board** *(optional)* | Provides 18V power delivery for the Amp & Pi and connected peripherals | ![Adafruit PD Board](docs/images/adafruit_pd_board.webp) |
+| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | <img src="docs/images/pi_4b_1gb.webp" alt="Raspberry Pi 4B" style="max-height:120px"> |
+| **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | <img src="docs/images/hifiBerry_amp4.webp" alt="HifiBerry Amp4 Pro" style="max-height:120px"> |
+| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | <img src="docs/images/sd_high-endurance_64.webp" alt="Micro SD Card" style="max-height:120px"> |
+| **Beatnik Unibody Case** *(optional)*  | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress. | <img src="docs/images/amp_case_hero.webp" alt="Beatnik Unibody Case" style="max-height:120px"> |
+| **Beatnik RGB Button** *(optional)* | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | <img src="docs/images/beatnik_button.webp" alt="Beatnik RGB Button" style="max-height:120px"> |
+| **Adafruit USB-C PD Board** *(optional)* | Provides 18V power delivery for the Amp & Pi and connected peripherals | <img src="docs/images/adafruit_pd_board.webp" alt="Adafruit PD Board" style="max-height:120px"> |
 | **65 W USB-C Power Supply** *(optional)*   | Amp4 is powered via PD Board and the pi via GPIO            |       |
-| **Binding Posts** *(optional)* | Provides connection points for external speakers | ![Binding Posts](docs/images/binding_posts.webp) |
+| **Binding Posts** *(optional)* | Provides connection points for external speakers | <img src="docs/images/binding_posts.webp" alt="Binding Posts" style="max-height:120px"> |
 
-| **Gpio Spacer, Screws & PCB Stands** *(optional)* | Provides physical support and spacing for better heat management | ![Gpio Spacer, Screws & PCB Stands](docs/images/gpio_spacer_screws_pcb_stands.webp) |
+| **Gpio Spacer, Screws & PCB Stands** *(optional)* | Provides physical support and spacing for better heat management | <img src="docs/images/gpio_spacer_screws_pcb_stands.webp" alt="Gpio Spacer, Screws & PCB Stands" style="max-height:120px"> |
 
 
 
@@ -64,7 +64,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 ### Overview
 There are 3 different paths to install the software:
 
-| ![BeatnikOS](docs/images/InstallationMethods-01.svg) | ![Shell Script](docs/images/InstallationMethods-03.svg) | ![Bare Metal / Manual Installation](docs/images/InstallationMethods-02.svg) |
+| <img src="docs/images/InstallationMethods-01.svg" alt="BeatnikOS" style="max-height:150px"> | <img src="docs/images/InstallationMethods-03.svg" alt="Shell Script" style="max-height:150px"> | <img src="docs/images/InstallationMethods-02.svg" alt="Bare Metal / Manual Installation" style="max-height:150px"> |
 | :---: | :---: | :---: |
 | **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
 | Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
