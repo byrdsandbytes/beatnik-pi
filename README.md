@@ -35,15 +35,16 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 
 | Part               | Notes                                                | Image |
 | ------------------ | ---------------------------------------------------- | ----- |
-| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | ![Raspberry Pi 5](docs/images/pi_4b_1GB.webp) |
+| **Pi 4B**           | 2GB recommended but 1GB will work for most server usecases | ![Raspberry Pi 4B](docs/images/pi_4b_1gb.webp) |
 | **HiFiBerry Amp4 Pro** | Just Plug it on your GPIOs       | ![HifiBerry Amp4 Pro](docs/images/hifiBerry_amp4.webp) |
-| **Beatnik Unibody Case**   | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |       |
-| **Beatnik RGB Button** | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | ![Beatnik RGB Button](docs/images/beatnik_rgb_button.webp) |
-| **Adafruit USB-C PD Board** | Provides 18V power delivery for the Amp & Pi and connected peripherals | ![Adafruit PD Board](docs/images/adafruit_pd_board.webp) |
-| **65 W USB-C Power Supply**   | Amp4 is powered via PD Board and the pi via GPIO            |       |
-| **Binding Posts** | Provides connection points for external speakers | ![Binding Posts](docs/images/binding_posts.webp) |
-| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | ![Micro SD Card](docs/images/micro_sd_card.webp) |
-| **Gpio Spacer & PCB Stands** | Provides physical support and spacing for better heat management | ![Gpio Spacer & PCB Stands](docs/images/gpio_spacer_pcb_stands.webp) |
+| **Micro SD Card** | High Quality/Endurance Recommended. Stores the operating system and software  | ![Micro SD Card](docs/images/sd_high-endurance_64.webp) |
+| **Beatnik Unibody Case** *(optional)*  | Currently working on case, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress. | ![Beatnik Unibody Case](docs/images/amp_case_hero.webp) |       |
+| **Beatnik RGB Button** *(optional)* | Connects via GPIO, used for state indication, restart, reset and wifi provisioning | ![Beatnik RGB Button](docs/images/beatnik_button.webp) |
+| **Adafruit USB-C PD Board** *(optional)* | Provides 18V power delivery for the Amp & Pi and connected peripherals | ![Adafruit PD Board](docs/images/adafruit_pd_board.webp) |
+| **65 W USB-C Power Supply** *(optional)*   | Amp4 is powered via PD Board and the pi via GPIO            |       |
+| **Binding Posts** *(optional)* | Provides connection points for external speakers | ![Binding Posts](docs/images/binding_posts.webp) |
+
+| **Gpio Spacer, Screws & PCB Stands** *(optional)* | Provides physical support and spacing for better heat management | ![Gpio Spacer, Screws & PCB Stands](docs/images/gpio_spacer_screws_pcb_stands.webp) |
 
 
 
@@ -63,7 +64,7 @@ The Hardware if have choosen here is to power some biger passive Speakers using 
 ### Overview
 There are 3 different paths to install the software:
 
-| ![BeatnikOS](docs/images/InstallationMethods-01.svg) | ![Shell Script](docs/images/InstallationMethods-02.svg) | ![Bare Metal / Manual Installation](docs/images/InstallationMethods-03.svg) |
+| ![BeatnikOS](docs/images/InstallationMethods-01.svg) | ![Shell Script](docs/images/InstallationMethods-03.svg) | ![Bare Metal / Manual Installation](docs/images/InstallationMethods-02.svg) |
 | :---: | :---: | :---: |
 | **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
 | Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
