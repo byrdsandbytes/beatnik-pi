@@ -1,4 +1,4 @@
-# Easy Installation Guide for Beatnik Pi
+# Shell Script Installation Guide for Beatnik Pi
 
 This guide provides step-by-step instructions for installing Beatnik Pi using the automated shell script. 
 

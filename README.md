@@ -145,6 +145,16 @@ eg. `http://192.168.1.100` or `http://beatnik-042.local/`
 Make sure your browser is on the same network as your Beatnik server and has network access to your local network.
 
 
+## Additional Guides (WIP)
+### Networking
+- [Network Requirements](network-requirements.md) (mainly used in large/corporate networks)
+- [Network Debugging Guide](network-debugging-guide.md)
+### Audio Processing
+- [CamillaDSP Guide](camilla-dsp.md)
+- [ADC Line In](adc-line-in.md)
+- [Snapserver Buffering Configuration](snapserver-buffering-config.md)
+- [Snapserver Default Volume Configuration](snapserver-default-volume-config.md)
+
 
 
 
