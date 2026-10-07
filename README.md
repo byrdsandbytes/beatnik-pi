@@ -1,15 +1,14 @@
-# beatnik-pi
+# Beatnik Pi
 
 Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spotify Connect** streams (from any smartphone and Laptop / PC) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
 
-The Hardware if have choosen here is to power some biger passive Speakers directly using Amp4 pro and some smaller passive Speakers using the Amp2.
-
-
-**NOTE**: This is a basic setup to stream music via airplay (1 & 2) and spotify connect. You ca add more streams follwing the snapcast docs here: https://github.com/badaix/snapcast
-
 ## Overview
 
-- [Architecture](#architecture)
+- [Overview](#overview)
+- [Introduction](#introduction)
+  - [DAC or Amp](#dac-or-amp)
+  - [Architecture](#architecture)
+  - [Extending the setup](#extending-the-setup)
 - [Software Components](#software-components)
 - [Hardware Examples](#hardware-examples)
   - [Beatnik Server (Amp Pro)](#beatnik-server-amp-pro)
@@ -20,8 +19,33 @@ The Hardware if have choosen here is to power some biger passive Speakers direct
   - [Selfhosted WebApp](#selfhosted-webapp)
 - [Acknowledgments & Tech Stack](#acknowledgments--tech-stack)
 
+
+## Introduction
+
+### DAC or Amp
+Beatnik allows you to build DACs (Digital-to-Analog Converter) or  Amps (Amplifier) depending on your speaker setup and audio requirements.
+
+
+<img src="docs/images/DacVsAMP_scale.webp" alt="DAC vs AMP" >
+
+
+The Hardware if have choosen in the [example](#hardware-examples) is to power some biger passive Speakers directly using Amp4 pro and some smaller passive Speakers using the Amp2 in a second room.
+
+If you have active speakers, existing amplifiers, or other audio equipment, you would wanna build a DAC setup to connect directly to your existing hardware.
+
 ## Architecture
 ![Beatnik Architecture](docs/images/beatnik_architecture.png)
+
+### Extending the setup
+
+You can combine as many devices as you like to create simple or complex **multi-room audio setup**.
+Currently we tested up to 23 devices in combination/Sync.
+
+### Streams
+We currently have reached stable state for both AirPlay (1 & 2) and Spotify Connect Streams. We have POCs (Proof of Concepts) for Line-In, MPD, Mopidy as well. We're currently testing an will release those in the near future.
+Meanwhile you can experiment with additional streams by following the Snapcast documentation: https://github.com/badaix/snapcast
+
+
 
 
 
@@ -120,6 +144,22 @@ Your beatnik server spawns a web interface (using docker) that you can access th
 eg. `http://192.168.1.100` or `http://beatnik-042.local/`
 
 Make sure your browser is on the same network as your Beatnik server and has network access to your local network.
+
+## Development Roadmap
+
+- **Short-term goals:**
+  - Improve stability and performance of AirPlay and Spotify Connect streams.
+  - Release support for Line-In, MPD, and Mopidy streams.
+  - Improve the user experience and interface of the mobile app.
+
+  - Improve documentation and guides for users and developers.
+
+- **Long-term goals:**
+  - Expand hardware compatibility with additional DACs and Amps.
+  - Enhance the web interface with more advanced audio management features.
+  - Add support for additional audio streams and formats.
+  - Easier Integration with third-party services and platforms.
+
 
 
 
