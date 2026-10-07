@@ -91,7 +91,7 @@ The script will display a summary of what was installed and provide useful infor
 
 - **Reboot**: For most soundcard configurations, the system will need to reboot to apply the changes. The script will do this automatically after a 10-second countdown.
 - **Accessing the Server**:
-  - **Beatnik Controller**: `http://<your-pi-hostname>.local:8181`
+  - **Beatnik Controller**: `http://<your-pi-hostname>.local`
   - **Classic Snapweb UI**: `http://<your-pi-hostname>.local:1780`
 - **Testing**:
   - From your phone or computer, look for a new **AirPlay** device named "Beatnik-Airplay".
