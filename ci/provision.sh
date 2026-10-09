@@ -147,7 +147,10 @@ install_shairport_sync() {
 install_raspotify() {
     log_info "Installing Raspotify for Spotify Connect support..."
     retry apt-get install -y curl
-    retry sh -c 'curl -sL https://dtcooper.github.io/raspotify/install.sh | sh' \
+    # Installer runs its own apt-get update; refresh now so a stale/corrupted list
+    # from an earlier step doesn't fail it before this retry loop even starts.
+    update_system || log_warning "apt-get update retry failed, attempting raspotify install anyway"
+    retry sh -c 'rm -rf /var/lib/apt/lists/*; curl -sL https://dtcooper.github.io/raspotify/install.sh | sh' \
         || log_warning "Raspotify installer failed after retries, continuing"
     systemctl disable raspotify.service 2>/dev/null || true
     log_success "Raspotify installed and disabled"
