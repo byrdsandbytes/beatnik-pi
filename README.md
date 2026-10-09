@@ -190,7 +190,7 @@ This project utilizes the following open-source software and hardware projects:
 * **[Caddy](https://caddyserver.com/)** for web server and reverse proxy capabilities.
 * **[Raspberry Pi OS Lite](https://www.raspberrypi.com/software/operating-systems/)**, **[Debian](https://www.debian.org/)** & **[Linux](https://www.kernel.org/)** for the underlying operating system environment.
 
-A special thanks to the countless community members, bloggers, and forum contributors who have written tutorials and guides explaining these technologies. This project wouldn't exist without that shared knowledge.
+A special thanks to developers & maintainers of those repos & community members, bloggers, and forum contributors who have written tutorials and guides explaining these technologies. This project wouldn't exist without that shared knowledge.
 
 Thank you for making Beatnik possible.
 
