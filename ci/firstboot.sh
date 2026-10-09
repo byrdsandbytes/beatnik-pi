@@ -30,4 +30,4 @@ systemctl enable --now docker.service
 
 su - "$BEATNIK_USER" -c 'cd ~/beatnik-controller && docker compose up -d'
 
-log "Beatnik Controller started. Access it at http://$(hostname).local:8181"
+log "Beatnik Controller started. Access it at http://$(hostname).local"
