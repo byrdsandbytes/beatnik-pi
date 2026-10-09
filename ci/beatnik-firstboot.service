@@ -1,7 +1,7 @@
 [Unit]
 Description=Beatnik OS first boot setup (Docker + Beatnik Controller)
-After=network-online.target
-Wants=network-online.target
+After=network-online.target docker.service time-sync.target
+Wants=network-online.target docker.service time-sync.target
 ConditionPathExists=!/etc/beatnik/firstboot.done
 
 [Service]
