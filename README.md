@@ -68,16 +68,16 @@ There are 3 different paths to install the software:
 | Component      | Version / Role                                             |
 | -------------- | ---------------------------------------------------------- |
 | Raspberry Pi OS Lite/Debian | **Bookworm** / operating system |
-| Snapserver     | **0.31.0** / receives and distributes streams |
-| Snapclient     | **0.31.0** / receives and plays streams |
-| Shairport‑Sync | **4.3.x** / handles AirPlay 1+2 |
-| Librespot      | **x.x** / handles Spotify Connect |
+| [Snapserver](https://github.com/badaix/snapcast)     | **0.31.0** / receives and distributes streams |
+| [Snapclient](https://github.com/badaix/snapcast)     | **0.31.0** / receives and plays streams |
+| [Shairport‑Sync](https://github.com/mikebrady/shairport-sync) | **4.3.x** / handles AirPlay 1+2 |
+| [Librespot](https://github.com/librespot-org/librespot)      | **x.x** / handles Spotify Connect |
 | Device overlay | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
-| CamillaDSP     | **2.0.3** / audio processing, EQ & room correction |
-| Beatnik Hardware API | **x.x** / soundcard management & hardware control, works together with CamillaDSP |
-| Beatnik Controller | **0.2.1** / Web UI & App – grouping, volume & status |
-| Beatnik Bleno  | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
-| Docker         | **x.x** – Containerize & host controller |
+| [CamillaDSP](https://github.com/HEnquist/camilladsp)     | **2.0.3** / audio processing, EQ & room correction |
+| [Beatnik Hardware API](https://github.com/byrdsandbytes/beatnik-hardware-api) | **x.x** / soundcard management & hardware control, works together with CamillaDSP |
+| [Beatnik Controller](https://github.com/byrdsandbytes/beatnik-controller) | **0.2.1** / Web UI & App – grouping, volume & status |
+| [Beatnik Bleno](https://github.com/byrdsandbytes/beatnik-bleno) | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
+| [Docker](https://www.docker.com/)         | **x.x** – Containerize & host controller |
 
 
 
