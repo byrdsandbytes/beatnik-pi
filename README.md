@@ -73,8 +73,8 @@ There are 3 different paths to install the software:
 | [Shairport‑Sync](https://github.com/mikebrady/shairport-sync) | **4.3.x** / handles AirPlay 1+2 |
 | [Librespot](https://github.com/librespot-org/librespot)      | **x.x** / handles Spotify Connect |
 | Device overlay | **HiFiBerry Amp4 Pro** / hardware driver *(swap for your own overlay if needed)* |
-| [CamillaDSP](https://github.com/HEnquist/camilladsp)     | **2.0.3** / audio processing, EQ & room correction |
-| [Beatnik Hardware API](https://github.com/byrdsandbytes/beatnik-hardware-api) | **x.x** / soundcard management & hardware control, works together with CamillaDSP |
+| [CamillaDSP](https://github.com/HEnquist/camilladsp)     | **2.0.3** / audio processing, EQ & room correction; service/configuration supplied by the Hardware API |
+| [Beatnik Hardware API](https://github.com/byrdsandbytes/beatnik-hardware-api) | Latest release package / soundcard management, hardware control, and CamillaDSP service/configuration |
 | [Beatnik Controller](https://github.com/byrdsandbytes/beatnik-controller) | **0.2.1** / Web UI & App – grouping, volume & status |
 | [Beatnik Bleno](https://github.com/byrdsandbytes/beatnik-bleno) | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
 | [Docker](https://www.docker.com/)         | **x.x** – Containerize & host controller |
@@ -196,7 +196,6 @@ Thank you for making Beatnik possible.
 
 ---
 Have a nice Sunday. 🎈
-
 
 
 

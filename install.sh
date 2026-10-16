@@ -410,161 +410,27 @@ start_services() {
     fi
 }
 
-# Install and Configure CamillaDSP
-install_camilladsp() {
-    log_info "Installing CamillaDSP..."
+# Install the CamillaDSP executable; the Hardware API package provides its service and configs.
+install_camilladsp_runtime() {
+    log_info "Installing CamillaDSP runtime and configuring Snapclient routing..."
 
-    # 1. Clone configs/coeffs from the CamillaDSP config repo into the user's home directory
-    CAMILLADSP_DIR="/home/$USER/camilladsp"
-    if [ -d "$CAMILLADSP_DIR" ]; then
-        rm -rf "$CAMILLADSP_DIR"
-    fi
-    git clone https://github.com/byrdsandbytes/camilladsp.git "$CAMILLADSP_DIR"
-    sudo apt-get update
-    sudo apt-get install -y alsa-utils unzip
-
-    # 2. Install CamillaDSP Binary (v2.0.3)
-    CAMILLA_VERSION="v2.0.3"
-    wget -q "https://github.com/HEnquist/camilladsp/releases/download/${CAMILLA_VERSION}/camilladsp-linux-aarch64.tar.gz" -P /tmp
-    sudo tar -xvf /tmp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
+    local version="v2.0.3"
+    wget -q "https://github.com/HEnquist/camilladsp/releases/download/${version}/camilladsp-linux-aarch64.tar.gz" -P /tmp
+    sudo tar -xzf /tmp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
     rm /tmp/camilladsp-linux-aarch64.tar.gz
 
-    # 3. Setup Loopback
     log_info "Setting up ALSA Loopback..."
     sudo modprobe snd-aloop
     echo "snd-aloop" | sudo tee /etc/modules-load.d/snd-aloop.conf > /dev/null
 
-    # 4. Configure Snapclient to use Loopback
     log_info "Configuring Snapclient to use Loopback..."
     if grep -q "sound_device" /etc/snapclient.conf; then
         sudo sed -i 's|^sound_device = .*|sound_device = hw:Loopback,0,0|' /etc/snapclient.conf
     else
-        echo "sound_device = hw:Loopback,0,0" | sudo tee -a /etc/snapclient.conf
+        echo "sound_device = hw:Loopback,0,0" | sudo tee -a /etc/snapclient.conf > /dev/null
     fi
 
-    # 5. Configure CamillaDSP
-    log_info "Generating CamillaDSP configuration..."
-    
-    # Determine playback device based on SOUNDCARD variable
-    case "$SOUNDCARD" in
-        "hifiberry-amp4pro"|"hifiberry-miniamp"|"hifiberry-digi"|"hifiberry-digi-pro")
-            PLAYBACK_DEVICE="plughw:CARD=sndrpihifiberry,DEV=0"
-            ;;
-        "raspberry-dacplus"|"raspberry-digiampplus")
-            PLAYBACK_DEVICE="plughw:CARD=IQaudIODAC,DEV=0"
-            ;;
-        "builtin")
-            PLAYBACK_DEVICE="plughw:CARD=Headphones,DEV=0"
-            ;;
-        "usb")
-             PLAYBACK_DEVICE="plughw:CARD=Device,DEV=0" # Generic fallback
-             log_warning "For USB devices, you might need to adjust the playback device in $CAMILLADSP_DIR/configs/client_config.yml"
-            ;;
-        *)
-            PLAYBACK_DEVICE="plughw:CARD=Headphones,DEV=0"
-            ;;
-    esac
-
-    cat > "$CAMILLADSP_DIR/configs/client_config.yml" <<EOF
-devices:
-  samplerate: 48000
-  chunksize: 1024
-        enable_rate_adjust: true
-        target_level: 1024
-  capture:
-    type: Alsa
-    channels: 2
-            device: "hw:Loopback,1,0"
-    format: S16LE
-  playback:
-    type: Alsa
-    channels: 2
-    device: "$PLAYBACK_DEVICE"
-    format: S16LE
-
-filters:
-  bass:
-    type: Biquad
-    parameters:
-      type: Lowshelf
-      freq: 100
-      slope: 6
-      gain: 0.0
-  mid:
-    type: Biquad
-    parameters:
-      type: Peaking
-      freq: 1000
-      q: 0.7
-      gain: 0.0
-  high:
-    type: Biquad
-    parameters:
-      type: Highshelf
-      freq: 5000
-      slope: 6
-      gain: 0.0
-
-mixers:
-  stereo:
-    channels:
-      in: 2
-      out: 2
-    mapping:
-      - dest: 0
-        sources:
-          - channel: 0
-            gain: 0
-            inverted: false
-      - dest: 1
-        sources:
-          - channel: 1
-            gain: 0
-            inverted: false
-
-pipeline:
-  - type: Mixer
-    name: stereo
-  - type: Filter
-    channel: 0
-    names:
-      - bass
-      - mid
-      - high
-  - type: Filter
-    channel: 1
-    names:
-      - bass
-      - mid
-      - high
-EOF
-    # Ensure user ownership
-    chown $USER:$USER "$CAMILLADSP_DIR/configs/client_config.yml"
-
-    # 6. Service
-    log_info "Creating CamillaDSP service..."
-    sudo tee /etc/systemd/system/camilladsp.service > /dev/null <<EOF
-[Unit]
-Description=CamillaDSP
-Wants=snapclient.service
-After=snapclient.service
-
-[Service]
-Type=simple
-User=$USER
-ExecStartPre=/bin/sleep 2
-ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 $CAMILLADSP_DIR/configs/client_config.yml
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    sudo systemctl daemon-reload
-    sudo systemctl enable camilladsp
-    
-    log_success "CamillaDSP installed and configured."
+    log_success "CamillaDSP runtime and Snapclient routing configured."
 }
 
 # Install Docker and Beatnik Controller
@@ -601,6 +467,7 @@ install_beatnik_controller() {
         fi
         
         log_info "Installing Beatnik Controller..."
+        sudo apt-get install -y git
         
         # Clone and setup Beatnik Controller
         if [ -d "beatnik-controller" ]; then
@@ -625,40 +492,57 @@ install_beatnik_controller() {
     fi
 }
 
-# Install the Beatnik Hardware API (Node.js service for hardware control/status)
+# Install the Beatnik Hardware API Debian package and its system Node.js dependency.
 install_beatnik_hardware_api() {
     log_info "Installing Beatnik Hardware API..."
 
-    mkdir -p "/home/$USER/beatnik-hardware-api"
-    cd "/home/$USER/beatnik-hardware-api" || exit 1
+    sudo bash -o pipefail -c 'curl -fsSL https://deb.nodesource.com/setup_22.x | bash -'
+    sudo apt-get install -y nodejs
 
-    # setup.sh installs Node.js 22 via NVM, pulls the latest release and installs the systemd service
-    wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
-    chmod +x setup.sh
-    ./setup.sh
+    local version_tag version
+    version_tag=$(curl -fsSL https://api.github.com/repos/byrdsandbytes/beatnik-hardware-api/releases/latest \
+        | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+    if [[ -z "$version_tag" ]]; then
+        log_error "Could not determine the latest Beatnik Hardware API release."
+        exit 1
+    fi
+    version=${version_tag#v}
+    wget -q -O /tmp/beatnik-hardware-api.deb \
+        "https://github.com/byrdsandbytes/beatnik-hardware-api/releases/download/${version_tag}/beatnik-hardware-api_${version}_all.deb"
+    sudo apt-get install -y /tmp/beatnik-hardware-api.deb
+    rm /tmp/beatnik-hardware-api.deb
 
     log_success "Beatnik Hardware API installed. Test it at http://$(hostname).local:3000/api/hardware/status"
-    cd "/home/$USER" || exit 1
 }
 
-# Install the Beatnik Bleno service (BLE setup/control)
+# Install the Beatnik Bleno Debian package (BLE setup/control).
 install_beatnik_bleno() {
     log_info "Would you like to install the Beatnik Bleno service (Bluetooth setup/control)? (y/n)"
     read -p "Choice: " install_bleno
 
     if [[ "$install_bleno" =~ ^[Yy]$ ]]; then
+        if [[ "$(dpkg --print-architecture)" != "arm64" ]]; then
+            log_warning "Beatnik Bleno's Debian package requires a 64-bit arm64 system; skipping."
+            install_bleno="n"
+            return
+        fi
+
         log_info "Installing Beatnik Bleno..."
 
-        mkdir -p "/home/$USER/beatnik-bleno"
-        cd "/home/$USER/beatnik-bleno" || exit 1
-
-        # setup.sh installs Node.js 22 via NVM, pulls the latest release and installs the systemd service
-        wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
-        chmod +x setup.sh
-        ./setup.sh
+        local version_tag version
+        version_tag=$(curl -fsSL https://api.github.com/repos/byrdsandbytes/beatnik-bleno/releases/latest \
+            | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+        if [[ -z "$version_tag" ]]; then
+            log_error "Could not determine the latest Beatnik Bleno release."
+            exit 1
+        fi
+        version=${version_tag#v}
+        wget -q -O /tmp/beatnik-bleno.deb \
+            "https://github.com/byrdsandbytes/beatnik-bleno/releases/download/${version_tag}/beatnik-bleno_${version}_arm64.deb"
+        sudo apt-get install -y /tmp/beatnik-bleno.deb
+        rm /tmp/beatnik-bleno.deb
 
         log_success "Beatnik Bleno installed. Check status with: sudo systemctl status beatnik-bleno.service"
-        cd "/home/$USER" || exit 1
     fi
 }
 
@@ -737,8 +621,7 @@ main() {
         echo "- Shairport-Sync (AirPlay support)"
         echo "- Raspotify (Spotify Connect support)"
         echo "- Configure your selected soundcard/HAT"
-        echo "- CamillaDSP (Room Correction/EQ)"
-        echo "- Beatnik Hardware API"
+        echo "- Beatnik Hardware API and CamillaDSP runtime/service/configuration"
         echo "- Optional: Beatnik Controller web interface"
         echo "- Optional: Beatnik Bleno service"
     else
@@ -746,8 +629,7 @@ main() {
         echo "- Snapcast client only"
         echo "- Configure your selected soundcard/HAT"
         echo "- Connect to an existing Snapcast server"
-        echo "- CamillaDSP (Room Correction/EQ)"
-        echo "- Beatnik Hardware API"
+        echo "- Beatnik Hardware API and CamillaDSP runtime/service/configuration"
         echo "- Optional: Beatnik Bleno service"
     fi
     echo
@@ -772,7 +654,7 @@ main() {
     
     configure_snapclient
     
-    install_camilladsp
+    install_camilladsp_runtime
     
     check_soundcard
     start_services

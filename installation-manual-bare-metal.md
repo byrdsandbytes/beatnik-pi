@@ -155,7 +155,7 @@ source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
 
 ## 6 · Point Snapclient at CamillaDSP (via ALSA Loopback)
 
-Audio is processed by CamillaDSP before it reaches your amp (see [step 9](#9--beatnik-hardware-api) & [camilla-dsp.md](./camilla-dsp.md)), so Snapclient must send its audio into a virtual **ALSA Loopback** device instead of directly to your amp's sound card.
+Audio is processed by CamillaDSP before it reaches your amp (see [step 9](#9--beatnik-hardware-api)), so Snapclient must send its audio into a virtual **ALSA Loopback** device instead of directly to your amp's sound card. The Hardware API package provides the CamillaDSP service and configuration; install the CamillaDSP executable as described in step 9.
 
 ```bash
 sudo usermod -aG audio snapclient   # grant ALSA access
@@ -172,9 +172,9 @@ sound_device = plughw:Loopback,0,0
 EOF
 ```
 
-### 6.1 Find your amp's card number for CamillaDSP
+### 6.1 Check your amp's playback device
 
-CamillaDSP (not Snapclient) needs to know your amp's real soundcard, since it sits between the Loopback device and the amp. Check for your soundcard number:
+The Hardware API manages CamillaDSP's playback device. To inspect detected soundcards:
 ```bash
  aplay -l 
 ```
@@ -191,7 +191,7 @@ card 1: DigiAMP [RPi DigiAMP+], device 0: Raspberry Pi DigiAMP+ HiFi pcm512x-hif
 
 ```
 
-In this example our amp is card 1 (`DigiAMP`). Use that card name/number as the `playback` device in CamillaDSP's config — continue with [camilla-dsp.md](./camilla-dsp.md) to finish wiring CamillaDSP's capture (`hw:Loopback,1,0`) to this playback device.
+The API selects the playback device from the detected hardware. For advanced, manually managed CamillaDSP configurations, see [camilla-dsp.md](./camilla-dsp.md).
 
 
 ---
@@ -260,25 +260,36 @@ Open **[http://beatnik-server.local:1780](http://beatnik-server.local:1780)**
 
 The Beatnik Hardware API is a small Node.js service that exposes hardware control & status (e.g. amp status) over HTTP. Full details are in the [beatnik-hardware-api repo](https://github.com/byrdsandbytes/beatnik-hardware-api).
 
-> **Soundcard management:** The Hardware API takes over soundcard management (device selection & output routing) in combination with CamillaDSP (see [step 5](#5--configure-snapserver) & [camilla-dsp.md](./camilla-dsp.md)). CamillaDSP handles the audio processing/EQ pipeline, while the Hardware API coordinates which soundcard/output it routes to, so install both together rather than configuring the soundcard manually afterwards.
+> **Soundcard management:** The Hardware API package includes the CamillaDSP service and configuration and manages soundcard selection/output routing. The CamillaDSP executable itself must also be installed at `/usr/local/bin/camilladsp`.
 
 ### Prerequisites
 
-* **Node.js 22** — installed automatically via NVM by the setup script below (or manually, see the repo's guide, if you prefer)
+* **Node.js 22 or newer** installed as a system package at `/usr/bin/node` (NVM installations are not detected by `apt`).
 
-### 9.1 Install (recommended: production setup script)
+Install Node.js 22 via NodeSource if needed:
 
 ```bash
-mkdir -p ~/beatnik-hardware-api
-cd ~/beatnik-hardware-api
-wget https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
-chmod +x setup.sh
-./setup.sh
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
-The script downloads the latest release artifact, installs Node.js 22 via NVM (if not already present), installs production dependencies, and installs/starts the `beatnik-hardware.service` systemd unit.
+Install the CamillaDSP executable required by the package's service:
 
-> Prefer building from source instead? See **Method 2: Manual Source Installation** in the [beatnik-hardware-api installation guide](https://github.com/byrdsandbytes/beatnik-hardware-api).
+```bash
+wget -q https://github.com/HEnquist/camilladsp/releases/download/v2.0.3/camilladsp-linux-aarch64.tar.gz -P /tmp
+sudo tar -xzf /tmp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
+rm /tmp/camilladsp-linux-aarch64.tar.gz
+```
+
+Install the latest Hardware API release package (replace `X.Y.Z` with the current release version):
+
+```bash
+VERSION=X.Y.Z
+wget https://github.com/byrdsandbytes/beatnik-hardware-api/releases/download/v${VERSION}/beatnik-hardware-api_${VERSION}_all.deb
+sudo apt-get install ./beatnik-hardware-api_${VERSION}_all.deb
+```
+
+The package installs and starts the API and CamillaDSP services, and includes the CamillaDSP configuration. See the [Hardware API Debian package guide](https://github.com/byrdsandbytes/beatnik-hardware-api/blob/master/INSTALL_DEB.md) for details.
 
 ### 9.2 Check status
 
@@ -295,21 +306,17 @@ The Beatnik Bleno service exposes Beatnik over Bluetooth Low Energy (BLE) for se
 
 ### Prerequisites
 
-* **Node.js 22** — installed automatically via NVM by the setup script below (or manually, see the repo's guide, if you prefer)
+* **Node.js 22 or newer** installed as a system package at `/usr/bin/node` (installed in step 9 if following this guide).
 
-### 10.1 Install (recommended: production setup script)
+### 10.1 Install the Debian package
 
 ```bash
-mkdir -p ~/beatnik-bleno
-cd ~/beatnik-bleno
-wget https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
-chmod +x setup.sh
-./setup.sh
+VERSION=X.Y.Z
+wget https://github.com/byrdsandbytes/beatnik-bleno/releases/download/v${VERSION}/beatnik-bleno_${VERSION}_arm64.deb
+sudo apt-get install ./beatnik-bleno_${VERSION}_arm64.deb
 ```
 
-The script downloads the latest release artifact, installs Node.js 22 via NVM (if not already present), installs production dependencies, and installs/starts the `beatnik-bleno.service` systemd unit.
-
-> Prefer building from source instead? See **Method 2: Manual Source Installation** in the [beatnik-bleno installation guide](https://github.com/byrdsandbytes/beatnik-bleno).
+The package installs and starts the service, and requires 64-bit Raspberry Pi OS/Debian (`arm64`). Reboot once so the package's startup LED GPIO settings take effect. See the [Bleno Debian package guide](https://github.com/byrdsandbytes/beatnik-bleno/blob/master/INSTALL_DEB.md) for details.
 
 ### 10.2 Check status
 

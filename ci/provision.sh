@@ -3,14 +3,14 @@
 # Beatnik OS - CI image provisioning script
 # Runs INSIDE a QEMU-emulated chroot (pguyot/arm-runner-action) against a
 # pristine Raspberry Pi OS Lite (arm64) image, as root. There is no running
-# systemd (PID 1) here - so this script only ever uses `systemctl enable`
-# (offline/symlink-based) and never `start`/`stop`.
+# systemd (PID 1) here; direct service management only enables units, while the
+# Debian packages manage their own service setup during installation.
 #
 # Mirrors the manual golden-master process: a fixed `beatnik` account is
 # created and locked at build time (Raspberry Pi Imager's userconf-service
 # resets its password on first boot if the end user picks that same
-# username; otherwise it stays locked and unused). Everything Beatnik-specific
-# lives under its home directory, same as when a person runs install.sh by hand.
+# username; otherwise it stays locked and unused). The Controller checkout
+# lives under this account; system services are installed from release packages.
 #
 # Default build target: Beatnik Pi Server + HiFiBerry Amp4 Pro.
 
@@ -35,7 +35,7 @@ SOUNDCARD="hifiberry-amp4pro"
 OVERLAY="dtoverlay=hifiberry-amp4pro"
 
 BEATNIK_USER="beatnik"
-BEATNIK_HOME="/home/$BEATNIK_USER"
+NODEJS22_READY=0
 
 # Fresh raspios images mount the boot partition at /boot/firmware; fall back
 # to /boot for older layouts so this script doesn't depend on action internals.
@@ -127,6 +127,17 @@ update_system() {
     done
 }
 
+install_nodejs22() {
+    if (( NODEJS22_READY )); then
+        return 0
+    fi
+    log_info "Installing system Node.js 22..."
+    retry bash -o pipefail -c 'curl -fsSL https://deb.nodesource.com/setup_22.x | bash -' \
+        && retry apt-get install -y nodejs \
+        || return 1
+    NODEJS22_READY=1
+}
+
 install_snapcast() {
     log_info "Installing Snapcast $SNAPCAST_VERSION for $OS_CODENAME..."
     cd /tmp
@@ -197,155 +208,85 @@ EOF
     log_success "Snapclient configured"
 }
 
-install_camilladsp() {
-    log_info "Installing CamillaDSP..."
+install_camilladsp_runtime() {
+    log_info "Installing CamillaDSP runtime and configuring Snapclient routing..."
 
-    retry apt-get install -y git alsa-utils unzip
-
-    CAMILLADSP_DIR="$BEATNIK_HOME/camilladsp"
-    rm -rf "$CAMILLADSP_DIR"
-    git clone https://github.com/byrdsandbytes/camilladsp.git "$CAMILLADSP_DIR"
-
-    CAMILLA_VERSION="v2.0.3"
-    wget -q "https://github.com/HEnquist/camilladsp/releases/download/${CAMILLA_VERSION}/camilladsp-linux-aarch64.tar.gz" -P /tmp
-    tar -xvf /tmp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
+    local version="v2.0.3"
+    wget -q "https://github.com/HEnquist/camilladsp/releases/download/${version}/camilladsp-linux-aarch64.tar.gz" -P /tmp
+    tar -xzf /tmp/camilladsp-linux-aarch64.tar.gz -C /usr/local/bin/
     rm /tmp/camilladsp-linux-aarch64.tar.gz
 
-    # Loopback module is loaded on real boot via this modules-load config
-    # (modprobe here would touch the CI runner's own x86 kernel, not the image).
+    # The Hardware API package supplies CamillaDSP's service and configuration.
+    # Load the loopback module on real boot; modprobe here would touch the CI runner.
     echo "snd-aloop" | tee /etc/modules-load.d/snd-aloop.conf > /dev/null
-
     sed -i 's|^sound_device = .*|sound_device = hw:Loopback,0,0|' /etc/snapclient.conf
-
-    PLAYBACK_DEVICE="plughw:CARD=sndrpihifiberry,DEV=0"
-
-    cat > "$CAMILLADSP_DIR/configs/client_config.yml" <<EOF
-devices:
-  samplerate: 48000
-  chunksize: 1024
-  enable_rate_adjust: true
-  target_level: 1024
-  capture:
-    type: Alsa
-    channels: 2
-    device: "hw:Loopback,1,0"
-    format: S16LE
-  playback:
-    type: Alsa
-    channels: 2
-    device: "$PLAYBACK_DEVICE"
-    format: S16LE
-
-filters:
-  bass:
-    type: Biquad
-    parameters:
-      type: Lowshelf
-      freq: 100
-      slope: 6
-      gain: 0.0
-  mid:
-    type: Biquad
-    parameters:
-      type: Peaking
-      freq: 1000
-      q: 0.7
-      gain: 0.0
-  high:
-    type: Biquad
-    parameters:
-      type: Highshelf
-      freq: 5000
-      slope: 6
-      gain: 0.0
-
-mixers:
-  stereo:
-    channels:
-      in: 2
-      out: 2
-    mapping:
-      - dest: 0
-        sources:
-          - channel: 0
-            gain: 0
-            inverted: false
-      - dest: 1
-        sources:
-          - channel: 1
-            gain: 0
-            inverted: false
-
-pipeline:
-  - type: Mixer
-    name: stereo
-  - type: Filter
-    channel: 0
-    names:
-      - bass
-      - mid
-      - high
-  - type: Filter
-    channel: 1
-    names:
-      - bass
-      - mid
-      - high
-EOF
-    chown -R "$BEATNIK_USER:$BEATNIK_USER" "$CAMILLADSP_DIR"
-
-    tee /etc/systemd/system/camilladsp.service > /dev/null <<EOF
-[Unit]
-Description=CamillaDSP
-Wants=snapclient.service
-After=snapclient.service
-
-[Service]
-Type=simple
-User=$BEATNIK_USER
-ExecStartPre=/bin/sleep 2
-ExecStart=/usr/local/bin/camilladsp --address 0.0.0.0 --port 1234 $CAMILLADSP_DIR/configs/client_config.yml
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    systemctl enable camilladsp.service
-    log_success "CamillaDSP installed and configured"
+    log_success "CamillaDSP runtime and Snapclient routing configured"
 }
 
 install_beatnik_hardware_api() {
     log_info "Installing Beatnik Hardware API..."
-    local cmd='set -e
-mkdir -p ~/beatnik-hardware-api
-cd ~/beatnik-hardware-api
-wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-hardware-api/master/setup.sh
-chmod +x setup.sh
-./setup.sh'
-    # su - gives a real login environment (correct $HOME/$USER), same as running it by hand.
-    retry su - "$BEATNIK_USER" -c "$cmd" \
-        || log_warning "Beatnik Hardware API setup failed after retries, continuing"
+    if ! install_nodejs22; then
+        log_warning "Could not install system Node.js 22; skipping Beatnik Hardware API"
+        return
+    fi
+    local version_tag version
+    if ! version_tag=$(curl -fsSL https://api.github.com/repos/byrdsandbytes/beatnik-hardware-api/releases/latest \
+        | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1); then
+        log_warning "Could not fetch the latest Beatnik Hardware API release, continuing"
+        return
+    fi
+    if [ -z "$version_tag" ]; then
+        log_warning "Could not determine the latest Beatnik Hardware API release, continuing"
+        return
+    fi
+    version=${version_tag#v}
+    if ! retry wget -q -O /tmp/beatnik-hardware-api.deb \
+        "https://github.com/byrdsandbytes/beatnik-hardware-api/releases/download/${version_tag}/beatnik-hardware-api_${version}_all.deb"; then
+        log_warning "Could not download Beatnik Hardware API package, continuing"
+        return
+    fi
+    if ! retry apt-get install -y /tmp/beatnik-hardware-api.deb; then
+        log_warning "Beatnik Hardware API package installation failed after retries, continuing"
+        return
+    fi
+    rm -f /tmp/beatnik-hardware-api.deb
     log_success "Beatnik Hardware API installed"
 }
 
 install_beatnik_bleno() {
     log_info "Installing Beatnik Bleno..."
-    local cmd='set -e
-mkdir -p ~/beatnik-bleno
-cd ~/beatnik-bleno
-wget -q -O setup.sh https://raw.githubusercontent.com/byrdsandbytes/beatnik-bleno/master/setup.sh
-chmod +x setup.sh
-./setup.sh'
-    retry su - "$BEATNIK_USER" -c "$cmd" \
-        || log_warning "Beatnik Bleno setup failed after retries, continuing"
-    systemctl enable beatnik-bleno.service 2>/dev/null || true
+    if ! install_nodejs22; then
+        log_warning "Could not install system Node.js 22; skipping Beatnik Bleno"
+        return
+    fi
+    local version_tag version
+    if ! version_tag=$(curl -fsSL https://api.github.com/repos/byrdsandbytes/beatnik-bleno/releases/latest \
+        | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1); then
+        log_warning "Could not fetch the latest Beatnik Bleno release, continuing"
+        return
+    fi
+    if [ -z "$version_tag" ]; then
+        log_warning "Could not determine the latest Beatnik Bleno release, continuing"
+        return
+    fi
+    version=${version_tag#v}
+    if ! retry wget -q -O /tmp/beatnik-bleno.deb \
+        "https://github.com/byrdsandbytes/beatnik-bleno/releases/download/${version_tag}/beatnik-bleno_${version}_arm64.deb"; then
+        log_warning "Could not download Beatnik Bleno package, continuing"
+        return
+    fi
+    if ! retry apt-get install -y /tmp/beatnik-bleno.deb; then
+        log_warning "Beatnik Bleno package installation failed after retries, continuing"
+        return
+    fi
+    rm -f /tmp/beatnik-bleno.deb
     log_success "Beatnik Bleno installed"
 }
 
 install_beatnik_controller() {
     log_info "Installing Docker + Beatnik Controller..."
+    retry apt-get install -y git \
+        || log_warning "Git installation failed; controller clone may fail"
     if ! command -v docker &>/dev/null; then
         retry sh -c 'curl -fsSL https://get.docker.com -o /tmp/get-docker.sh && sh /tmp/get-docker.sh' \
             || log_warning "Docker install failed after retries, continuing"
@@ -384,7 +325,7 @@ main() {
     install_raspotify
     configure_snapserver
     configure_snapclient
-    install_camilladsp
+    install_camilladsp_runtime
     install_beatnik_hardware_api
     install_beatnik_bleno
     install_beatnik_controller
