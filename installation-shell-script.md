@@ -81,6 +81,8 @@ If you are installing a "Full Beatnik Pi Server", you will be asked if you want 
 Once you've answered the questions, the script will automate the rest:
 - Update the system packages.
 - Install all required software (Snapcast, AirPlay, Spotify, etc.).
+- Install the Beatnik Hardware API release package and its CamillaDSP service/configuration.
+- Optionally install Beatnik Bleno from its arm64 release package.
 - Configure the soundcard drivers in `/boot/firmware/config.txt`.
 - Set up the Snapcast server and client configuration files.
 - Enable and start all the necessary services.

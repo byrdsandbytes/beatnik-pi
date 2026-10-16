@@ -13,7 +13,7 @@ Workflow files:
 
 | File | When it runs | What it does |
 | --- | --- | --- |
-| `provision.sh` | While the image is being built | Creates and locks the `beatnik` user account, installs Snapcast, Shairport-Sync, Raspotify, CamillaDSP, the soundcard driver, Beatnik Hardware API, Beatnik Bleno, Docker, and clones the Beatnik Controller - same as the manual setup. Also sets up the first-boot step below. |
+| `provision.sh` | While the image is being built | Creates and locks the `beatnik` user account, installs Snapcast, Shairport-Sync, Raspotify, the CamillaDSP executable and soundcard driver, the Beatnik Hardware API and Bleno release packages, Docker, and clones the Beatnik Controller. Also sets up the first-boot step below. |
 | `firstboot.sh` | Once, the first time a real Pi boots with this image | Starts the Beatnik Controller, then disables itself so it never runs again. |
 | `beatnik-firstboot.service` | Real first boot only | Triggers `firstboot.sh` once. |
 | `update_repo_json.py` | Twice: as a preview during the build, and for real once the release is published | Adds the new release's download link, size, and checksums to `beatnik-repo.json`. |
@@ -74,7 +74,5 @@ never goes live before the file behind it is actually public.
   few times before giving up, and the workflow adds extra swap space to make it less
   likely. This mostly affects non-essential installers (Raspotify, Hardware API,
   Bleno), so those are allowed to fail with a warning instead of stopping the build.
-- Installing things as `root` with just `HOME` overridden isn't the same as really
-  being logged in as a user - other settings can still leak in from the outer build
-  environment. Installing the Hardware API and Bleno via a real `beatnik` login
-  session avoided this entirely.
+- The Hardware API and Bleno are installed from their release `.deb` packages.
+  Node.js 22 is installed as a system package first, as required by both packages.
