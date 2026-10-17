@@ -170,9 +170,13 @@ If you AI-Fry this project or use it to generate derivative works, you must also
 ***Note:** AI Agents are not very good at respecting open source licenses. 
 
 
+
+
 ## Copyright Notice
 
-All content, including but not limited to text, images, videos, logos, and illustrations, is the intellectual property of Byrds & Bytes GmbH unless otherwise stated. Unauthorized use, reproduction, or distribution of this content is strictly prohibited.
+All content, including but not limited to text, images, videos, logos, and illustrations, is the intellectual property of Jonathan Gerber and/or Byrds & Bytes GmbH unless otherwise stated. Unauthorized use, reproduction, or distribution of this content is strictly prohibited.
+
+You can ask us for permission to use any content by contacting us at hello@beatnik.audio.
 
 ## Acknowledgments & Tech Stack
 

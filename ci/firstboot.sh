@@ -31,11 +31,17 @@ until ping -c 1 -W 2 github.com >/dev/null 2>&1; do
     sleep 2
 done
 
-# 3. Start the controller
+# 3. Wait for time to sync so SSL certificate validation doesn't fail
+log "Waiting for system clock to synchronize..."
+until [ "$(timedatectl show --property=NTPSynchronized --value)" = "yes" ]; do
+    sleep 2
+done
+
+# 4. Start the controller
 log "Starting Beatnik Controller..."
 su - "$BEATNIK_USER" -c 'cd ~/beatnik-controller && docker compose up -d'
 
-# 4. Mark as done ONLY on success (removed the EXIT trap)
+# 5. Mark as done ONLY on success
 mkdir -p "$(dirname "$MARKER")"
 touch "$MARKER"
 systemctl disable beatnik-firstboot.service 2>/dev/null || true
