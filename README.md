@@ -37,7 +37,7 @@ The Hardware if have choosen in the [example](#hardware-examples) is to power so
 If you have active speakers, existing amplifiers, or other audio equipment, you would wanna build a DAC setup to connect directly to your existing hardware.
 
 ### Architecture
-![Beatnik Architecture](docs/images/beatnik_architecture.png)
+![Beatnik Architecture](docs/images/beatnik_software_architecture-v008.webp)
 
 ### Extending the setup
 
