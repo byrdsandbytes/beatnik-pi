@@ -169,31 +169,7 @@ install_raspotify() {
 
 configure_snapserver() {
     log_info "Configuring Snapserver..."
-    tee /etc/snapserver.conf > /dev/null <<'EOF'
-# Beatnik Pi Snapserver Configuration
-
-[http]
-enabled = true
-bind_to_address = 0.0.0.0
-port = 1780
-
-[tcp]
-enabled = true
-bind_to_address = 0.0.0.0
-port = 1705
-
-[stream]
-# AirPlay 1 (port 5000)
-source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000
-
-[stream]
-# AirPlay 2 (port 7000)
-source = airplay:///usr/bin/shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
-
-[stream]
-# Spotify Connect
-source = spotify:///usr/bin/librespot?name=Spotify&devicename=Beatnik-Spotify
-EOF
+    install -m 644 "$SCRIPT_DIR/snapserver.conf" /etc/snapserver.conf
     log_success "Snapserver configured"
 }
 
