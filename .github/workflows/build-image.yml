@@ -23,7 +23,9 @@ permissions:
 
 jobs:
   build-image:
-    runs-on: ubuntu-latest
+    # Pinned: newer ubuntu-latest no longer ships a installable qemu-user-static
+    # package, which pguyot/arm-runner-action installs.
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -14,6 +14,7 @@ Workflow files:
 | File | When it runs | What it does |
 | --- | --- | --- |
 | `provision.sh` | While the image is being built | Creates and locks the `beatnik` user account, installs Snapcast, Shairport-Sync, Raspotify, the CamillaDSP executable and soundcard driver, the Beatnik Hardware API and Bleno release packages, Docker, and clones the Beatnik Controller. Also sets up the first-boot step below. |
+| `snapserver.conf` | While the image is being built | Provides the Snapserver configuration installed by `provision.sh`. The workflow checks it out with the rest of the repository. |
 | `firstboot.sh` | Once, the first time a real Pi boots with this image | Starts the Beatnik Controller, then disables itself so it never runs again. |
 | `beatnik-firstboot.service` | Real first boot only | Triggers `firstboot.sh` once. |
 | `update_repo_json.py` | Twice: as a preview during the build, and for real once the release is published | Adds the new release's download link, size, and checksums to `beatnik-repo.json`. |
