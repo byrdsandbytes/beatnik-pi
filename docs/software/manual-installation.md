@@ -22,7 +22,7 @@ sudo apt update && sudo apt full-upgrade -y
 
 ## 2 · Activate Drivers (HIFI Berry Amp 4 example)
 
-**NOTE:** If you're using a diffent soundcard (DAC/amp) check the [HifiBerry Amp 4 Pro soundcard guide](../hardware/soundcards/hifiberry-amp4Pro.md).
+**NOTE:** If you're using a diffent soundcard (DAC/amp) check the [HifiBerry Amp 4 Pro soundcard guide](../software/soundcards/hifiberry-amp4Pro.md).
 
 Based on hifi berry docs: https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/
 

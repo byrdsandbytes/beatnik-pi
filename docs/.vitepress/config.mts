@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Beatnik Pi",
-  description: "Open Source Multi-Room Audio",
+  description: "Open Source Multi-Room Audio. Free. Customizable. Based on Raspberry Pi. Made in Bern, Switzerland.",
   markdown: {
     config: (md) => {
       md.core.ruler.push('resolve-readme-image-paths', (state) => {
@@ -47,28 +47,45 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Project Overview', link: '/getting-started/project-overview' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Examples', link: '/markdown-examples' },
+      { text: 'beatnik.audio', link: 'https://beatnik.audio' }
     ],
 
     sidebar: [
       {
         text: 'Getting Started',
         items: [
-          { text: 'Quick Start', link: '/getting-started/quick-start' },
-          { text: 'Project Overview', link: '/getting-started/project-overview' }
+          { text: 'Project Overview', link: '/getting-started/project-overview' },
+          { text: 'Quick Start', link: '/getting-started/quick-start' }
+        ]
+      },
+      {
+        text: 'Usage',
+        collapsed: false,
+        items: [
+          { text: 'Using the Beatnik Controller', link: '/usage/controller' },
+          {
+            text: 'Controller Guide',
+            collapsed: false,
+            items: [
+              { text: 'Getting Around', link: '/usage/guide-getting-around' },
+              { text: 'Everyday Use', link: '/usage/guide-everyday-use' },
+              { text: 'Adding a New Device', link: '/usage/guide-add-device' },
+              { text: 'Camilla DSP & Equalising', link: '/usage/guide-camilladsp' },
+              { text: 'Maintenance & Updates', link: '/usage/guide-maintenance' },
+              { text: 'Settings & Help', link: '/usage/guide-settings-help' }
+            ]
+          },
+          { text: 'Controller Docker Setup', link: '/usage/controller-docker' }
         ]
       },
       {
         text: 'Hardware & Assembly',
         collapsed: false,
         items: [
-          { text: 'HifiBerry Amp 4 Pro', link: '/hardware/soundcards/hifiberry-amp4Pro' },
-          { text: 'HiFiBerry DAC 2 ADC Pro', link: '/hardware/soundcards/hifiberry-dac-adc-pro' },
-          { text: 'HiFiBerry Digi+ Pro / Digi 2 Pro', link: '/hardware/soundcards/hifiberry-digi-pro' },
-          { text: 'HiFiBerry Digi+ / Digi 2 Standard', link: '/hardware/soundcards/hifiberry-digi' },
-          { text: 'IQ Audio DAC Pro', link: '/hardware/soundcards/iqaudio-dacPro' },
-          { text: 'Raspberry Pi DAC+ HAT', link: '/hardware/soundcards/raspberry-dacPlus' },
-          { text: 'Raspberry Pi DigiAmp+ HAT', link: '/hardware/soundcards/raspberry-digiAmpPlus' }
+          { text: 'Choosing the Right Hardware', link: '/hardware/choosing-hardware' },
+          { text: 'Hardware Examples', link: '/hardware/overview' },
+          { text: 'How to Build a Beatnik Amplifier', link: '/hardware/build-amplifier' }
         ]
       },
       {
@@ -78,6 +95,19 @@ export default defineConfig({
           { text: 'Beatnik OS Installation Guide', link: '/software/flashing' },
           { text: 'Shell Script Installation Guide', link: '/software/shell-script' },
           { text: 'Manual / Bare Metal Installation', link: '/software/manual-installation' },
+          {
+            text: 'Soundcard Configuration (Bare Metal)',
+            collapsed: true,
+            items: [
+              { text: 'HifiBerry Amp 4 Pro', link: '/software/soundcards/hifiberry-amp4Pro' },
+              { text: 'HiFiBerry DAC 2 ADC Pro', link: '/software/soundcards/hifiberry-dac-adc-pro' },
+              { text: 'HiFiBerry Digi+ Pro / Digi 2 Pro', link: '/software/soundcards/hifiberry-digi-pro' },
+              { text: 'HiFiBerry Digi+ / Digi 2 Standard', link: '/software/soundcards/hifiberry-digi' },
+              { text: 'IQ Audio DAC Pro', link: '/software/soundcards/iqaudio-dacPro' },
+              { text: 'Raspberry Pi DAC+ HAT', link: '/software/soundcards/raspberry-dacPlus' },
+              { text: 'Raspberry Pi DigiAmp+ HAT', link: '/software/soundcards/raspberry-digiAmpPlus' }
+            ]
+          },
           { text: 'Network and Infrastructure Requirements', link: '/software/network/requirements' }
         ]
       },
@@ -85,6 +115,9 @@ export default defineConfig({
         text: 'Audio & Streaming',
         collapsed: false,
         items: [
+          { text: 'Beatnik Audio Pipelines', link: '/features/pipelines' },
+          { text: 'AirPlay', link: '/features/streaming/airplay' },
+          { text: 'Spotify Connect', link: '/features/streaming/spotify' },
           { text: 'Line-In', link: '/features/line-in' },
           { text: 'CamillaDSP', link: '/features/dsp' },
           { text: 'Snapserver Buffering', link: '/advanced/troubleshooting/snapserver-buffering' },
@@ -92,12 +125,14 @@ export default defineConfig({
         ]
       },
       {
-        text: 'Developers & Support',
+        text: 'Developers',
         collapsed: true,
         items: [
+          { text: 'Hardware API', link: '/advanced/hardware-api' },
+          { text: 'Bleno Service (BLE WiFi Provisioning)', link: '/advanced/bleno' },
           { text: 'Network Debugging Guide', link: '/advanced/troubleshooting/network-debugging' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
-          { text: 'Markdown Extension Examples', link: '/markdown-examples' }
+
+
         ]
       }
     ],

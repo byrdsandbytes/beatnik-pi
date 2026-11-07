@@ -116,17 +116,41 @@
   --vp-c-border: rgba(29, 29, 30, 0.18);
   --vp-c-gutter: #e8e6d9;
 
-  --vp-c-brand-1: var(--beatnik-color-secondary-shade);
-  --vp-c-brand-2: var(--beatnik-color-secondary);
-  --vp-c-brand-3: #468579;
-  --vp-c-brand-soft: rgba(99, 180, 167, 0.14);
+  --vp-c-brand-1: #e066e0;
+  --vp-c-brand-2: #ff99ff;
+  --vp-c-brand-3: #ff99ff;
+  --vp-c-brand-soft: rgba(255, 153, 255, 0.22);
+  --vp-button-brand-text: var(--beatnik-color-primary);
+  --vp-button-brand-hover-text: var(--beatnik-color-primary);
+  --vp-button-brand-active-text: var(--beatnik-color-primary);
+  --vp-button-brand-bg: #ff99ff;
+  --vp-button-brand-hover-bg: #ffb3ff;
+  --vp-button-brand-active-bg: #e680e6;
   --vp-c-green-1: var(--beatnik-color-success);
   --vp-c-yellow-1: #8a7000;
   --vp-c-red-1: var(--beatnik-color-tertiary);
 }
 
 .VPNavBarTitle .logo {
-  height: 20px;
+  height: 14px;
+}
+
+/* The phone mockup has a white backdrop; multiply blends it into the page colour */
+.VPHero .VPImage.image-src {
+  mix-blend-mode: multiply;
+  max-width: 100%;
+  max-height: 420px;
+}
+
+@media (min-width: 640px) {
+  .VPHero .VPImage.image-src {
+    max-height: 520px;
+  }
+}
+
+.VPButton.medium,
+.VPButton.big {
+  border-radius: 0 !important;
 }
 
 .dark {
@@ -140,11 +164,106 @@
   --vp-c-border: rgba(245, 243, 232, 0.18);
   --vp-c-gutter: #111112;
 
-  --vp-c-brand-1: var(--beatnik-color-secondary-tint);
-  --vp-c-brand-2: var(--beatnik-color-secondary);
-  --vp-c-brand-3: var(--beatnik-color-secondary-shade);
-  --vp-c-brand-soft: rgba(99, 180, 167, 0.16);
+  --vp-c-brand-1: #ff99ff;
+  --vp-c-brand-2: #ffb3ff;
+  --vp-c-brand-3: #ff99ff;
+  --vp-c-brand-soft: rgba(255, 153, 255, 0.16);
   --vp-c-green-1: #76a982;
   --vp-c-yellow-1: #f4c708;
   --vp-c-red-1: #d8757e;
+}
+
+/* Home hero typography */
+.VPHero .name {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.VPHero .text {
+  margin-top: 8px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--vp-c-text-1);
+}
+
+.VPHero .tagline {
+  margin-top: 20px;
+  max-width: 460px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+  color: var(--vp-c-text-2);
+}
+
+@media (min-width: 640px) {
+  .VPHero .name {
+    font-size: 20px;
+  }
+
+  .VPHero .text {
+    font-size: 56px;
+  }
+
+  .VPHero .tagline {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .text {
+    font-size: 64px;
+  }
+}
+
+.VPFeature .title {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Square corners on cards and blocks */
+.VPFeature,
+.VPFeatures .item .VPLink,
+.vp-doc .custom-block,
+.vp-doc div[class*='language-'],
+.vp-doc table,
+.vp-doc img,
+.vp-doc video,
+.vp-doc :not(pre) > code,
+.VPImage.image-src,
+.VPSidebar .group,
+.VPLocalSearchBox,
+.DocSearch-Modal {
+  border-radius: 0 !important;
+}
+
+/* Dark feature cards */
+.VPFeature,
+.VPFeatures .item .VPLink,
+.VPFeatures .item .VPLink:hover {
+  background-color: #000 !important;
+  border-color: #000 !important;
+}
+
+.VPFeature .title,
+.VPFeature .details,
+.VPFeature .link-text-value {
+  color: #f5f3e8 !important;
+}
+
+/* Black hero buttons on the landing page */
+.VPHome .VPButton.brand {
+  background-color: #000 !important;
+  border-color: #000 !important;
+  color: #f5f3e8 !important;
+}
+
+.VPHome .VPButton.brand:hover {
+  background-color: #333 !important;
+  border-color: #333 !important;
 }

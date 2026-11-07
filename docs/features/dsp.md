@@ -1,10 +1,16 @@
 # Advanced: Room Correction with CamillaDSP
 
+::: tip Included in Beatnik OS
+Starting with Beatnik OS version 0.8, CamillaDSP is already installed and configured. The steps below are only needed for a manual / bare metal setup.
+:::
+
 This tutorial guides you through setting up CamillaDSP on a Raspberry Pi Snapcast client. The goal is to process the audio stream from your Snapserver with CamillaDSP for equalization or room correction before playing it on the client's DAC.
 
 This setup uses a virtual **ALSA Loopback** device, which acts like a software audio cable to route audio between applications.
 
 ### The Audio Path
+
+![Beatnik audio signal processing pipeline](../images/signalProcessing-02.webp)
 
 > Snapclient → ALSA Loopback (Input) → CamillaDSP (Processing) → ALSA Loopback (Output) → Your DAC
 
