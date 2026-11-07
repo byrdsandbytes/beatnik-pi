@@ -1,6 +1,14 @@
 # How to Use an ADC as a Line-In for Snapcast
 
+::: tip Included in Beatnik OS
+Starting with Beatnik OS version 0.8, Line-In is already installed and configured. The steps below are only needed for a manual / bare metal setup.
+:::
+
 This guide explains how to use the Analog-to-Digital Converter (ADC) on a soundcard like the **HiFiBerry DAC+ ADC Pro** to create a line-in source for your Snapcast server. This allows you to stream audio from any analog device (e.g., a turntable, CD player, or phone) to all of your Snapcast clients.
+
+::: tip Separate CamillaDSP instance
+Line-In and the playback output each run their own CamillaDSP instance with separate configs. See [Camilla DSP and Equalising](../usage/guide-camilladsp.md).
+:::
 
 ### How It Works
 
@@ -13,7 +21,7 @@ The audio flows from your analog device through a chain of software components o
 ## Prerequisites
 
 - A working Snapcast server running on a Raspberry Pi.
-- A soundcard with an ADC, like the [HiFiBerry DAC+ ADC Pro](docs/soundcards/hifiberry-dac-adc-pro.md), physically installed.
+- A soundcard with an ADC, like the [HiFiBerry DAC+ ADC Pro](../software/soundcards/hifiberry-dac-adc-pro.md), physically installed.
 - The driver for your soundcard must be activated and working (see the soundcard docs).
 - An analog audio source connected to the "Line In"  on your soundcard.
 

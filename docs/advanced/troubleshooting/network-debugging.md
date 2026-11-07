@@ -6,7 +6,7 @@ Because Snapcast distributes uncompressed audio in real time, it requires a stea
 
 This step-by-step guide helps you locate the source of the issue, verify your signal quality, and optimize your setup.
 
-> **Note:** For general infrastructure prerequisites and enterprise/VLAN configuration, refer to [network-reqiurements.md](network-reqiurements.md).
+> **Note:** For general infrastructure prerequisites and enterprise/VLAN configuration, refer to [network-reqiurements.md](../../software/network/requirements.md).
 
 ---
 
@@ -165,7 +165,7 @@ journalctl -u snapclient -f
 
 If you have an inherently noisy Wi-Fi environment and cannot eliminate minor jitter, you can increase the client's internal playback buffer.
 
-For a full breakdown of server-side latency targets, chunk sizes, and client cushion settings, check the [snapserver-buffering-config.md](snapserver-buffering-config.md) guide.
+For a full breakdown of server-side latency targets, chunk sizes, and client cushion settings, check the [snapserver-buffering-config.md](snapserver-buffering.md) guide.
 
 1. Open the Snapclient configuration:
    ```bash
@@ -200,7 +200,6 @@ For a full breakdown of server-side latency targets, chunk sizes, and client cus
 | View live server logs | `journalctl -u snapserver -f` |
 | Restart Snapclient service | `sudo systemctl restart snapclient` |
 | Restart Snapserver service | `sudo systemctl restart snapserver` | 
-
 
 
 
