@@ -161,7 +161,7 @@ Make sure your browser is on the same network as your Beatnik server and has net
 
 ## License
 
-This project is licensed under the agpl-3.0 License. See the [LICENSE](LICENSE.md) file for details.
+This project is licensed under the agpl-3.0 License. See the [LICENSE](https://github.com/byrdsandbytes/beatnik-pi/blob/master/LICENSE.md) file for details.
 
 If you modify and distribute this project, you must also make your modifications available under the same AGPL-3.0 License.
 
@@ -200,7 +200,6 @@ Thank you for making Beatnik possible.
 
 ---
 Have a nice Sunday. 🎈
-
 
 
 
