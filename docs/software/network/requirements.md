@@ -37,5 +37,4 @@ This document outlines the network requirements necessary to support a multi-roo
 
 ---
 
-For troubleshooting audio dropouts, jitter, Wi-Fi signal issues, or late chunks, see the [network-debugging.md](network-debugging.md).
-
+For troubleshooting audio dropouts, jitter, Wi-Fi signal issues, or late chunks, see the [network-debugging.md](../../advanced/troubleshooting/network-debugging.md).

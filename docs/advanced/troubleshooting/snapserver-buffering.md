@@ -216,5 +216,5 @@ journalctl -u snapclient -f
 
 ## Related Documentation
 - [network-debugging.md](network-debugging.md) - Wi-Fi signal inspection, `nmcli` diagnostics, and power-saving fixes.
-- [network-reqiurements.md](network-reqiurements.md) - Router, AP, and port allowlist requirements.
-- [sample-snapserver.conf](docs/sample-configs/sample-snapserver.conf) - Full sample configuration file.
+- [network-reqiurements.md](../../software/network/requirements.md) - Router, AP, and port allowlist requirements.
+- [sample-snapserver.conf](../../sample-configs/sample-snapserver.conf) - Full sample configuration file.

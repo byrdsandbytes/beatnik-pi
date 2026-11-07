@@ -22,7 +22,7 @@ sudo apt update && sudo apt full-upgrade -y
 
 ## 2 · Activate Drivers (HIFI Berry Amp 4 example)
 
-**NOTE:** If you're using a diffent soundcard (DAC/amp) check the [soundcard folder in the docs](./docs/soundcards)
+**NOTE:** If you're using a diffent soundcard (DAC/amp) check the [HifiBerry Amp 4 Pro soundcard guide](../hardware/soundcards/hifiberry-amp4Pro.md).
 
 Based on hifi berry docs: https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/
 
@@ -191,7 +191,7 @@ card 1: DigiAMP [RPi DigiAMP+], device 0: Raspberry Pi DigiAMP+ HiFi pcm512x-hif
 
 ```
 
-The API selects the playback device from the detected hardware. For advanced, manually managed CamillaDSP configurations, see [camilla-dsp.md](./camilla-dsp.md).
+The API selects the playback device from the detected hardware. For advanced, manually managed CamillaDSP configurations, see [camilla-dsp.md](../features/dsp.md).
 
 
 ---

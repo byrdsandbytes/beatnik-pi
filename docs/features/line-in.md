@@ -13,7 +13,7 @@ The audio flows from your analog device through a chain of software components o
 ## Prerequisites
 
 - A working Snapcast server running on a Raspberry Pi.
-- A soundcard with an ADC, like the [HiFiBerry DAC+ ADC Pro](docs/soundcards/hifiberry-dac-adc-pro.md), physically installed.
+- A soundcard with an ADC, like the [HiFiBerry DAC+ ADC Pro](../hardware/soundcards/hifiberry-dac-adc-pro.md), physically installed.
 - The driver for your soundcard must be activated and working (see the soundcard docs).
 - An analog audio source connected to the "Line In"  on your soundcard.
 

@@ -59,7 +59,7 @@ There are 3 different paths to install the software:
 | **BeatnikOS** | **Shell Script** | **Bare Metal / Manual Installation** |
 | Pre-configured OS image with all necessary drivers and software for Beatnik Server and Client | Script to automate the installation of necessary software for Beatnik Server and Client | Step-by-step guide to manually install and configure the software for Beatnik Server and Client |
 | Difficulty: Easy | Difficulty: Medium | Difficulty: Hard |
-[BeatnikOS Installation Guide](installation-beatnik-os.md) | [Shell Script Installation Guide](installation-shell-script.md) | [Bare Metal Installation Guide](installation-manual-bare-metal.md)
+[BeatnikOS Installation Guide](docs/software/flashing.md) | [Shell Script Installation Guide](docs/software/shell-script.md) | [Bare Metal Installation Guide](docs/software/manual-installation.md)
 
 
 
@@ -150,18 +150,18 @@ Make sure your browser is on the same network as your Beatnik server and has net
 
 ## Additional Guides (WIP)
 ### Networking
-- [Network Requirements](network-requirements.md) (mainly used in large/corporate networks)
-- [Network Debugging Guide](network-debugging-guide.md)
+- [Network Requirements](docs/software/network/requirements.md) (mainly used in large/corporate networks)
+- [Network Debugging Guide](docs/advanced/troubleshooting/network-debugging.md)
 ### Audio Processing
-- [CamillaDSP Guide](camilla-dsp.md)
-- [ADC Line In](adc-line-in.md)
-- [Snapserver Buffering Configuration](snapserver-buffering-config.md)
-- [Snapserver Default Volume Configuration](snapserver-default-volume-config.md)
+- [CamillaDSP Guide](docs/features/dsp.md)
+- [ADC Line In](docs/features/line-in.md)
+- [Snapserver Buffering Configuration](docs/advanced/troubleshooting/snapserver-buffering.md)
+- [Snapserver Default Volume Configuration](docs/features/streaming/snapserver-default-volume.md)
 
 
 ## License
 
-This project is licensed under the agpl-3.0 License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the agpl-3.0 License. See the [LICENSE](LICENSE.md) file for details.
 
 If you modify and distribute this project, you must also make your modifications available under the same AGPL-3.0 License.
 
@@ -200,8 +200,6 @@ Thank you for making Beatnik possible.
 
 ---
 Have a nice Sunday. 🎈
-
-
 
 
 

@@ -9,7 +9,7 @@ This guide explains how to flash  **Beatnik OS** (Image) using the **Raspberry P
 1.  **Raspberry Pi Imager v2.x** or newer installed.
     -   Download: [raspberrypi.com/software](https://www.raspberrypi.com/software/)
 2.  **beatnik-repo.json** file.
-    -   Download the [`beatnik-repo.json`](beatnik-repo.json) file from this repository to your computer.
+    -   Download the [`beatnik-repo.json`](https://github.com/byrdsandbytes/beatnik-pi/blob/master/beatnik-repo.json) file from this repository to your computer.
 
 ## Installation Steps
 
@@ -23,7 +23,7 @@ This guide explains how to flash  **Beatnik OS** (Image) using the **Raspberry P
 
 ### 2. Select Device and OS
 1.  Select your Raspberry Pi model.
-2.  Select **Beatnik OS v0.4.9** (or the latest version shown).
+2.  Select the latest **Beatnik OS** version shown.
 
 ### 3. Choose Storage
 1.  Click **CHOOSE STORAGE**.

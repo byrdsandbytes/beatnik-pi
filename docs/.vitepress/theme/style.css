@@ -1,0 +1,150 @@
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Thin.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-ExtraLight.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Light.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Medium.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-MediumItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-SemiBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-SemiBoldItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-BoldItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --vp-font-family-base: 'IBM Plex Mono', monospace;
+  --vp-font-family-mono: 'IBM Plex Mono', monospace;
+
+  --beatnik-color-primary: #1d1d1e;
+  --beatnik-color-primary-shade: #121113;
+  --beatnik-color-primary-tint: #2c2b2d;
+  --beatnik-color-secondary: #63b4a7;
+  --beatnik-color-secondary-shade: #579e93;
+  --beatnik-color-secondary-tint: #73bcb0;
+  --beatnik-color-tertiary: #ab4f59;
+  --beatnik-color-tertiary-shade: #96464e;
+  --beatnik-color-tertiary-tint: #b3616a;
+  --beatnik-color-success: #3b7246;
+  --beatnik-color-warning: #f4c708;
+  --beatnik-color-danger: #c50825;
+  --beatnik-color-light: #f5f3e8;
+  --beatnik-color-medium: #5f5f5f;
+  --beatnik-color-dark: #1d1d1e;
+
+  --vp-c-bg: var(--beatnik-color-light);
+  --vp-c-bg-alt: #eeecdf;
+  --vp-c-bg-elv: #fffef9;
+  --vp-c-text-1: var(--beatnik-color-primary);
+  --vp-c-text-2: #505050;
+  --vp-c-text-3: var(--beatnik-color-medium);
+  --vp-c-divider: rgba(29, 29, 30, 0.12);
+  --vp-c-border: rgba(29, 29, 30, 0.18);
+  --vp-c-gutter: #e8e6d9;
+
+  --vp-c-brand-1: var(--beatnik-color-secondary-shade);
+  --vp-c-brand-2: var(--beatnik-color-secondary);
+  --vp-c-brand-3: #468579;
+  --vp-c-brand-soft: rgba(99, 180, 167, 0.14);
+  --vp-c-green-1: var(--beatnik-color-success);
+  --vp-c-yellow-1: #8a7000;
+  --vp-c-red-1: var(--beatnik-color-tertiary);
+}
+
+.VPNavBarTitle .logo {
+  height: 20px;
+}
+
+.dark {
+  --vp-c-bg: var(--beatnik-color-primary);
+  --vp-c-bg-alt: #242426;
+  --vp-c-bg-elv: #2c2b2d;
+  --vp-c-text-1: var(--beatnik-color-light);
+  --vp-c-text-2: #d0cec4;
+  --vp-c-text-3: #aaa89f;
+  --vp-c-divider: rgba(245, 243, 232, 0.12);
+  --vp-c-border: rgba(245, 243, 232, 0.18);
+  --vp-c-gutter: #111112;
+
+  --vp-c-brand-1: var(--beatnik-color-secondary-tint);
+  --vp-c-brand-2: var(--beatnik-color-secondary);
+  --vp-c-brand-3: var(--beatnik-color-secondary-shade);
+  --vp-c-brand-soft: rgba(99, 180, 167, 0.16);
+  --vp-c-green-1: #76a982;
+  --vp-c-yellow-1: #f4c708;
+  --vp-c-red-1: #d8757e;
+}
