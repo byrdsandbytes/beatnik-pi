@@ -12,9 +12,9 @@ Beatnik turns a Raspberry Pi into a Snapcast server that accepts AirPlay and Spo
 
 Yes. All the core components used in Beatnik Pi as well as the Beatnik Software are open source and freely available for anyone to use and modify. See the [Software Components](../advanced/architecture.md#software-components).
 
-### What is the difference between this open-source project and beatnik.audio?
+### How are Beatnik Pi and beatnik.audio related?
 
-The software and documentation here are free and open source. At [beatnik.audio](https://beatnik.audio) you can order components, curated bundles or Plug & Play devices if you don't want to source everything yourself.
+Beatnik Pi is the open-source software behind Beatnik. You can use it with hardware you source yourself, or find components, DIY bundles and assembled devices at [beatnik.audio](https://beatnik.audio).
 
 ## Hardware
 

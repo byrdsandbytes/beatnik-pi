@@ -1,18 +1,54 @@
 # Using the Beatnik Controller
 
-Beatnik Controller is a web-based remote control for your Beatnik Pi or Snapcast multi-room audio server. It allows you to easily manage and control audio streams from any device with a web browser.
+The Beatnik Controller lets you manage your Beatnik Pi or Snapcast multi-room audio system from a browser or the iOS and Android apps. Use it to control playback across rooms, manage devices and adjust audio settings.
 
-## Features
+![Beatnik Controller dashboard in a web browser](../images/webApp001.webp)
 
-- Control volume for all connected clients.
-- Manage client groups.
-- View what's currently playing on each stream.
-- Simple and intuitive user interface.
+## What you can do
 
-To run the controller yourself with Docker, see the [Controller Docker Setup](./controller-docker.md). 
-## Usage Guide
+- **Multi-room control:** group clients, adjust room volumes and see what's playing.
+- **Streams and presets:** assign sources to groups and save volume and stream setups for one-tap recall.
+- **CamillaDSP:** monitor levels and adjust EQ, master volume, mixers and dynamics for playback or Line-In, depending on the active configuration.
+- **Device setup and discovery:** set up Beatnik devices using Bluetooth Low Energy (BLE) and Wi-Fi, and search for devices on your network (mobile apps only).
+- **Updates:** check installed versions and update Beatnik software components from the app.
+- **Device management:** choose soundcards, inspect device and network status, and reboot devices.
+- **Server maintenance:** inspect server status, remove offline clients and restart Snapcast services.
 
-A walkthrough of every feature, from first-time setup to day-to-day listening and device maintenance:
+## Get the controller
+
+### iOS and Android
+
+Download the app from the [App Store](https://apps.apple.com/ch/app/beatnik-audio/) or [Google Play](https://play.google.com/store/apps/details?id=ch.byrds.beatnik). The mobile app also supports network scanning and adding a device using Bluetooth and Wi-Fi.
+
+![Beatnik Controller mobile app showing volume controls for multiple rooms](../images/app_mulitroomControll.webp)
+
+### Web app
+
+The controller is pre-installed in Beatnik OS. On the same network as your server, open its hostname or IP address in your browser, for example `http://beatnik-042.local/` or `http://192.168.1.100`.
+
+For other setups, see [Controller Docker Setup](./controller-docker.md). The web and mobile apps share the main controls; see [Web vs. mobile app](./guide-settings-help.md#web-vs-mobile-app) for the differences.
+
+## Get started
+
+1. Open the mobile or web app.
+2. Connect to your Beatnik or Snapcast server. If the app cannot find it, enter its address in **Menu > Settings**, or use the network scanner in the mobile app. See [Connecting to your server](./guide-getting-around.md#connecting-to-your-server).
+3. Use the **Dashboard**, **Devices** and **Streams** tabs to explore your system. For a new Beatnik, follow [Adding a New Beatnik Device](./guide-add-device.md).
+
+You can also explore the app without hardware using [Demo mode](./guide-settings-help.md#demo-mode).
+
+## Streams and sound
+
+The **Streams** tab shows available sources and their status. See [Everyday Use](./guide-everyday-use.md) for stream assignments, groups and presets.
+
+![Beatnik Controller web app showing the streams list](../images/webApp002.webp)
+
+For sound adjustments, open a device's **Camilla DSP** tab. The available controls depend on its active configuration. See [Camilla DSP and Equalising](./guide-camilladsp.md) for EQ, signal levels, mixers and advanced settings.
+
+![Camilla DSP controls and signal levels in the Beatnik Controller web app](../images/webApp003.webp)
+
+## Controller guide
+
+For more detail, explore the guide:
 
 1. [Getting Around](./guide-getting-around.md) - concepts, connecting to your server and the app layout.
 2. [Everyday Use](./guide-everyday-use.md) - dashboard, devices, streams and presets.
@@ -21,28 +57,4 @@ A walkthrough of every feature, from first-time setup to day-to-day listening an
 5. [Device Maintenance & Updates](./guide-maintenance.md) - device details, updates, server status and the network scanner.
 6. [Settings & Help](./guide-settings-help.md) - settings, demo mode, web vs. mobile app and troubleshooting.
 
-The Beatnik Controller app is available for both iOS and Android devices, as well as selfhosted WebApp. It allows you to setup, configure, and control your Beatnik audio system, including grouping speakers, adjusting volume, EQ settings, and checking the status of your devices.
-
-## iOS & Android App
-
-- **iOS:** [Download from the App Store](https://apps.apple.com/ch/app/beatnik-audio/)
-- **Android:** [Download from Google Play](https://play.google.com/store/apps/details?id=ch.byrds.beatnik)
-- **Source Code:** [GitHub Repository](https://github.com/byrdsandbytes/beatnik-controller)
-
-<img src="../images/app_mulitroomControll.webp" alt="Beatnik Controller App - Multiroom Volume Control" />
-<img src="../images/app_camillaDSP.webp" alt="Beatnik Controller App CamillaDSP" />
-<img src="../images/app_soundcard_pick.webp" alt="Beatnik Controller App - Soundcard Selection" />
-
-## Selfhosted WebApp
-
-<img src="../images/webApp001.webp" alt="Beatnik Controller Web UI" />
-<img src="../images/webApp002.webp" alt="Beatnik Controller Web UI - Speaker Grouping" />
-<img src="../images/webApp003.webp" alt="Beatnik Controller Web UI - EQ Settings" />
-
-The Beatnik Controller Web UI allows you to manage your Beatnik audio system from any web browser. You can group speakers, adjust volume, configure EQ settings, and monitor the status of your devices.
-
-Your Beatnik server spawns a web interface (using Docker) that you can access through your browser to manage and control your audio system without needing to use the mobile app.
-
-- **Access:** Open a web browser and navigate to the IP address or hostname of your Beatnik server, e.g. `http://192.168.1.100` or `http://beatnik-042.local/`
-
-Make sure your browser is on the same network as your Beatnik server and has network access to your local network.
+The controller source code is available on [GitHub](https://github.com/byrdsandbytes/beatnik-controller).
