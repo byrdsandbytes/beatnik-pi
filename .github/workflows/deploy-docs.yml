@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'docs/**'
+      - 'README.md'
       - '.github/workflows/deploy-docs.yml'
 
 permissions:
