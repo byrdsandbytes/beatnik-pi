@@ -308,7 +308,19 @@ configure_snapserver() {
     if [[ -f /etc/snapserver.conf ]]; then
         sudo cp /etc/snapserver.conf /etc/snapserver.conf.backup.$(date +%Y%m%d_%H%M%S)
     fi
-    
+    if [[ -f /etc/shairport-snapcast.conf ]]; then
+        sudo cp /etc/shairport-snapcast.conf /etc/shairport-snapcast.conf.backup.$(date +%Y%m%d_%H%M%S)
+    fi
+
+    sudo tee /etc/shairport-snapcast.conf > /dev/null <<'EOF'
+general = {
+  ignore_volume_control = "yes";
+  disable_synchronization = "yes";
+  disable_standby_mode = "always";
+  resend_control = "none";
+}
+EOF
+
     # Create snapserver configuration
     sudo tee /etc/snapserver.conf > /dev/null <<'EOF'
 # Beatnik Pi Snapserver Configuration
@@ -323,17 +335,26 @@ enabled = true
 bind_to_address = 0.0.0.0
 port = 1705
 
+[streaming_client]
+initial_volume = 30
+
 [stream]
+sampleformat = 48000:24:2
+
 # AirPlay 1 (port 5000)
-source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000
+source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000&codec=flac&params=-c%20/etc/shairport-snapcast.conf
 
-[stream]
-# AirPlay 2 (port 7000)  
-source = airplay:///shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
+# AirPlay 2 (port 7000)
+source = airplay:///usr/bin/shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000&codec=flac&params=-c%20/etc/shairport-snapcast.conf
 
-[stream]
 # Spotify Connect
-source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
+source = spotify:///usr/bin/librespot?name=Spotify&devicename=Beatnik-Spotify&params=--enable-volume-normalisation%20--normalisation-gain-type%20auto
+
+# Line-In
+source = pipe:///tmp/snap-line-in?name=Line-In&sampleformat=48000:16:2&codec=flac
+
+# MPD
+source = pipe:///tmp/snapfifo?name=MPD&sampleformat=48000:16:2
 EOF
     
     log_success "Snapserver configured"

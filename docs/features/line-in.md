@@ -57,7 +57,7 @@ The ALSA device name is `hw:1,0`. **Note this down, as you will need it later.**
 
 ## Step 2: Create a Named Pipe
 
-A named pipe (or FIFO) is a special file that acts as a buffer. We will write the captured audio into this pipe, and Snapserver will read it from the other end.
+A named pipe (or FIFO) is a special file that acts as a buffer. We will write the captured audio into this pipe, and Snapserver will read it from the other end. If Snapserver has already created `/tmp/snap-line-in`, skip this step.
 
 ```bash
 sudo mkfifo /tmp/snap-line-in
@@ -74,10 +74,9 @@ Now, tell Snapserver to create a new stream that reads from the pipe we just cre
     sudo nano /etc/snapserver.conf
     ```
 
-2.  **Add a new `[stream]` source.** Add this block to the file, alongside your existing AirPlay and Spotify streams.
+2.  **Check for the Line-In source.** If it is not already present, add this line under `[stream]`, alongside your existing AirPlay and Spotify streams.
     ```ini
-    [stream]
-    source = pipe:///tmp/snap-line-in?name=Line-In&sampleformat=48000:16:2
+    source = pipe:///tmp/snap-line-in?name=Line-In&sampleformat=48000:16:2&codec=flac
     ```
     - `name=Line-In`: This is the name that will appear in your Snapcast client apps.
     - `sampleformat=48000:16:2`: This tells Snapserver to expect CD-quality stereo audio (48kHz sample rate, 16-bit depth, 2 channels).
