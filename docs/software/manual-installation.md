@@ -95,6 +95,19 @@ sudo apt install shairport-sync -y   # v4.3.x
 sudo systemctl disable shairport-sync.service
 ```
 
+Create the configuration used by both Snapserver-managed AirPlay receivers:
+
+```bash
+sudo tee /etc/shairport-snapcast.conf >/dev/null <<'EOF'
+general = {
+  ignore_volume_control = "yes";
+  disable_synchronization = "yes";
+  disable_standby_mode = "always";
+  resend_control = "none";
+}
+EOF
+```
+
 ---
 
 ### 4.2 . librespot using raspotify (Spotify Connect - expermintal)
@@ -123,33 +136,36 @@ sudo systemctl stop raspotify
 ```bash
 sudo nano /etc/snapserver.conf
 ```
-In the strream section add your streams as follows:
-(if you have trouble setting up your streams consult the sample snapserver.conf in this repo docs/sample-configs/sample-snapserver.conf)
-
-### 5.1 Airplay 1 (uses port 5000)
-More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
-```ini
-[stream]
-source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000
-```
-### 5.2 Airplay 2 (uses port 7000)
-More details here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md#airplay
-```ini
-[stream]
-source = airplay:///shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000
-```
-
-Find options for device names etc here: https://github.com/badaix/snapcast/blob/develop/doc/configuration.md
-
-### 5.3 Spotify
+Use the following configuration for AirPlay, Spotify, Line-In, and MPD:
 
 ```ini
+[http]
+enabled = true
+bind_to_address = 0.0.0.0
+port = 1780
+
+[tcp]
+enabled = true
+bind_to_address = 0.0.0.0
+port = 1705
+
+[streaming_client]
+initial_volume = 30
+
 [stream]
-source = spotify:///librespot?name=Spotify&devicename=Beatnik-Spotify
+sampleformat = 48000:24:2
+source = airplay:///usr/bin/shairport-sync?name=AirPlay&devicename=Beatnik-Airplay1&port=5000&codec=flac&params=-c%20/etc/shairport-snapcast.conf
+source = airplay:///usr/bin/shairport-sync?name=AirPlay2&devicename=Beatnik-Airplay2&port=7000&codec=flac&params=-c%20/etc/shairport-snapcast.conf
+source = spotify:///usr/bin/librespot?name=Spotify&devicename=Beatnik-Spotify&params=--enable-volume-normalisation%20--normalisation-gain-type%20auto
+source = pipe:///tmp/snap-line-in?name=Line-In&sampleformat=48000:16:2&codec=flac
+source = pipe:///tmp/snapfifo?name=MPD&sampleformat=48000:16:2
 ```
 
-
-
+New Snapclients start at 30% volume; clients already known to Snapserver retain
+their saved volume. The Line-In and MPD entries expose FIFO inputs; they do not install or start
+audio producers. See the [Line-In guide](../features/line-in.md) for capture
+setup, and [Snapcast's configuration documentation](https://github.com/badaix/snapcast/blob/develop/doc/configuration.md)
+for stream options.
 
 ---
 

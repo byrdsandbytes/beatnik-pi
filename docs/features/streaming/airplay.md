@@ -14,7 +14,9 @@ If you use [Beatnik OS](../../software/flashing.md), AirPlay is already installe
 
 ## Streaming
 
-From your phone or computer, look for a new **AirPlay** device named "Beatnik-Airplay".
+From your phone or computer, look for **Beatnik-Airplay1** or **Beatnik-Airplay2**.
+Both Snapserver-managed receivers use `/etc/shairport-snapcast.conf` to disable
+Shairport volume control and synchronization, disable standby, and turn off resends.
 
 ## Manual Setup
 

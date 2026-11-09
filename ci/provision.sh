@@ -169,6 +169,7 @@ install_raspotify() {
 
 configure_snapserver() {
     log_info "Configuring Snapserver..."
+    install -m 644 "$SCRIPT_DIR/shairport-snapcast.conf" /etc/shairport-snapcast.conf
     install -m 644 "$SCRIPT_DIR/snapserver.conf" /etc/snapserver.conf
     log_success "Snapserver configured"
 }

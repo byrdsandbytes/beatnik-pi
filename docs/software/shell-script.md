@@ -96,7 +96,7 @@ The script will display a summary of what was installed and provide useful infor
   - **Beatnik Controller**: `http://<your-pi-hostname>.local`
   - **Classic Snapweb UI**: `http://<your-pi-hostname>.local:1780`
 - **Testing**:
-  - From your phone or computer, look for a new **AirPlay** device named "Beatnik-Airplay".
+  - From your phone or computer, look for **Beatnik-Airplay1** or **Beatnik-Airplay2**.
   - Open the Spotify app and look for a new **Spotify Connect** device named "Beatnik-Spotify".
 
 You are now ready to enjoy your multi-room audio system!
