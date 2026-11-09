@@ -6,13 +6,19 @@
 [![Last Commit](https://img.shields.io/github/last-commit/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/commits/master)
 [![Latest release](https://img.shields.io/github/v/release/byrdsandbytes/beatnik-pi?display_name=tag)](https://github.com/byrdsandbytes/beatnik-pi/releases/latest)
 
-[![Repo Size](https://img.shields.io/github/repo-size/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi) [![Issues](https://img.shields.io/github/issues/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/issues)
+[![Documentation](https://img.shields.io/badge/Docs-docs.beatnik.audio-blue?logo=readthedocs&logoColor=white)](https://docs.beatnik.audio/)
+[![Repo Size](https://img.shields.io/github/repo-size/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi) 
+[![Issues](https://img.shields.io/github/issues/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/issues)
+
+
+
 
 
 
 [![Stars](https://img.shields.io/github/stars/byrdsandbytes/beatnik-pi?style=social)](https://github.com/byrdsandbytes/beatnik-pi/stargazers)
 [![Forks](https://img.shields.io/github/forks/byrdsandbytes/beatnik-pi?style=social)](https://github.com/byrdsandbytes/beatnik-pi/network/members)
 [![Subreddit](https://img.shields.io/reddit/subreddit-subscribers/beatnikAudio?style=social)](https://www.reddit.com/r/beatnikAudio/)
+
 
 
 
