@@ -5,7 +5,6 @@
 [![Docs deployment](https://img.shields.io/github/actions/workflow/status/byrdsandbytes/beatnik-pi/deploy-docs.yml?branch=master&label=docs)](https://github.com/byrdsandbytes/beatnik-pi/actions/workflows/deploy-docs.yml)
 [![Last Commit](https://img.shields.io/github/last-commit/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/commits/master)
 [![Latest release](https://img.shields.io/github/v/release/byrdsandbytes/beatnik-pi?display_name=tag)](https://github.com/byrdsandbytes/beatnik-pi/releases/latest)
-
 [![Documentation](https://img.shields.io/badge/Docs-docs.beatnik.audio-blue?logo=readthedocs&logoColor=white)](https://docs.beatnik.audio/)
 [![Repo Size](https://img.shields.io/github/repo-size/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi) 
 [![Issues](https://img.shields.io/github/issues/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/issues)
