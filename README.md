@@ -1,6 +1,24 @@
 # Beatnik Pi
 
+
+[![Build pipeline](https://img.shields.io/github/actions/workflow/status/byrdsandbytes/beatnik-pi/build-image.yml?label=build)](https://github.com/byrdsandbytes/beatnik-pi/actions/workflows/build-image.yml)
+[![Docs deployment](https://img.shields.io/github/actions/workflow/status/byrdsandbytes/beatnik-pi/deploy-docs.yml?branch=master&label=docs)](https://github.com/byrdsandbytes/beatnik-pi/actions/workflows/deploy-docs.yml)
+[![Last Commit](https://img.shields.io/github/last-commit/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/commits/master)
+[![Latest release](https://img.shields.io/github/v/release/byrdsandbytes/beatnik-pi?display_name=tag)](https://github.com/byrdsandbytes/beatnik-pi/releases/latest)
+
+[![Repo Size](https://img.shields.io/github/repo-size/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi) [![Issues](https://img.shields.io/github/issues/byrdsandbytes/beatnik-pi)](https://github.com/byrdsandbytes/beatnik-pi/issues)
+
+
+
+[![Stars](https://img.shields.io/github/stars/byrdsandbytes/beatnik-pi?style=social)](https://github.com/byrdsandbytes/beatnik-pi/stargazers)
+[![Forks](https://img.shields.io/github/forks/byrdsandbytes/beatnik-pi?style=social)](https://github.com/byrdsandbytes/beatnik-pi/network/members)
+[![Subreddit](https://img.shields.io/reddit/subreddit-subscribers/beatnikAudio?style=social)](https://www.reddit.com/r/beatnikAudio/)
+
+
+
 Turn a **Raspberry Pi** into a Snapcast server that accepts **AirPlay** & **Spotify Connect** streams (from any smartphone and Laptop / PC) and re‑distributes them to any Snapclients you add later. The server itself also runs the first Snapclient, giving you an instant **master room**.
+
+For detailed guides and usage documentation, visit the [Beatnik documentation](https://docs.beatnik.audio) or the [documentation blog](https://beatnik.audio/blogs/docs).
 
 ## Overview
 
@@ -200,8 +218,6 @@ Thank you for making Beatnik possible.
 
 ---
 Have a nice Sunday. 🎈
-
-
 
 
 
