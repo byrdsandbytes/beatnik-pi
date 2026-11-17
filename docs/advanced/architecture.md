@@ -1,8 +1,8 @@
 # Architecture & Software Components
 
-[![Last Edited](https://us-central1-human-validated-badge.cloudfunctions.net/badges/last-edited/byrdsandbytes/beatnik-pi/master/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
+[![Last Edited](https://us-central1-human-validated-badge.cloudfunctions.net/badges/last-edited/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
 
-[![Validated By](https://us-central1-human-validated-badge.cloudfunctions.net/badges/last-reviewed/byrdsandbytes/beatnik-pi/master/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
+[![Validated By](https://us-central1-human-validated-badge.cloudfunctions.net/badges/last-reviewed/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
 
 ## Architecture
 
