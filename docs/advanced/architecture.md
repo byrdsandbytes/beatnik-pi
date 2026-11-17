@@ -25,3 +25,5 @@ For the audio signal path see [Audio Pipelines](../features/pipelines.md).
 | [Beatnik Controller](https://github.com/byrdsandbytes/beatnik-controller) | **0.2.1** / Web UI & App – grouping, volume & status |
 | [Beatnik Bleno](https://github.com/byrdsandbytes/beatnik-bleno) | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
 | [Docker](https://www.docker.com/)         | **x.x** – Containerize & host controller |
+
+
