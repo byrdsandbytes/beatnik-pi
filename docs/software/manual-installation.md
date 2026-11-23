@@ -360,7 +360,7 @@ On another Pi (e.g. Pi Zero 2 W + MiniAmp):
 *Imager settings*
 
 ```
-OS           : Raspberry Pi OS Lite (32‑bit, Bookworm)
+OS           : Raspberry Pi OS Lite (64‑bit, Bookworm)
 Hostname     : pizero-mini          # must be unique
 SSH          : enabled
 Wi‑Fi        : your credentials

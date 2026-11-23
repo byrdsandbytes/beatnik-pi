@@ -5,7 +5,7 @@
     "devices": [
       {
         "name": "Raspberry Pi 5",
-        "tags": ["pi5-64bit", "pi5-32bit"],
+        "tags": ["pi5-64bit"],
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_5.png",
         "description": "Raspberry Pi 5, 500 / 500+, and Compute Module 5",
         "matching_type": "exclusive",
@@ -13,7 +13,7 @@
       },
       {
         "name": "Raspberry Pi 4",
-        "tags": ["pi4-64bit", "pi4-32bit"],
+        "tags": ["pi4-64bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_4.png",
         "description": "Raspberry Pi 4 Model B, 400, and Compute Module 4 / 4S",
@@ -22,7 +22,7 @@
       },
       {
         "name": "Raspberry Pi 3",
-        "tags": ["pi3-64bit", "pi3-32bit"],
+        "tags": ["pi3-64bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_3.png",
         "description": "Raspberry Pi 3 Model A+ / B / B+ and Compute Module 3 / 3+",
@@ -30,38 +30,11 @@
         "capabilities": []
       },
       {
-        "name": "Raspberry Pi 2",
-        "tags": ["pi2-32bit"],
-        "default": false,
-        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_2.png",
-        "description": "Raspberry Pi 2 Model B",
-        "matching_type": "inclusive",
-        "capabilities": []
-      },
-      {
-        "name": "Raspberry Pi 1",
-        "tags": ["pi1-32bit"],
-        "default": false,
-        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_1B+.png",
-        "description": "Raspberry Pi 1 Model A / A+ / B / B+ and Compute Module 1",
-        "matching_type": "inclusive",
-        "capabilities": []
-      },
-      {
         "name": "Raspberry Pi Zero 2 W",
-        "tags": ["pi3-64bit", "pi3-32bit"],
+        "tags": ["pi3-64bit"],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero_2_W.png",
         "description": "Raspberry Pi Zero 2 W",
-        "matching_type": "inclusive",
-        "capabilities": []
-      },
-      {
-        "name": "Raspberry Pi Zero",
-        "tags": ["pi1-32bit"],
-        "default": false,
-        "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero.png",
-        "description": "Raspberry Pi Zero, Zero W, and Zero WH",
         "matching_type": "inclusive",
         "capabilities": []
       },
@@ -89,13 +62,8 @@
       "init_format": "systemd",
       "devices": [
         "pi5-64bit",
-        "pi5-32bit",
         "pi4-64bit",
-        "pi4-32bit",
-        "pi3-64bit",
-        "pi3-32bit",
-        "pi2-32bit",
-        "pi1-32bit"
+        "pi3-64bit"
       ]
     },
     {
@@ -111,13 +79,8 @@
       "init_format": "systemd",
       "devices": [
         "pi5-64bit",
-        "pi5-32bit",
         "pi4-64bit",
-        "pi4-32bit",
-        "pi3-64bit",
-        "pi3-32bit",
-        "pi2-32bit",
-        "pi1-32bit"
+        "pi3-64bit"
       ]
     },
     {
@@ -133,13 +96,8 @@
       "init_format": "systemd",
       "devices": [
         "pi5-64bit",
-        "pi5-32bit",
         "pi4-64bit",
-        "pi4-32bit",
-        "pi3-64bit",
-        "pi3-32bit",
-        "pi2-32bit",
-        "pi1-32bit"
+        "pi3-64bit"
       ]
     },
 
@@ -156,13 +114,8 @@
       "init_format": "systemd",
       "devices": [
         "pi5-64bit",
-        "pi5-32bit",
         "pi4-64bit",
-        "pi4-32bit",
-        "pi3-64bit",
-        "pi3-32bit",
-        "pi2-32bit",
-        "pi1-32bit"
+        "pi3-64bit"
       ]
     }
   ]

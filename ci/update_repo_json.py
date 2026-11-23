@@ -48,10 +48,9 @@ def main():
         "release_date": release_date,
         "init_format": "systemd",
         "devices": existing.get("devices", [
-            "pi5-64bit", "pi5-32bit",
-            "pi4-64bit", "pi4-32bit",
-            "pi3-64bit", "pi3-32bit",
-            "pi2-32bit", "pi1-32bit",
+            "pi5-64bit",
+            "pi4-64bit",
+            "pi3-64bit",
         ]),
     }
 
