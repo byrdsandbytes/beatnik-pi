@@ -140,6 +140,14 @@ export default defineConfig({
 
 
         ]
+      },
+      {
+        text: 'Beyond Audio',
+        collapsed: true,
+        items: [
+          { text: 'Running Other Services', link: '/advanced/beyond-audio/' },
+          { text: 'Gitea with Cloudflare Tunnel', link: '/advanced/beyond-audio/gitea' }
+        ]
       }
     ],
 
