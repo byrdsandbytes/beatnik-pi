@@ -110,19 +110,21 @@ jobs:
 
       # Consumed by publish-repo-json.yml once the release is actually published,
       # so beatnik-repo.json is never updated before the asset is publicly downloadable.
+      # The name MUST stay beatnik-os-<version>.meta.json - publish-repo-json.yml
+      # downloads it by exactly that name.
       - name: Write build metadata
         id: meta
         run: |
-          META_FILE="${{ steps.rename.outputs.img }}.meta.json"
-          cat > "$META_FILE" <<EOF
-          {
-            "version": "${{ steps.ver.outputs.version }}",
-            "img_size": ${{ steps.raw.outputs.size }},
-            "img_sha256": "${{ steps.raw.outputs.sha256 }}",
-            "xz_size": ${{ steps.xz.outputs.size }},
-            "xz_sha256": "${{ steps.xz.outputs.sha256 }}"
-          }
-          EOF
+          META_FILE="beatnik-os-${{ steps.ver.outputs.version }}.meta.json"
+          jq -n \
+            --arg version    "${{ steps.ver.outputs.version }}" \
+            --argjson img_size "${{ steps.raw.outputs.size }}" \
+            --arg img_sha256 "${{ steps.raw.outputs.sha256 }}" \
+            --argjson xz_size  "${{ steps.xz.outputs.size }}" \
+            --arg xz_sha256  "${{ steps.xz.outputs.sha256 }}" \
+            '{version: $version, img_size: $img_size, img_sha256: $img_sha256, xz_size: $xz_size, xz_sha256: $xz_sha256}' \
+            > "$META_FILE"
+          cat "$META_FILE"
           echo "file=$META_FILE" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release (draft)
@@ -140,17 +142,13 @@ jobs:
       # Preview only - not committed here. beatnik-repo.json is only committed by
       # publish-repo-json.yml once you actually click "Publish release" on GitHub.
       - name: Update beatnik-repo.json (preview)
-        run: |
-          python3 ci/update_repo_json.py \
-            --version "${{ steps.ver.outputs.version }}" \
-            --xz-size "${{ steps.xz.outputs.size }}" \
-            --xz-sha256 "${{ steps.xz.outputs.sha256 }}" \
-            --img-size "${{ steps.raw.outputs.size }}" \
-            --img-sha256 "${{ steps.raw.outputs.sha256 }}"
+        run: python3 ci/update_repo_json.py --meta "${{ steps.meta.outputs.file }}"
 
-      - name: Upload beatnik-repo.json artifact
+      - name: Upload beatnik-repo.json preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: beatnik-repo.json
-          path: beatnik-repo.json
+          name: beatnik-repo-preview
+          path: |
+            beatnik-repo.json
+            ${{ steps.meta.outputs.file }}
           retention-days: 7
