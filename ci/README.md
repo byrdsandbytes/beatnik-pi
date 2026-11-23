@@ -60,7 +60,13 @@ attached - it does **not** touch `beatnik-repo.json` yet.
 
 `beatnik-repo.json` only gets updated once you click **Publish release** on GitHub.
 A separate workflow (`publish-repo-json.yml`) handles that, so the download link
-never goes live before the file behind it is actually public.
+never goes live before the file behind it is actually public. It downloads the
+`beatnik-os-<version>.meta.json` asset (sizes + checksums written by the build) from
+the release, runs `update_repo_json.py --meta`, and pushes the result to `master`.
+Prereleases are skipped.
+
+If it ever fails, or for a release published before it worked, run it by hand:
+Actions → **Publish beatnik-repo.json** → **Run workflow** → enter the tag.
 
 ## Problems we ran into (so we don't repeat them)
 

@@ -136,6 +136,7 @@ export default defineConfig({
           { text: 'Hardware API', link: '/advanced/hardware-api' },
           { text: 'Bleno Service (BLE WiFi Provisioning)', link: '/advanced/bleno' },
           { text: 'Network Debugging Guide', link: '/advanced/troubleshooting/network-debugging' },
+          { text: 'Multi-AP Wi-Fi Crashes (brcmfmac)', link: '/advanced/troubleshooting/mulit-access-point-networks-wifi' },
 
 
         ]
