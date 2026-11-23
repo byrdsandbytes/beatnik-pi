@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 # Never let two runs race each other pushing to master.
 concurrency:
@@ -69,15 +70,29 @@ jobs:
         if: steps.state.outputs.skip != 'true'
         run: python3 ci/update_repo_json.py --meta meta.json
 
-      - name: Commit and push
+      # master is protected, so open a PR instead of pushing directly.
+      # Requires: Settings → Actions → General → "Allow GitHub Actions to create and
+      # approve pull requests".
+      - name: Open pull request
         if: steps.state.outputs.skip != 'true'
         run: |
           if git diff --quiet -- beatnik-repo.json; then
             echo "beatnik-repo.json already up to date."
             exit 0
           fi
+          BRANCH="chore/repo-json-${TAG}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
           git add beatnik-repo.json
           git commit -m "chore: add ${TAG} to beatnik-repo.json"
-          git push origin HEAD:master
+          # --force so re-running for the same tag just refreshes the existing PR.
+          git push --force origin "$BRANCH"
+
+          if [[ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]]; then
+            echo "PR for $BRANCH already open - branch updated."
+          else
+            gh pr create --base master --head "$BRANCH" \
+              --title "chore: add ${TAG} to beatnik-repo.json" \
+              --body "Adds Beatnik OS ${TAG} to \`beatnik-repo.json\` so Raspberry Pi Imager offers it. Generated from the \`beatnik-os-${TAG}.meta.json\` asset of the published release."
+          fi
