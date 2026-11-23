@@ -62,8 +62,11 @@ attached - it does **not** touch `beatnik-repo.json` yet.
 A separate workflow (`publish-repo-json.yml`) handles that, so the download link
 never goes live before the file behind it is actually public. It downloads the
 `beatnik-os-<version>.meta.json` asset (sizes + checksums written by the build) from
-the release, runs `update_repo_json.py --meta`, and pushes the result to `master`.
-Prereleases are skipped.
+the release, runs `update_repo_json.py --meta`, and opens a pull request
+(`chore/repo-json-<version>`) against `master`, since `master` is protected. Merge that
+PR to make the release show up in Raspberry Pi Imager. Prereleases are skipped.
+This needs **Settings → Actions → General → "Allow GitHub Actions to create and
+approve pull requests"** enabled.
 
 If it ever fails, or for a release published before it worked, run it by hand:
 Actions → **Publish beatnik-repo.json** → **Run workflow** → enter the tag.
