@@ -13,7 +13,7 @@ Repeat the steps on your server **and** on every client Pi. Each device has its 
 | Component | 0.6 | 0.8 |
 |-----------|-----|-----|
 | Hardware API | `~/beatnik-hardware-api` (installed with `setup.sh`) | `beatnik-hardware-api` package in `/opt/beatnik-hardware-api` |
-| Bleno (Bluetooth setup) | `~/beatnik-bleno` (installed with `setup.sh`) | `beatnik-bleno` package in `/opt/beatnik-bleno` |
+| Bleno (Bluetooth setup, RGB button) | `~/beatnik-bleno` (installed with `setup.sh`, optional) | `beatnik-bleno` package in `/opt/beatnik-bleno` |
 | CamillaDSP config | `~/camilladsp` | Comes with the Hardware API package, stored in `/var/lib/beatnik-hardware-api/camilladsp` |
 | CamillaDSP executable | `/usr/local/bin/camilladsp` | Unchanged |
 | Beatnik Controller | `~/beatnik-controller` (Docker) | Unchanged, server only |
@@ -24,7 +24,7 @@ The service names (`beatnik-hardware.service`, `beatnik-bleno.service`, `camilla
 
 - SSH into the device, e.g. `ssh beatnik@beatnik-server.local`.
 - Make sure the device has internet access.
-- Check that you're on a 64-bit OS. The Bleno package only exists for `arm64`:
+- Check that you're on a 64-bit OS. The Bleno package, which every device needs, only exists for `arm64`:
 
   ```bash
   dpkg --print-architecture   # must print arm64
@@ -35,9 +35,12 @@ The service names (`beatnik-hardware.service`, `beatnik-bleno.service`, `camilla
 ```bash
 ls -d ~/beatnik-hardware-api ~/beatnik-bleno ~/camilladsp ~/beatnik-controller 2>/dev/null
 systemctl list-unit-files 'beatnik-*' 'camilladsp*'
+dpkg -l | grep beatnik
 ```
 
-Client Pis usually have no `beatnik-controller` folder, and `beatnik-bleno` is only present if you installed it. Skip the steps for anything that isn't there.
+If `dpkg -l` already lists `beatnik-hardware-api` or `beatnik-bleno`, that component was installed as a package earlier. Steps 4, 7 and 8 handle this, so just follow them as written.
+
+Client Pis usually have no `beatnik-controller` folder, and `beatnik-bleno` is only present if you installed it in 0.6. Skip the removal steps for anything that isn't there. You still install both packages in steps 7 and 8.
 
 ## 2 · Back up your CamillaDSP config (optional)
 
@@ -58,12 +61,16 @@ If a service doesn't exist on this device, systemd reports `Unit ... not loaded`
 
 ## 4 · Remove the old unit files
 
-The 0.6 scripts wrote their unit files directly to `/etc/systemd/system`, pointing at your home folder. Delete them so nothing still points at the old checkouts:
+The 0.6 scripts wrote their unit files directly to `/etc/systemd/system`, pointing at your home folder. Delete them so nothing still points at the old checkouts. The loop skips unit files that already belong to an installed package:
 
 ```bash
-sudo rm -f /etc/systemd/system/beatnik-hardware.service \
-           /etc/systemd/system/beatnik-bleno.service \
-           /etc/systemd/system/camilladsp.service
+for unit in beatnik-hardware.service beatnik-bleno.service camilladsp.service; do
+  file=/etc/systemd/system/$unit
+  if [ -f "$file" ] && ! dpkg -S "$file" >/dev/null 2>&1; then
+    echo "Removing $file"
+    sudo rm -f "$file"
+  fi
+done
 sudo systemctl daemon-reload
 ```
 
@@ -95,15 +102,21 @@ sudo apt-get install -y nodejs
 
 ## 7 · Install the Hardware API package
 
-Look up the latest version on the [Hardware API releases page](https://github.com/byrdsandbytes/beatnik-hardware-api/releases/latest) and set it below:
+This looks up the latest release on GitHub, then downloads and installs it:
 
 ```bash
-VERSION=X.Y.Z   # latest Hardware API version, without the leading "v"
-cd /tmp
-wget https://github.com/byrdsandbytes/beatnik-hardware-api/releases/download/v${VERSION}/beatnik-hardware-api_${VERSION}_all.deb
-sudo apt-get install -y ./beatnik-hardware-api_${VERSION}_all.deb
-rm beatnik-hardware-api_${VERSION}_all.deb
+TAG=$(curl -fsSL https://api.github.com/repos/byrdsandbytes/beatnik-hardware-api/releases/latest \
+  | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+echo "Installing Hardware API ${TAG}"
+wget -O /tmp/beatnik-hardware-api.deb \
+  "https://github.com/byrdsandbytes/beatnik-hardware-api/releases/download/${TAG}/beatnik-hardware-api_${TAG#v}_all.deb"
+sudo apt-get install -y --reinstall --allow-downgrades /tmp/beatnik-hardware-api.deb
+rm /tmp/beatnik-hardware-api.deb
 ```
+
+If the `echo` line prints no version, the GitHub lookup failed. Check the internet connection and run the block again.
+
+`--reinstall` and `--allow-downgrades` make sure you end up on the release version with all its files in place. This matters if the package was already installed, at the same version or as a newer test build.
 
 The package installs, enables and starts `beatnik-hardware.service` and `camilladsp.service`.
 
@@ -116,16 +129,18 @@ rm /tmp/camilladsp-linux-aarch64.tar.gz
 sudo systemctl restart camilladsp.service
 ```
 
-## 8 · Install the Bleno package (optional)
+## 8 · Install the Bleno package
 
-Only needed if you want to set up and control the device over Bluetooth. Look up the latest version on the [Bleno releases page](https://github.com/byrdsandbytes/beatnik-bleno/releases/latest):
+Install Bleno on every device, even if 0.6 didn't have it. Besides Bluetooth setup and control, it drives the RGB button.
 
 ```bash
-VERSION=X.Y.Z   # latest Bleno version, without the leading "v"
-cd /tmp
-wget https://github.com/byrdsandbytes/beatnik-bleno/releases/download/v${VERSION}/beatnik-bleno_${VERSION}_arm64.deb
-sudo apt-get install -y ./beatnik-bleno_${VERSION}_arm64.deb
-rm beatnik-bleno_${VERSION}_arm64.deb
+TAG=$(curl -fsSL https://api.github.com/repos/byrdsandbytes/beatnik-bleno/releases/latest \
+  | sed -n 's/.*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+echo "Installing Bleno ${TAG}"
+wget -O /tmp/beatnik-bleno.deb \
+  "https://github.com/byrdsandbytes/beatnik-bleno/releases/download/${TAG}/beatnik-bleno_${TAG#v}_arm64.deb"
+sudo apt-get install -y --reinstall --allow-downgrades /tmp/beatnik-bleno.deb
+rm /tmp/beatnik-bleno.deb
 ```
 
 The package enables and starts `beatnik-bleno.service` and adds LED settings to `/boot/firmware/config.txt`. These take effect after the reboot in step 10.
@@ -153,11 +168,11 @@ SSH back in and check the services:
 
 ```bash
 systemctl status beatnik-hardware.service camilladsp.service --no-pager
-systemctl status beatnik-bleno.service --no-pager   # if installed
+systemctl status beatnik-bleno.service --no-pager
 curl http://localhost:3000/api/hardware/status
 ```
 
-Both should be `active (running)` and the `curl` call should return JSON. Then confirm `apt` now manages the components:
+All three services should be `active (running)` and the `curl` call should return JSON. Then confirm `apt` now manages the components:
 
 ```bash
 dpkg -l | grep beatnik
@@ -183,7 +198,7 @@ If audio stops after this, the old file probably points at the wrong playback de
 
 ## Future updates
 
-From 0.8 on, update the Hardware API and Bleno by downloading the newer `.deb` and installing it with `sudo apt-get install ./<package>.deb`, the same way as in steps 7 and 8. See the package update guides for details:
+From 0.8 on, you can update the Hardware API and Bleno by running the blocks from steps 7 and 8 again. They always fetch the latest release. See the package update guides for details:
 
 - [Hardware API: Updating](https://github.com/byrdsandbytes/beatnik-hardware-api/blob/master/UPDATING_DEB.md)
 - [Bleno: Updating](https://github.com/byrdsandbytes/beatnik-bleno/blob/master/UPDATE_DEB.md)
