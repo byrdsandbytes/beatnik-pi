@@ -20,11 +20,11 @@ chmod +x update-0-6-to-0-8.sh
 
 Run it as your normal user (e.g. `beatnik`), not with `sudo`. It asks:
 
-1. **Server or client.** A server runs Snapserver and plays audio itself. A client plays audio from another Beatnik server, whose hostname or IP you enter.
+1. **Server or client.** A server runs Snapserver and plays audio itself. On a client, the script never enables or starts Snapserver.
 2. **Self-host the Beatnik Controller.** Yes installs or updates the controller in `~/beatnik-controller` with Docker. No leaves it out, and if an old controller exists, asks whether to remove it.
 3. **Confirmation** of a summary before anything changes, and at the end whether to reboot.
 
-The script backs up `/etc/snapserver.conf`, `/etc/snapclient.conf` and your CamillaDSP config before changing them. Every device gets Snapserver, AirPlay and Spotify installed, so you can switch a client to a server later. On a client, Snapserver and the Line-In preamp are turned off at the end.
+The script backs up `/etc/snapserver.conf` and your CamillaDSP config before changing them. Every device gets the 0.8 Snapserver config, but Snapclient settings stay as they are. On a client, the Line-In preamp service is turned off, since it only works together with Snapserver.
 
 If you prefer to do it by hand, or the script stops with an error, follow the steps below.
 
@@ -138,6 +138,24 @@ ls -l /tmp/snap-line-in   # must exist and start with "p" (a pipe)
 
 If you changed device names or added sources in 0.6, copy those changes over from `/etc/snapserver.conf.0-6-backup`.
 
+::: tip On a client
+Install the two config files, but skip the `restart` and `ls` lines. Don't enable or start Snapserver on a client. Without Snapserver there's no Line-In pipe, so cap the preamp's start time before step 8. This keeps the install from hanging and is gone after the next reboot:
+
+```bash
+sudo mkdir -p /run/systemd/system/camilladsp-preamp.service.d
+printf '[Service]\nTimeoutStartSec=5\n' | sudo tee /run/systemd/system/camilladsp-preamp.service.d/zz-update-guard.conf
+sudo systemctl daemon-reload
+```
+
+After step 8, turn the preamp off. It only works together with Snapserver:
+
+```bash
+sudo rm -rf /run/systemd/system/camilladsp-preamp.service.d
+sudo systemctl daemon-reload
+sudo systemctl disable --now camilladsp-preamp.service
+```
+:::
+
 ::: warning If the install in step 8 hangs anyway
 If the output stops after the `Created symlink ... camilladsp-preamp.service` line, open a second SSH session and run:
 
@@ -145,7 +163,7 @@ If the output stops after the `Created symlink ... camilladsp-preamp.service` li
 sudo systemctl stop camilladsp-preamp.service
 ```
 
-The install then finishes. Fix the Snapserver config as above and start the service again with `sudo systemctl restart camilladsp-preamp.service`.
+The install then finishes. On a server, fix the Snapserver config as above and start the service again with `sudo systemctl restart camilladsp-preamp.service`. On a client, leave it stopped and disable it with `sudo systemctl disable camilladsp-preamp.service`.
 :::
 
 ## 8 · Install the Hardware API package
