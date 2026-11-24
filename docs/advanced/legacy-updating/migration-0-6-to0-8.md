@@ -5,7 +5,7 @@ Beatnik 0.6 installed its own services from Git checkouts in your home folder. B
 This guide removes the old checkouts and their systemd services, then installs the 0.8 packages. Your Snapcast, AirPlay and Spotify setup stays as it is.
 
 ::: tip Run this on every Beatnik device
-Repeat the steps on your server **and** on every client Pi. Each device has its own Hardware API.
+Repeat the steps on **every** Beatnik device. Each one runs its own Snapserver, Hardware API and Bleno service.
 :::
 
 ## What changes
@@ -16,7 +16,7 @@ Repeat the steps on your server **and** on every client Pi. Each device has its 
 | Bleno (Bluetooth setup, RGB button) | `~/beatnik-bleno` (installed with `setup.sh`, optional) | `beatnik-bleno` package in `/opt/beatnik-bleno` |
 | CamillaDSP config | `~/camilladsp` | Comes with the Hardware API package, stored in `/var/lib/beatnik-hardware-api/camilladsp` |
 | CamillaDSP executable | `/usr/local/bin/camilladsp` | Unchanged |
-| Beatnik Controller | `~/beatnik-controller` (Docker) | Unchanged, server only |
+| Beatnik Controller | `~/beatnik-controller` (Docker) | Unchanged |
 
 The service names (`beatnik-hardware.service`, `beatnik-bleno.service`, `camilladsp.service`) stay the same. The packages install their own unit files in place of the old ones.
 
@@ -38,9 +38,9 @@ systemctl list-unit-files 'beatnik-*' 'camilladsp*'
 dpkg -l | grep beatnik
 ```
 
-If `dpkg -l` already lists `beatnik-hardware-api` or `beatnik-bleno`, that component was installed as a package earlier. Steps 4, 7 and 8 handle this, so just follow them as written.
+If `dpkg -l` already lists `beatnik-hardware-api` or `beatnik-bleno`, that component was installed as a package earlier. Steps 4, 8 and 9 handle this, so just follow them as written.
 
-Client Pis usually have no `beatnik-controller` folder, and `beatnik-bleno` is only present if you installed it in 0.6. Skip the removal steps for anything that isn't there. You still install both packages in steps 7 and 8.
+`beatnik-bleno` is only present if you installed it in 0.6. Skip the removal steps for anything that isn't there. You still install both packages in steps 8 and 9.
 
 ## 2 · Back up your CamillaDSP config (optional)
 
@@ -100,7 +100,35 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-## 7 · Install the Hardware API package
+## 7 · Update the Snapserver config
+
+The 0.6 Snapserver config only has AirPlay and Spotify. 0.8 adds a Line-In and an MPD source. The Hardware API package's preamp service waits for the Line-In pipe that Snapserver creates. Without it, the package install in step 8 hangs.
+
+Back up your current config, then install the 0.8 configs and restart Snapserver:
+
+```bash
+sudo cp /etc/snapserver.conf /etc/snapserver.conf.0-6-backup
+sudo wget -O /etc/snapserver.conf \
+  https://raw.githubusercontent.com/byrdsandbytes/beatnik-pi/master/ci/snapserver.conf
+sudo wget -O /etc/shairport-snapcast.conf \
+  https://raw.githubusercontent.com/byrdsandbytes/beatnik-pi/master/ci/shairport-snapcast.conf
+sudo systemctl restart snapserver.service
+ls -l /tmp/snap-line-in   # must exist and start with "p" (a pipe)
+```
+
+If you changed device names or added sources in 0.6, copy those changes over from `/etc/snapserver.conf.0-6-backup`.
+
+::: warning If the install in step 8 hangs anyway
+If the output stops after the `Created symlink ... camilladsp-preamp.service` line, open a second SSH session and run:
+
+```bash
+sudo systemctl stop camilladsp-preamp.service
+```
+
+The install then finishes. Fix the Snapserver config as above and start the service again with `sudo systemctl restart camilladsp-preamp.service`.
+:::
+
+## 8 · Install the Hardware API package
 
 This looks up the latest release on GitHub, then downloads and installs it:
 
@@ -129,7 +157,7 @@ rm /tmp/camilladsp-linux-aarch64.tar.gz
 sudo systemctl restart camilladsp.service
 ```
 
-## 8 · Install the Bleno package
+## 9 · Install the Bleno package
 
 Install Bleno on every device, even if 0.6 didn't have it. Besides Bluetooth setup and control, it drives the RGB button.
 
@@ -143,11 +171,11 @@ sudo apt-get install -y --reinstall --allow-downgrades /tmp/beatnik-bleno.deb
 rm /tmp/beatnik-bleno.deb
 ```
 
-The package enables and starts `beatnik-bleno.service` and adds LED settings to `/boot/firmware/config.txt`. These take effect after the reboot in step 10.
+The package enables and starts `beatnik-bleno.service` and adds LED settings to `/boot/firmware/config.txt`. These take effect after the reboot in step 11.
 
-## 9 · Update the Beatnik Controller (server only)
+## 10 · Update the Beatnik Controller
 
-On the server, pull the latest controller:
+If the device has a `~/beatnik-controller` folder, pull the latest controller:
 
 ```bash
 cd ~/beatnik-controller
@@ -156,13 +184,13 @@ docker compose pull
 docker compose up -d
 ```
 
-## 10 · Reboot
+## 11 · Reboot
 
 ```bash
 sudo reboot
 ```
 
-## 11 · Check that everything runs
+## 12 · Check that everything runs
 
 SSH back in and check the services:
 
@@ -198,7 +226,7 @@ If audio stops after this, the old file probably points at the wrong playback de
 
 ## Future updates
 
-From 0.8 on, you can update the Hardware API and Bleno by running the blocks from steps 7 and 8 again. They always fetch the latest release. See the package update guides for details:
+From 0.8 on, you can update the Hardware API and Bleno by running the blocks from steps 8 and 9 again. They always fetch the latest release. See the package update guides for details:
 
 - [Hardware API: Updating](https://github.com/byrdsandbytes/beatnik-hardware-api/blob/master/UPDATING_DEB.md)
 - [Bleno: Updating](https://github.com/byrdsandbytes/beatnik-bleno/blob/master/UPDATE_DEB.md)
