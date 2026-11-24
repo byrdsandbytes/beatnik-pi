@@ -5,7 +5,9 @@
     "devices": [
       {
         "name": "Raspberry Pi 5",
-        "tags": ["pi5-64bit"],
+        "tags": [
+          "pi5-64bit"
+        ],
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_5.png",
         "description": "Raspberry Pi 5, 500 / 500+, and Compute Module 5",
         "matching_type": "exclusive",
@@ -13,7 +15,9 @@
       },
       {
         "name": "Raspberry Pi 4",
-        "tags": ["pi4-64bit"],
+        "tags": [
+          "pi4-64bit"
+        ],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_4.png",
         "description": "Raspberry Pi 4 Model B, 400, and Compute Module 4 / 4S",
@@ -22,7 +26,9 @@
       },
       {
         "name": "Raspberry Pi 3",
-        "tags": ["pi3-64bit"],
+        "tags": [
+          "pi3-64bit"
+        ],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_3.png",
         "description": "Raspberry Pi 3 Model A+ / B / B+ and Compute Module 3 / 3+",
@@ -31,7 +37,9 @@
       },
       {
         "name": "Raspberry Pi Zero 2 W",
-        "tags": ["pi3-64bit"],
+        "tags": [
+          "pi3-64bit"
+        ],
         "default": false,
         "icon": "https://downloads.raspberrypi.com/imager/icons/RPi_Zero_2_W.png",
         "description": "Raspberry Pi Zero 2 W",
@@ -49,6 +57,23 @@
     ]
   },
   "os_list": [
+    {
+      "name": "Beatnik OS v0.8.3",
+      "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
+      "icon": "https://raw.githubusercontent.com/byrdsandbytes/beatnik-pi/master/assets/brand/40x40%404x.png",
+      "url": "https://github.com/byrdsandbytes/beatnik-pi/releases/download/v0.8.3/beatnik-os-v0.8.3.img.xz",
+      "extract_size": 4181639168,
+      "extract_sha256": "b3f4c5e22af4c68e7b0213cc430954cae58228c01eaa1948d8a5d945c2c43308",
+      "image_download_size": 742070216,
+      "image_download_sha256": "3917098db70afb0330fec385329436bc90119ca3341b0b0f672a09816727f0dd",
+      "release_date": "2026-11-24",
+      "init_format": "systemd",
+      "devices": [
+        "pi5-64bit",
+        "pi4-64bit",
+        "pi3-64bit"
+      ]
+    },
     {
       "name": "Beatnik OS v0.8.1",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
@@ -100,7 +125,6 @@
         "pi3-64bit"
       ]
     },
-
     {
       "name": "Beatnik OS v0.5.3",
       "description": "Custom Image for Beatnik Pi, a Raspberry Pi based streamer.",
