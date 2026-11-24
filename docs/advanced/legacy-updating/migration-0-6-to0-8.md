@@ -8,6 +8,26 @@ This guide removes the old checkouts and their systemd services, then installs t
 Repeat the steps on **every** Beatnik device. Each one runs its own Snapserver, Hardware API and Bleno service.
 :::
 
+## Quick update with the script
+
+The update script does every step below for you. SSH into the device and run:
+
+```bash
+wget https://raw.githubusercontent.com/byrdsandbytes/beatnik-pi/master/legacy/update-0-6-to-0-8.sh
+chmod +x update-0-6-to-0-8.sh
+./update-0-6-to-0-8.sh
+```
+
+Run it as your normal user (e.g. `beatnik`), not with `sudo`. It asks:
+
+1. **Server or client.** A server runs Snapserver and plays audio itself. A client plays audio from another Beatnik server, whose hostname or IP you enter.
+2. **Self-host the Beatnik Controller.** Yes installs or updates the controller in `~/beatnik-controller` with Docker. No leaves it out, and if an old controller exists, asks whether to remove it.
+3. **Confirmation** of a summary before anything changes, and at the end whether to reboot.
+
+The script backs up `/etc/snapserver.conf`, `/etc/snapclient.conf` and your CamillaDSP config before changing them. Every device gets Snapserver, AirPlay and Spotify installed, so you can switch a client to a server later. On a client, Snapserver and the Line-In preamp are turned off at the end.
+
+If you prefer to do it by hand, or the script stops with an error, follow the steps below.
+
 ## What changes
 
 | Component | 0.6 | 0.8 |
