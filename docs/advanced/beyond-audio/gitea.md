@@ -88,15 +88,22 @@ The token gives full control of the tunnel. Treat it like a password and don't c
 The tunnel is now running on your Pi. Next, tell Cloudflare where to send the traffic.
 
 1. Back in the Zero Trust dashboard, your tunnel should now show as **Healthy**. Click it and select **Configure**.
-2. Open the **Public Hostname** tab and click **Add a public hostname**.
-3. **Subdomain:** enter a prefix, e.g. `git`.
-4. **Domain:** select your domain from the dropdown.
-5. **Service Type:** select **HTTP**.
-6. **Service URL:** enter `gitea:3000`.
+2. Open the **Published application routes** tab and click **Add a published application route**.
+3. Under **Hostname**:
+   - **Subdomain:** enter a prefix, e.g. `git`.
+   - **Domain:** select your domain (zone) from the dropdown.
+   - **Path:** leave it empty.
 
-   Both containers are defined in the same Compose file, so `cloudflared` reaches Gitea's internal port directly through Docker's internal DNS. Use the internal port `3000` here, not `3030`.
+   The **Full hostname** preview should now show something like `git.yourdomain.com`.
+4. **Service URL:** enter `http://gitea:3000`.
 
-7. Click **Save hostname**.
+   Both containers are defined in the same Compose file, so `cloudflared` reaches Gitea's internal port directly through Docker's internal DNS. Use the internal port `3000` here, not `3030`, and `http://`, not `https://`. Cloudflare handles HTTPS at its edge.
+
+5. Click **Save**. Cloudflare creates the DNS record automatically.
+
+::: tip
+Use a single-level subdomain such as `git.yourdomain.com`. Multi-level subdomains (e.g. `git.home.yourdomain.com`) need Cloudflare's paid Advanced Certificate Manager.
+:::
 
 ## Phase 4: Initialize Gitea
 
