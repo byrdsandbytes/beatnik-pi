@@ -8,7 +8,7 @@
 #   2. installs the 0.8 Snapserver config (the Hardware API package's preamp
 #      service waits for its Line-In pipe and hangs the install without it),
 #   3. installs Node.js 22 and the Hardware API and Bleno release packages,
-#   4. configures the device as server or client,
+#   4. enables Snapserver and the Line-In preamp only on a server,
 #   5. optionally installs/updates the self-hosted Beatnik Controller.
 #
 # Docs: docs/advanced/legacy-updating/migration-0-6-to0-8.md
@@ -31,7 +31,6 @@ CAMILLA_VERSION="v2.0.3"
 LINE_IN_PIPE="/tmp/snap-line-in"
 
 ROLE=""
-SERVER_HOST=""
 SELFHOST_CONTROLLER=""
 REMOVE_CONTROLLER="n"
 
@@ -77,8 +76,6 @@ preflight() {
         log_error "Cannot reach GitHub. Check the internet connection and try again."
         exit 1
     fi
-    . /etc/os-release
-    OS_CODENAME=$VERSION_CODENAME
     sudo -v
 }
 
@@ -96,7 +93,7 @@ show_current_state() {
 ask_questions() {
     echo "How should this device run?"
     echo "  1) Server - runs Snapserver and plays audio itself"
-    echo "  2) Client - plays audio from another Beatnik server"
+    echo "  2) Client - plays audio from another Beatnik server (Snapserver stays off)"
     while [[ -z "$ROLE" ]]; do
         case "$(ask "Choice [1]: ")" in
             ""|1) ROLE="server" ;;
@@ -104,14 +101,6 @@ ask_questions() {
             *)    echo "Please enter 1 or 2." ;;
         esac
     done
-
-    if [[ "$ROLE" == "client" ]]; then
-        local current
-        current=$(sed -n 's/^[[:space:]]*host[[:space:]]*=[[:space:]]*\([^[:space:]#]*\).*/\1/p' /etc/snapclient.conf 2>/dev/null | head -n 1)
-        [[ -z "$current" || "$current" == "localhost" ]] && current="beatnik-server.local"
-        SERVER_HOST=$(ask "Hostname or IP of your Beatnik server [$current]: ")
-        SERVER_HOST=${SERVER_HOST:-$current}
-    fi
 
     echo
     local default="n" hint="y/N"
@@ -124,7 +113,7 @@ ask_questions() {
 
     echo
     log_info "Summary:"
-    echo "   - Role: $ROLE${SERVER_HOST:+ (server: $SERVER_HOST)}"
+    echo "   - Role: $ROLE"
     echo "   - Self-hosted controller: $SELFHOST_CONTROLLER"
     [[ "$REMOVE_CONTROLLER" == "y" ]] && echo "   - Remove existing controller: yes"
     echo "   - Snapserver config is replaced with the 0.8 config (a backup is kept)"
@@ -175,31 +164,6 @@ remove_old_install() {
 # Snapcast
 # ---------------------------------------------------------------------------
 
-install_snapcast_if_missing() {
-    local missing=()
-    dpkg -s snapserver >/dev/null 2>&1 || missing+=(snapserver)
-    dpkg -s snapclient >/dev/null 2>&1 || missing+=(snapclient)
-    if [[ ${#missing[@]} -eq 0 ]]; then
-        return
-    fi
-
-    local tag version pkg debs=()
-    tag=$(latest_tag badaix/snapcast)
-    if [[ -z "$tag" ]]; then
-        log_error "Could not determine the latest Snapcast release."
-        exit 1
-    fi
-    version=${tag#v}
-    log_info "Installing ${missing[*]} $version..."
-    for pkg in "${missing[@]}"; do
-        wget -q -O "/tmp/$pkg.deb" \
-            "https://github.com/badaix/snapcast/releases/download/${tag}/${pkg}_${version}-1_arm64_${OS_CODENAME}.deb"
-        debs+=("/tmp/$pkg.deb")
-    done
-    sudo apt-get install -y "${debs[@]}"
-    rm -f "${debs[@]}"
-}
-
 install_stream_sources_if_missing() {
     if ! command -v shairport-sync >/dev/null 2>&1; then
         log_info "Installing Shairport-Sync (AirPlay)..."
@@ -214,8 +178,8 @@ install_stream_sources_if_missing() {
     fi
 }
 
-# Every device runs Snapserver with the 0.8 config while the Hardware API
-# package installs, so the Line-In pipe exists and the preamp service can start.
+# Every device gets the 0.8 config. Only a server enables and starts Snapserver,
+# which creates the Line-In pipe the preamp service waits for.
 configure_snapserver() {
     log_info "Installing the 0.8 Snapserver config..."
     if [[ -f /etc/snapserver.conf ]]; then
@@ -224,6 +188,11 @@ configure_snapserver() {
     fi
     sudo wget -q -O /etc/snapserver.conf "$REPO_RAW/ci/snapserver.conf"
     sudo wget -q -O /etc/shairport-snapcast.conf "$REPO_RAW/ci/shairport-snapcast.conf"
+
+    if [[ "$ROLE" != "server" ]]; then
+        log_info "Client: Snapserver is not enabled or started"
+        return
+    fi
 
     sudo systemctl enable snapserver.service
     sudo systemctl restart snapserver.service
@@ -240,32 +209,6 @@ configure_snapserver() {
     log_error "$LINE_IN_PIPE was not created. Installing the Hardware API now would hang."
     log_error "Check Snapserver with: journalctl -u snapserver -n 60 --no-pager"
     exit 1
-}
-
-configure_snapclient() {
-    local host="localhost"
-    [[ "$ROLE" == "client" ]] && host="$SERVER_HOST"
-    log_info "Pointing Snapclient at $host..."
-
-    sudo usermod -aG audio snapclient 2>/dev/null || true
-    sudo touch /etc/snapclient.conf
-    sudo cp /etc/snapclient.conf /etc/snapclient.conf.0-6-backup
-    grep -q '^\[snapclient\]' /etc/snapclient.conf || echo "[snapclient]" | sudo tee -a /etc/snapclient.conf > /dev/null
-
-    # 0.8 routes Snapclient through CamillaDSP via the ALSA loopback device.
-    local key value
-    for key in host sound_device; do
-        if [[ "$key" == "host" ]]; then value="$host"; else value="hw:Loopback,0,0"; fi
-        if grep -qE "^[[:space:]]*${key}[[:space:]]*=" /etc/snapclient.conf; then
-            sudo sed -i -E "s|^[[:space:]]*${key}[[:space:]]*=.*|${key} = ${value}|" /etc/snapclient.conf
-        else
-            echo "$key = $value" | sudo tee -a /etc/snapclient.conf > /dev/null
-        fi
-    done
-
-    sudo modprobe snd-aloop
-    echo "snd-aloop" | sudo tee /etc/modules-load.d/snd-aloop.conf > /dev/null
-    sudo systemctl enable snapclient.service
 }
 
 # ---------------------------------------------------------------------------
@@ -297,6 +240,22 @@ install_camilladsp_binary() {
     rm -f /tmp/camilladsp.tar.gz
 }
 
+# The package's postinst runs a blocking `systemctl restart camilladsp-preamp`,
+# which waits forever when the Line-In pipe is missing (always on a client).
+# A temporary runtime drop-in caps that start so the install can finish.
+PREAMP_GUARD=/run/systemd/system/camilladsp-preamp.service.d
+
+add_preamp_guard() {
+    sudo mkdir -p "$PREAMP_GUARD"
+    printf '[Service]\nTimeoutStartSec=5\n' | sudo tee "$PREAMP_GUARD/zz-update-guard.conf" > /dev/null
+    sudo systemctl daemon-reload
+}
+
+remove_preamp_guard() {
+    sudo rm -rf "$PREAMP_GUARD"
+    sudo systemctl daemon-reload
+}
+
 # --reinstall restores package files that were deleted; --allow-downgrades lets
 # a newer test build be replaced by the release version.
 install_release_deb() {
@@ -321,14 +280,13 @@ install_release_deb() {
 
 apply_role() {
     if [[ "$ROLE" == "server" ]]; then
-        sudo systemctl enable snapserver.service camilladsp-preamp.service
+        sudo systemctl enable camilladsp-preamp.service
         log_success "Configured as server"
     else
         # Line-In is fed into Snapserver, so the preamp is only useful on a server.
-        # Left enabled without Snapserver it would wait for the pipe forever.
+        # Without Snapserver it would wait for the pipe forever.
         sudo systemctl disable --now camilladsp-preamp.service 2>/dev/null || true
-        sudo systemctl disable --now snapserver.service
-        log_success "Configured as client of $SERVER_HOST"
+        log_success "Configured as client (Snapserver left off)"
     fi
 }
 
@@ -407,14 +365,20 @@ main() {
     remove_old_install
 
     sudo apt-get update
-    install_snapcast_if_missing
-    install_stream_sources_if_missing
+    [[ "$ROLE" == "server" ]] && install_stream_sources_if_missing
     configure_snapserver
-    configure_snapclient
 
     install_nodejs22
     install_camilladsp_binary
+    if [[ "$ROLE" == "client" ]]; then
+        add_preamp_guard
+        trap remove_preamp_guard EXIT
+    fi
     install_release_deb byrdsandbytes/beatnik-hardware-api all
+    if [[ "$ROLE" == "client" ]]; then
+        trap - EXIT
+        remove_preamp_guard
+    fi
     install_release_deb byrdsandbytes/beatnik-bleno arm64
 
     apply_role
