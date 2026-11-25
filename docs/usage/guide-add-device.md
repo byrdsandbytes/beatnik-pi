@@ -17,9 +17,7 @@ Network Configuration step: Scan for Devices and the list of Wi-Fi networks.
 
 ### Step 2 - Server setup (`Configure Device`)
 
-::: warning 📸 Screenshot needed
-Configure Device step: Setup as Server / Setup as Client.
-:::
+![Configure Device step with Setup as Server and Setup as Client](../images/byrd-app_add-device_server.png)
 
 The app searches for existing Snapcast servers on your network:
 
@@ -41,8 +39,6 @@ Tap **Continue** when finished.
 
 ### Step 4 - Name the device group
 
-::: warning 📸 Screenshot needed
-Name the device group screen with Save & Complete Setup.
-:::
+![Name the device group screen with the Save & Complete Setup button](../images/byrd-app_add-device_name.png)
 
 Give the device a descriptive name such as "Living Room Amp" or "Kitchen Audio" and tap **Save & Complete Setup**. A group can contain a single device or several.

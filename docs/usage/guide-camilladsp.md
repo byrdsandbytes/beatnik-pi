@@ -54,9 +54,7 @@ The **Filters** section is your equaliser. Every filter in the config appears as
 - **Gain** - the amount of boost or cut in dB. This is the control you adjust.
 - **Frequency** and **Q** - where the filter acts and how wide it is. Read-only.
 
-::: warning 📸 Screenshot needed
-Filters section with the filter cards (for example bass and treble) and their gain sliders.
-:::
+![CamillaDSP filters section with bass and treble filter cards and gain sliders](../images/byrd-app_camilladsp_filters.png)
 
 To equalise:
 
@@ -91,9 +89,7 @@ Each mixer card shows its output channel count and, for every destination channe
 
 Mixers are useful for channel balance, swapping left and right, or muting one side while testing.
 
-::: warning 📸 Screenshot needed
-Mixers section with a mixer card, showing source gain, Inverted and Muted.
-:::
+![CamillaDSP mixer card with source gain, Inverted and Muted controls](../images/byrd-app_camilladsp_mixers.png)
 
 ## Processors (dynamics)
 
@@ -111,9 +107,7 @@ If the config contains a compressor, each processor card shows its name and type
 
 Applying processor changes restarts the audio pipeline, so the app waits until you stop dragging before it sends the change. Expect a brief interruption in the audio while the change is applied.
 
-::: warning 📸 Screenshot needed
-Processors section with a compressor card and the Soft clip toggle.
-:::
+![CamillaDSP processors section with a compressor card and the Soft clip toggle](../images/byrd-app_camilladsp_processors.png)
 
 ## Signal levels
 
@@ -142,9 +136,9 @@ For the **Line-In** stream the same section manages the config of the line-in (p
 
 At the very bottom, the collapsible **CamillaDSP Connection** section shows the WebSocket address, the connection status and the raw messages and configuration. It is meant for debugging.
 
-::: warning 📸 Screenshot needed
-Advanced Settings with the "Select a config" list and the Set as default button.
-:::
+![CamillaDSP advanced settings with the Select a config list](../images/byrd-app_camilladsp_configs.png)
+
+![CamillaDSP advanced settings with the Set as default button](../images/byrd-app_camilladsp_set-default.png)
 
 ## Troubleshooting Camilla DSP
 

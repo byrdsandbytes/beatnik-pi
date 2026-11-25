@@ -50,9 +50,7 @@ Pull down on the dashboard to reload the server state.
 
 ## Devices
 
-::: warning 📸 Screenshot needed
-Devices tab with the Clients and Device Groups lists.
-:::
+![Devices tab with the Clients and Device Groups lists](../images/byrd-app_everyday_devices.png)
 
 The **Devices** tab has two lists:
 
@@ -69,9 +67,7 @@ The **Streams** tab lists all streams. Active (non-idle) streams appear first, f
 
 ### Stream details
 
-::: warning 📸 Screenshot needed
-Stream details view, including the collapsible JSON section.
-:::
+![Stream details view with the collapsible JSON section](../images/byrd-app_everyday_stream-details.png)
 
 Tap a stream to see its details:
 
@@ -83,9 +79,7 @@ Tap a stream to see its details:
 
 ## Volume presets
 
-::: warning 📸 Screenshot needed
-Volume presets list with an expanded swipe action.
-:::
+![Volume presets list with an expanded swipe action](../images/byrd-app_everyday_volume-presets.png)
 
 Volume presets store the volume of every client so you can switch between listening scenarios (for example "Party", "Night", "Dinner").
 
@@ -100,9 +94,7 @@ Open them from the dashboard (volume button) or directly at `/volume-presets`.
 
 ### Creating a preset
 
-::: warning 📸 Screenshot needed
-Capture Preset screen with per-group sliders and the Save Preset prompt.
-:::
+![Capture Preset screen with per-group volume sliders and the Save Preset prompt](../images/byrd-app_everyday_capture-preset.png)
 
 1. Set your speakers to the desired volumes (for example in the player toolbar).
 2. Tap **Create / Capture Preset**, then **Capture Preset** to record the current volume of every group.
@@ -115,9 +107,7 @@ When editing, **Re-Capture Current Setup** replaces the stored values with the c
 
 ## Stream presets
 
-::: warning 📸 Screenshot needed
-Stream presets screen with a stream selector per group and the Quick Assign All list.
-:::
+![Stream presets screen with a stream selector per group and the Quick Assign All list](../images/byrd-app_everyday_stream-presets.png)
 
 Stream presets store which stream is assigned to which group, so you can re-route the whole house in one tap.
 

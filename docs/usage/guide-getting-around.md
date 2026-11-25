@@ -16,9 +16,7 @@ Beatnik Controller is a remote control for a [Snapcast](https://github.com/badai
 
 ## Connecting to your server
 
-::: warning 📸 Screenshot needed
-Settings screen with the Server Url field and the Connect to Server button.
-:::
+![Settings screen with the Server Url field and the Connect to Server button](../images/byrd-app_getting-around_connect.png)
 
 By default the app looks for a Snapcast server at `beatnik-server.local`.
 
@@ -32,9 +30,7 @@ If no server can be reached, the dashboard shows an onboarding card with an **Ad
 
 ## App layout
 
-::: warning 📸 Screenshot needed
-Bottom tab bar (Dashboard, Devices, Streams, Menu) and the expanded player toolbar.
-:::
+![App layout with the bottom tab bar and the expanded player toolbar](../images/byrd-app_getting-around_layout.png)
 
 A tab bar at the bottom of the screen gives access to the main areas:
 
