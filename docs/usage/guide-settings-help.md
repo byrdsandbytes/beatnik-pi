@@ -2,9 +2,7 @@
 
 ## Settings
 
-::: warning 📸 Screenshot needed
-Settings screen (Username, Server Url, Scan for devices on startup).
-:::
+![Settings screen with Username, Server Url and Scan for devices on startup](../images/byrd-app_settings.png)
 
 Open **Menu > Settings**.
 
@@ -19,9 +17,7 @@ Open **Menu > Settings**.
 
 ## Demo mode
 
-::: warning 📸 Screenshot needed
-Menu with the Enable Demo Mode entry.
-:::
+![Menu with the Enable Demo Mode entry](../images/byrd-app_settings_demo-mode.png)
 
 **Menu > Enable Demo Mode** loads a mock server state with sample devices and streams so you can explore the app without any hardware.
 

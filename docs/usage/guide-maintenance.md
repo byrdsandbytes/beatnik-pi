@@ -2,9 +2,7 @@
 
 ## Device details and maintenance
 
-::: warning 📸 Screenshot needed
-Device details view with Now playing, Stream, Group Name and Clients.
-:::
+![Device details view with Now playing, Stream, Group Name and Clients](../images/byrd-app_maintenance_device-details.png)
 
 Open a group from the dashboard or **Devices > Device Groups**.
 
@@ -17,9 +15,7 @@ Open a group from the dashboard or **Devices > Device Groups**.
 
 ### Speaker image
 
-::: warning 📸 Screenshot needed
-Speaker picker with type filter and search.
-:::
+![Speaker picker with type filter and search](../images/byrd-app_maintenance_speaker-picker.png)
 
 Long-press the group card (dashboard or device details) or use **Choose Speakers** in the settings tab to open the speaker picker:
 
@@ -28,9 +24,7 @@ Long-press the group card (dashboard or device details) or use **Choose Speakers
 
 ### Client details
 
-::: warning 📸 Screenshot needed
-Client information panel showing the Info tab.
-:::
+![Client information panel showing the Info tab](../images/byrd-app_maintenance_client-details.png)
 
 The client information panel has five tabs:
 
@@ -54,9 +48,7 @@ Equalising, master volume, mixers and dynamics for each device are covered on th
 
 ## Updates
 
-::: warning 📸 Screenshot needed
-Beatnik Update screen with installed versions and the update buttons.
-:::
+![Beatnik Update screen with installed versions and update buttons](../images/byrd-app_maintenance_updates.png)
 
 Open **Menu > Beatnik Update**, or the **Update** tab in the client details.
 
@@ -68,9 +60,7 @@ Open **Menu > Beatnik Update**, or the **Update** tab in the client details.
 
 ## Server status and maintenance
 
-::: warning 📸 Screenshot needed
-Server Status screen with the restart and reboot actions.
-:::
+![Server Status screen with restart and reboot actions](../images/byrd-app_maintenance_server-status.png)
 
 Open **Menu > Server Status** (or tap the Wi-Fi button on the dashboard).
 
@@ -86,9 +76,7 @@ If the server cannot be reached, tap **Attempt to Connect** to retry.
 
 ## Network scanner
 
-::: warning 📸 Screenshot needed
-Network scanner listing servers and clients.
-:::
+![Network scanner listing servers and clients](../images/byrd-app_maintenance_scanner.png)
 
 Open **Menu > Search Devices**. The scanner uses mDNS/ZeroConf to find:
 
