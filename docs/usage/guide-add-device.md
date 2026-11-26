@@ -33,7 +33,7 @@ The app then validates the connection to the server.
 Choose the soundcard configuration:
 
 - **Detected Soundcard** - use the hardware the Beatnik detected automatically.
-- **Manual** - select your soundcard from the list and tap **Apply Manual Soundcard Config**. Some soundcards cannot be detected automatically.
+- **Manual** - select your soundcard from the list and tap **Apply Manual Soundcard Config**. Some soundcards cannot be detected automatically. HiFiBerry cards are never detected, so always pick them here.
 
 Tap **Continue** when finished.
 

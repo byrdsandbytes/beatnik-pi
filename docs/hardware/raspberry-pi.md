@@ -59,5 +59,5 @@ The Pi 5 is faster, but Beatnik doesn't need that extra speed for streaming and 
 
 ## Next
 
-- [Sound Cards](./soundcards.md)
-- [Hardware Examples](./overview.md)
+- [Sound Cards](./soundcards.md) – pick the audio board.
+- [Compatibility](./compatibility.md) – back to the overview.

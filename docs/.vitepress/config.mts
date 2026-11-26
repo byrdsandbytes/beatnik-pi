@@ -88,10 +88,16 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Choosing the Right Hardware', link: '/hardware/choosing-hardware' },
-          { text: 'Compatibility', link: '/hardware/compatibility' },
-          { text: 'Raspberry Pi Models', link: '/hardware/raspberry-pi' },
-          { text: 'Sound Cards', link: '/hardware/soundcards' },
           { text: 'Hardware Examples', link: '/hardware/overview' },
+          {
+            text: 'Compatibility',
+            link: '/hardware/compatibility',
+            collapsed: false,
+            items: [
+              { text: 'Raspberry Pi Models', link: '/hardware/raspberry-pi' },
+              { text: 'Sound Cards', link: '/hardware/soundcards' }
+            ]
+          },
           { text: 'How to Build a Beatnik Amplifier', link: '/hardware/build-amplifier' }
         ]
       },

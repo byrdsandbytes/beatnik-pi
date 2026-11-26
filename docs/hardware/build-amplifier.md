@@ -6,7 +6,7 @@ Source: [beatnik.audio – How to build a Beatnik Amplifier](https://beatnik.aud
 
 ## 1. Get the Components
 
-Once you decided for quality of case, SBC & audio board, order them. See the [Hardware Examples](./overview.md) for an example Amp Pro parts list.
+Once you decided for quality of case, SBC & audio board, order them. See the [Hardware Examples](./overview.md) for an example Amp Pro parts list, and [Compatibility](./compatibility.md) if you want to use other parts.
 
 ## 2. Flash the Software or get a BeatnikOS preflashed SD-Card
 

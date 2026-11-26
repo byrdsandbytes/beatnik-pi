@@ -4,7 +4,7 @@ The complete list of sound cards supported by Beatnik. For a short summary, see 
 
 ## How it works
 
-Beatnik ships a profile for each sound card below. A profile sets the device tree overlay in `config.txt` and configures CamillaDSP with the right ALSA device and sample format. Cards with an EEPROM (most HiFiBerry boards) are detected automatically. Otherwise you pick the card in the app during setup.
+Beatnik ships a profile for each sound card below. A profile sets the device tree overlay in `config.txt` and configures CamillaDSP with the right ALSA device and sample format. During setup the app tries to detect the card. HiFiBerry cards are **not** detected automatically, so select yours from the list under **Manual** (see [Adding a device](../usage/guide-add-device.md)).
 
 **Tested** shows who has confirmed the card works with Beatnik:
 
@@ -19,11 +19,11 @@ For active speakers, an existing amp or a receiver.
 | Sound card | Overlay | Format | Line-In | Tested |
 |------------|---------|--------|---------|--------|
 | [HiFiBerry DAC+ ADC Pro / DAC2 ADC Pro](../software/soundcards/hifiberry-dac-adc-pro.md) | `hifiberry-dacplusadcpro` | S32LE | Yes | Beatnik |
-| HiFiBerry DAC+ ADC | `hifiberry-dacplusadc` | S32LE | Yes | – |
-| HiFiBerry DAC+ Pro / DAC2 Pro | `hifiberry-dacplus-pro` | S32LE | No | – |
+| HiFiBerry DAC+ ADC | `hifiberry-dacplusadc` | S32LE | Yes | Beatnik |
+| HiFiBerry DAC+ Pro / DAC2 Pro | `hifiberry-dacplus-pro` | S32LE | No | Beatnik |
+| HiFiBerry DAC / MiniAmp / Beocreate / DAC+ Light | `hifiberry-dac` | S32LE | No | Beatnik |
 | HiFiBerry DAC+ Standard | `hifiberry-dacplus-std` | S32LE | No | – |
 | HiFiBerry DAC2 HD | `hifiberry-dacplushd` | S32LE | No | – |
-| HiFiBerry DAC / MiniAmp / Beocreate / DAC+ Light | `hifiberry-dac` | S32LE | No | – |
 | HiFiBerry DAC8x | `hifiberry-dac8x` | S32LE | No | – |
 | [IQaudIO Pi-DAC PRO](../software/soundcards/iqaudio-dacPro.md) / [DAC+](../software/soundcards/raspberry-dacPlus.md) | `iqaudio-dacplus` | S32LE | No | – |
 
@@ -35,7 +35,7 @@ For passive speakers. Connect them directly to the board.
 |------------|---------|--------|--------|
 | [HiFiBerry Amp4 Pro](../software/soundcards/hifiberry-amp4Pro.md) | `hifiberry-amp4pro` | S32LE | Beatnik, Community |
 | [Raspberry Pi DigiAMP+](../software/soundcards/raspberry-digiAmpPlus.md) | `iqaudio-digiamp-plus,unmute_amp` | S32LE | Beatnik |
-| HiFiBerry Amp2 / Amp4 | `hifiberry-dacplus-std` | S32LE | – |
+| HiFiBerry Amp2 / Amp4 | `hifiberry-dacplus-std` | S32LE | Beatnik, Community |
 
 The older HiFiBerry **Amp+** and **Amp3** have no profile and are not supported.
 
@@ -65,7 +65,7 @@ Line-In lets you stream an analog source, such as a turntable, CD player, mixer 
 | Sound card | Tested |
 |------------|--------|
 | [HiFiBerry DAC+ ADC Pro / DAC2 ADC Pro](../software/soundcards/hifiberry-dac-adc-pro.md) | Beatnik |
-| HiFiBerry DAC+ ADC | – |
+| HiFiBerry DAC+ ADC | Beatnik |
 
 Things to know:
 
@@ -76,5 +76,6 @@ Things to know:
 
 ## Next
 
+- [How to Build a Beatnik Amplifier](./build-amplifier.md) – put it all together.
 - [Raspberry Pi Models](./raspberry-pi.md)
-- [Hardware Examples](./overview.md)
+- [Compatibility](./compatibility.md) – back to the overview.
