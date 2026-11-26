@@ -1,3 +1,8 @@
+---
+reviewed_by: Idrimi
+reviewed_at: 2026-11-26
+---
+
 # Architecture & Software Components
 
 [![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
