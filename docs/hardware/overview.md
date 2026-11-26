@@ -6,6 +6,8 @@
 Prefer not to source the parts yourself? Components, curated bundles and Plug & Play devices are available at [beatnik.audio](https://beatnik.audio).
 :::
 
+For all supported Pi models and sound cards, see [Compatibility](./compatibility.md).
+
 ## Beatnik Server (Amp Pro)
 
 | Part               | Notes                                                | Image |
