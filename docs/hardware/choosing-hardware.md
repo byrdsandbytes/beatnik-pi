@@ -49,6 +49,6 @@ It's up to you to decide what you need.
 
 ## Next
 
-See the [Hardware Examples](./overview.md) for example parts lists.
+See [Compatibility](./compatibility.md) for supported Raspberry Pi models and sound cards, and the [Hardware Examples](./overview.md) for example parts lists.
 
 Curated bundles, components and Plug & Play devices are available at [beatnik.audio](https://beatnik.audio).
