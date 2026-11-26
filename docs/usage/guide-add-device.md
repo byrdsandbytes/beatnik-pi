@@ -1,5 +1,7 @@
 # Adding a New Beatnik Device
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-add-device.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-add-device.md)
+
 Tap **+** on the dashboard (or the big button on the onboarding card) to start the setup. Setup runs in the **mobile app** and uses Bluetooth Low Energy.
 
 ### Step 1 - Wi-Fi setup (`Network Configuration`)

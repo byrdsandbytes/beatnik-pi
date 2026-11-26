@@ -1,5 +1,7 @@
 # HiFiBerry DAC 2 ADC Pro
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/soundcards/hifiberry-dac-adc-pro.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/soundcards/hifiberry-dac-adc-pro.md)
+
 This card provides both a high-quality analog output (DAC) and a high-quality analog input (ADC), making it ideal for integrating external audio sources like a turntable into your Snapcast system.
 
 ## Driver Activation

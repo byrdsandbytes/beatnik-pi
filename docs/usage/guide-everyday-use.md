@@ -1,5 +1,7 @@
 # Everyday Use
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-everyday-use.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-everyday-use.md)
+
 ## Dashboard
 
 ![Beatnik Controller Web UI - Dashboard with player toolbar](../images/webApp001.webp)

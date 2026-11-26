@@ -1,5 +1,7 @@
 # Shell Script Installation Guide for Beatnik Pi
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/shell-script.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/shell-script.md)
+
 This guide provides step-by-step instructions for installing Beatnik Pi using the automated shell script. 
 
 ## Prerequisites

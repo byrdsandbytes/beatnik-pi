@@ -1,5 +1,7 @@
 # Device Maintenance & Updates
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-maintenance.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-maintenance.md)
+
 ## Device details and maintenance
 
 ![Device details view with Now playing, Stream, Group Name and Clients](../images/byrd-app_maintenance_device-details.png)

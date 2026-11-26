@@ -1,5 +1,7 @@
 # Sound Cards
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/soundcards.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/soundcards.md)
+
 The complete list of sound cards supported by Beatnik. For a short summary, see [Compatibility](./compatibility.md).
 
 ## How it works

@@ -1,5 +1,7 @@
 # Compatibility
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/compatibility.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/compatibility.md)
+
 An overview of the hardware that works with Beatnik. For every model and card, see the complete lists:
 
 - [Raspberry Pi Models](./raspberry-pi.md)

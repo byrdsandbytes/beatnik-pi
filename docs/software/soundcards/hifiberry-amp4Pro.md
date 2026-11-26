@@ -1,5 +1,7 @@
 # HifiBerry Amp 4 Pro
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/soundcards/hifiberry-amp4Pro.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/soundcards/hifiberry-amp4Pro.md)
+
 
 ## Driver Actication
 

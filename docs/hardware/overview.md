@@ -1,5 +1,7 @@
 # Hardware Examples
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/overview.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/overview.md)
+
 ![DAC vs Amp](../images/DacVsAMP_scale.webp)
 
 ::: tip

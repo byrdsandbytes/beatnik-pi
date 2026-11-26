@@ -1,5 +1,7 @@
 # Raspberry Pi Models
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/raspberry-pi.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/raspberry-pi.md)
+
 The complete list of Raspberry Pi models and how they work with Beatnik. For a short summary, see [Compatibility](./compatibility.md).
 
 ## Requirements
