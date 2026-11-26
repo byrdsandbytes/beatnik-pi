@@ -46,10 +46,12 @@ For detailed guides and usage documentation, visit the [Beatnik documentation](h
 ## Introduction
 
 ### Free Open Source Software (FOSS)
-It may does not look like a typical FOSS project at first glance, but all the core components used in Beatnik Pi as well as the Beatnik Software are open source and freely available for anyone to use and modify. 
+It may does not look like a typical FOSS, but all the core components used in Beatnik Pi as well as the Beatnik Software are open source and freely available for anyone to use and modify.
+You can find the list of all core components and their respective repositories in Software Components section below.
 
-### DAC or Amp
+### DAC or Amp (Hardware)
 Beatnik allows you to build DACs (Digital-to-Analog Converter) or  Amps (Amplifier) depending on your speaker setup and audio requirements.
+You can also build a line-in server (turntable, cd player, etc.) using an ADC (Analogue digital converter) Board to capture the audio input and stream/distribute it through the Beatnik setup.
 
 
 <img src="docs/images/DacVsAMP_scale.webp" alt="DAC vs AMP" >
