@@ -1,5 +1,7 @@
 # Spotify Connect
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/features/streaming/spotify.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/features/streaming/spotify.md)
+
 Spotify Connect is in a stable state. The server accepts Spotify Connect streams from the Spotify app and re-distributes them to all your Snapclients.
 
 ::: tip Included in Beatnik OS

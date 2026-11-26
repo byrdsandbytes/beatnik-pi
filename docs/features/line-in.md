@@ -1,5 +1,7 @@
 # How to Use an ADC as a Line-In for Snapcast
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/features/line-in.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/features/line-in.md)
+
 ::: tip Included in Beatnik OS
 Starting with Beatnik OS version 0.8, Line-In is already installed and configured. The steps below are only needed for a manual / bare metal setup.
 :::

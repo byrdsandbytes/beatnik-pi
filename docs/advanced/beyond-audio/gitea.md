@@ -1,5 +1,7 @@
 # Gitea with Cloudflare Tunnel
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/beyond-audio/gitea.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/beyond-audio/gitea.md)
+
 This guide sets up [Gitea](https://about.gitea.com/), a lightweight self-hosted Git service, on your Beatnik Pi. It then makes Gitea reachable from the internet through a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/), so you don't need to open any ports on your router.
 
 ::: info Before you start

@@ -1,5 +1,7 @@
 # Network Debugging Guide for Beatnik Pi
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/troubleshooting/network-debugging.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/troubleshooting/network-debugging.md)
+
 If you experience buffering issues, audio dropouts, synchronization drift, or playback hiccups, the root cause is almost always related to local network latency, packet loss, or Wi-Fi interference. 
 
 Because Snapcast distributes uncompressed audio in real time, it requires a steady, low-jitter stream between the server and all client nodes.
