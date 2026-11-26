@@ -30,3 +30,8 @@ For all supported Pi models and sound cards, see [Compatibility](./compatibility
 | **HifiBerry Amp 2** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
+
+## Next
+
+- [Compatibility](./compatibility.md) – swap in other Raspberry Pi models or sound cards.
+- [How to Build a Beatnik Amplifier](./build-amplifier.md) – put it all together.

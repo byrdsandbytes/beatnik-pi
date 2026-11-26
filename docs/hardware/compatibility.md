@@ -30,17 +30,24 @@ Tested by the Beatnik team:
 | Sound card | Type | Use with |
 |------------|------|----------|
 | **HiFiBerry Amp4 Pro** | Amplifier | Passive speakers |
+| **HiFiBerry Amp2 / Amp4** | Amplifier | Passive speakers |
 | **Raspberry Pi DigiAMP+** | Amplifier | Passive speakers |
 | **HiFiBerry DAC+ ADC Pro / DAC2 ADC Pro** | DAC + ADC | Active speakers, amp or receiver. Also has Line-In. |
+| **HiFiBerry DAC+ ADC** | DAC + ADC | Active speakers, amp or receiver. Also has Line-In. |
+| **HiFiBerry DAC+ Pro / DAC2 Pro** | DAC | Active speakers, amp or receiver |
+| **HiFiBerry DAC / MiniAmp / Beocreate / DAC+ Light** | DAC | Active speakers, amp or receiver |
 
 Reported working by the community: **HiFiBerry Digi / Digi+ / Digi 2** (standard and Pro), for receivers with an S/PDIF input.
+
+HiFiBerry cards are not detected automatically. Select yours manually during setup.
 
 Profiles also exist for more HiFiBerry and IQaudIO boards, USB DACs, HDMI and the headphone jack. See [Sound Cards](./soundcards.md) for the full list.
 
 ## Line-In
 
-To stream an analog source such as a turntable to every room, use a sound card with an ADC, for example the **HiFiBerry DAC+ ADC Pro**. It must be on the device that runs as your server. See [Sound Cards – Line-In](./soundcards.md#line-in).
+To stream an analog source such as a turntable to every room, use a sound card with an ADC: the **HiFiBerry DAC+ ADC Pro** or **DAC+ ADC**. It must be on the device that runs as your server. See [Sound Cards – Line-In](./soundcards.md#line-in).
 
 ## Next
 
-See [Hardware Examples](./overview.md) for complete parts lists.
+- [How to Build a Beatnik Amplifier](./build-amplifier.md) – put it all together.
+- [Hardware Examples](./overview.md) – complete parts lists.
