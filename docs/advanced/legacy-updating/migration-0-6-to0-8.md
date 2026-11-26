@@ -1,5 +1,7 @@
 # Updating from Beatnik 0.6 to 0.8
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/legacy-updating/migration-0-6-to0-8.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/legacy-updating/migration-0-6-to0-8.md)
+
 Beatnik 0.6 installed its own services from Git checkouts in your home folder. Beatnik 0.8 ships the Hardware API and the Bleno service as Debian packages that live in `/opt` and are managed by `apt`. The in-app updater can't make this switch for you, so you do it once by hand over SSH.
 
 This guide removes the old checkouts and their systemd services, then installs the 0.8 packages. Your Snapcast, AirPlay and Spotify setup stays as it is.

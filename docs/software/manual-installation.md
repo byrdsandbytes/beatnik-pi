@@ -1,5 +1,7 @@
 # Beatnik Manual / Bare Metal Installation
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/manual-installation.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/manual-installation.md)
+
 ## 1 · Flash OS & SSH into the Pi
 
 1. **Download** [Raspberry Pi Imager](https://www.raspberrypi.com/software/).

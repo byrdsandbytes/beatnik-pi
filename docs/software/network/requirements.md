@@ -1,5 +1,7 @@
 # Network and Infrastructure Requirements: Beatnik Pi & Snapcast Audio System
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/network/requirements.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/network/requirements.md)
+
 **Note: These guidelines are primarily for complex, high-traffic commercial or enterprise environments. Typical standard home Wi-Fi setups usually support these protocols out of the box without requiring advanced network configurations.**
 
 This document outlines the network requirements necessary to support a multi-room, synchronized audio environment using **Beatnik Pi** & **Snapcast**.

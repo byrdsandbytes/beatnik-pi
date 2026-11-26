@@ -1,4 +1,7 @@
 # Raspberry Pi DAC+ HAT
+
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/soundcards/raspberry-dacPlus.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/soundcards/raspberry-dacPlus.md)
+
 Former IQAudio
 
 ## Driver Actication

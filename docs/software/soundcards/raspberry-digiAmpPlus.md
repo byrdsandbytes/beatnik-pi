@@ -1,4 +1,7 @@
 # Raspberry Pi DigiAmp+ HAT
+
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/soundcards/raspberry-digiAmpPlus.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/soundcards/raspberry-digiAmpPlus.md)
+
 Former IQAudio
 
 ## Driver Actication

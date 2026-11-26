@@ -1,5 +1,7 @@
 # Bleno Service (BLE WiFi Provisioning)
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/bleno.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/bleno.md)
+
 Source: [byrdsandbytes/beatnik-bleno](https://github.com/byrdsandbytes/beatnik-bleno)
 
 A Bluetooth Low Energy (BLE) WiFi provisioning service for Raspberry Pi, built with TypeScript on top of [@abandonware/bleno](https://github.com/abandonware/bleno).

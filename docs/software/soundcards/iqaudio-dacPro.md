@@ -1,4 +1,7 @@
 # IQ Audio DAC Pro
+
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/soundcards/iqaudio-dacPro.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/soundcards/iqaudio-dacPro.md)
+
 Now official Raspberry Pi DAC Pro
 ## Driver Actication
 

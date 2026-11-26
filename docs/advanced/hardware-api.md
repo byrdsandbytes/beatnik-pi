@@ -1,5 +1,7 @@
 # Hardware API
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/hardware-api.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/hardware-api.md)
+
 Source: [byrdsandbytes/beatnik-hardware-api](https://github.com/byrdsandbytes/beatnik-hardware-api)
 
 Microservice for managing audio hardware, Snapcast, and system settings on a Raspberry Pi for the Beatnik Audio System.

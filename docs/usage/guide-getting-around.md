@@ -1,5 +1,7 @@
 # Getting Around
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-getting-around.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-getting-around.md)
+
 ## Concepts
 
 Beatnik Controller is a remote control for a [Snapcast](https://github.com/badaix/snapcast) multi-room audio system. A few terms appear throughout the app:

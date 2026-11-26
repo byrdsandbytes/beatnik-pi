@@ -1,5 +1,7 @@
 # Choosing the Right Hardware
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/choosing-hardware.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/choosing-hardware.md)
+
 Source: [beatnik.audio – Getting Started](https://beatnik.audio/blogs/docs/getting-started)
 
 ## 1. What do you already have?

@@ -1,5 +1,7 @@
 # Advanced: Room Correction with CamillaDSP
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/features/dsp.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/features/dsp.md)
+
 ::: tip Included in Beatnik OS
 Starting with Beatnik OS version 0.8, CamillaDSP is already installed and configured. The steps below are only needed for a manual / bare metal setup.
 :::

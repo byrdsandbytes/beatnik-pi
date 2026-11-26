@@ -1,5 +1,7 @@
 # Settings & Help
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-settings-help.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-settings-help.md)
+
 ## Settings
 
 ![Settings screen with Username, Server Url and Scan for devices on startup](../images/byrd-app_settings.png)

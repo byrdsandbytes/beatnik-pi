@@ -1,5 +1,7 @@
 # Quick Start
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/getting-started/quick-start.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/getting-started/quick-start.md)
+
 Flash Beatnik OS to an SD card, then boot your Raspberry Pi.
 
 ## What You Need

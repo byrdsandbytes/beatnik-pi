@@ -1,5 +1,7 @@
 # Camilla DSP and Equalising
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-camilladsp.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-camilladsp.md)
+
 [CamillaDSP](https://github.com/HEnquist/camilladsp) is the audio processing engine on each Beatnik. It sits between Snapcast and the soundcard and is what makes equalising, volume trim, channel mixing and dynamics control possible. The app talks to it live, so you can hear every change while you make it.
 
 ![Beatnik Controller Web UI - Camilla DSP](../images/webApp003.webp)

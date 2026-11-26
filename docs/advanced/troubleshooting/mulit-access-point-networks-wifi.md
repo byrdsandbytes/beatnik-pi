@@ -1,5 +1,7 @@
 # Wi-Fi Crashes on Multi-Access-Point Networks
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/troubleshooting/mulit-access-point-networks-wifi.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/troubleshooting/mulit-access-point-networks-wifi.md)
+
 This guide helps you diagnose and resolve Wi-Fi crashes on Beatnik Pi devices when connected to high-density & high complexity networks with multiple access points, that are in reach simultaneously.
 
 **NOTE:** This is only relevant to prove that the issue is caused by high-density multi-access-point Wi-Fi environments and not by other factors like hardware faults or software bugs unrelated to networking. Usually service providers configure this correctly but you may need to help them getting the settings right.

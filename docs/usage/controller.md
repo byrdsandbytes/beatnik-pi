@@ -1,5 +1,7 @@
 # Using the Beatnik Controller
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/controller.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/controller.md)
+
 The Beatnik Controller lets you manage your Beatnik Pi or Snapcast multi-room audio system from a browser or the iOS and Android apps. Use it to control playback across rooms, manage devices and adjust audio settings.
 
 ![Beatnik Controller dashboard in a web browser](../images/webApp001.webp)
