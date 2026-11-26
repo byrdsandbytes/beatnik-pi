@@ -1,4 +1,4 @@
-<!-- reviewed-by: @Idrimi 2026-11-20 -->
+<!-- reviewed-by: @Idrimi 2026-11-26 -->
 
 # Architecture & Software Components
 
