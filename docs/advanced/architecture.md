@@ -1,3 +1,5 @@
+<!-- reviewed-by: @Idrimi 2026-11-20 -->
+
 # Architecture & Software Components
 
 [![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
@@ -24,11 +26,6 @@ For the audio signal path see [Audio Pipelines](../features/pipelines.md).
 | [Beatnik Bleno](https://github.com/byrdsandbytes/beatnik-bleno) | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
 | [Docker](https://www.docker.com/)         | **x.x** – Containerize & host controller |
 
-
----
-reviewed_by: Idrimi
-reviewed_at: 2026-11-26
----
 
 
 
