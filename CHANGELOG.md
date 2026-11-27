@@ -12,6 +12,7 @@ Entries before this file existed were reconstructed from the git history.
 - More detailed Raspberry Pi and soundcard recommendations; docs restructured and cross-linked (#76, #77).
 - Human doc validation concept: provenance badge and review tag on all docs (#78 to #84).
 - ADC mentioned in the README installation instructions (#75).
+- Power consumption and running costs page in the hardware docs, comparing a Beatnik Pi to an AV receiver.
 
 ### Changed
 - Docs split into smaller pages (#84).

@@ -98,6 +98,7 @@ export default defineConfig({
               { text: 'Sound Cards', link: '/hardware/soundcards' }
             ]
           },
+          { text: 'Power Consumption & Running Costs', link: '/hardware/power-consumption' },
           { text: 'How to Build a Beatnik Amplifier', link: '/hardware/build-amplifier' }
         ]
       },

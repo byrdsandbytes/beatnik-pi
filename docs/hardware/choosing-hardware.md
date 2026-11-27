@@ -53,5 +53,6 @@ It's up to you to decide what you need.
 
 - [Hardware Examples](./overview.md) – complete parts lists for a server and a client.
 - [Compatibility](./compatibility.md) – supported Raspberry Pi models and sound cards, if you want to pick your own parts.
+- [Power Consumption & Running Costs](./power-consumption.md) – how much electricity a Beatnik Pi uses compared to an AV receiver.
 
 Curated bundles, components and Plug & Play devices are available at [beatnik.audio](https://beatnik.audio).
