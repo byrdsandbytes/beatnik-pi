@@ -1,10 +1,14 @@
 # Hardware Examples
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/overview.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/overview.md)
+
 ![DAC vs Amp](../images/DacVsAMP_scale.webp)
 
 ::: tip
 Prefer not to source the parts yourself? Components, curated bundles and Plug & Play devices are available at [beatnik.audio](https://beatnik.audio).
 :::
+
+For all supported Pi models and sound cards, see [Compatibility](./compatibility.md).
 
 ## Beatnik Server (Amp Pro)
 
@@ -28,3 +32,8 @@ Prefer not to source the parts yourself? Components, curated bundles and Plug & 
 | **HifiBerry Amp 2** | Just Plug it on your GPIOs       |
 | **Power Supply**   | Amp is powered via  GPIO            |
 | **3d Printed Custom Case**   | Currently working on cases, check   [our subbredit r/beatnikAudio](https://www.reddit.com/r/beatnikAudio/) to see the progress.         |
+
+## Next
+
+- [Compatibility](./compatibility.md) – swap in other Raspberry Pi models or sound cards.
+- [How to Build a Beatnik Amplifier](./build-amplifier.md) – put it all together.

@@ -1,5 +1,7 @@
 # HiFiBerry Digi+ Pro / Digi 2 Pro
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/software/soundcards/hifiberry-digi-pro.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/software/soundcards/hifiberry-digi-pro.md)
+
 ## Driver Activation
 
 Based on HiFiBerry docs: https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/

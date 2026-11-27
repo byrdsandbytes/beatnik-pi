@@ -1,8 +1,8 @@
+<!-- reviewed-by: @Idrimi 2026-11-26 -->
+
 # Architecture & Software Components
 
-[![Last Edited](https://us-central1-human-validated-badge.cloudfunctions.net/badges/last-edited/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
-
-[![Validated By](https://us-central1-human-validated-badge.cloudfunctions.net/badges/last-reviewed/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/architecture.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/architecture.md)
 
 ## Architecture
 
@@ -25,6 +25,7 @@ For the audio signal path see [Audio Pipelines](../features/pipelines.md).
 | [Beatnik Controller](https://github.com/byrdsandbytes/beatnik-controller) | **0.2.1** / Web UI & App – grouping, volume & status |
 | [Beatnik Bleno](https://github.com/byrdsandbytes/beatnik-bleno) | **x.x** / Bluetooth Low Energy (BLE) for headless setup / wifi provisioning |
 | [Docker](https://www.docker.com/)         | **x.x** – Containerize & host controller |
+
 
 
 

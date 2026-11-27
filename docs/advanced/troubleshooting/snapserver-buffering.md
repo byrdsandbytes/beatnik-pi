@@ -1,5 +1,7 @@
 # Snapserver & Snapclient Buffering Configuration Guide
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/troubleshooting/snapserver-buffering.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/troubleshooting/snapserver-buffering.md)
+
 When streaming multi-room audio over Wi-Fi, tuning your buffer and latency parameters in **Snapserver** and **Snapclient** is the most effective way to eliminate audio dropouts, clicks, and synchronization drift without degrading audio quality.
 
 This guide explains how Snapcast handles buffering from end to end, the key configuration options, and practical tuning presets for various network conditions.

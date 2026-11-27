@@ -1,5 +1,7 @@
 # FAQ
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/getting-started/faq.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/getting-started/faq.md)
+
 Short answers with links to the full documentation.
 
 ## General & Ecosystem

@@ -1,5 +1,7 @@
 # Adding a New Beatnik Device
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/guide-add-device.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/guide-add-device.md)
+
 Tap **+** on the dashboard (or the big button on the onboarding card) to start the setup. Setup runs in the **mobile app** and uses Bluetooth Low Energy.
 
 ### Step 1 - Wi-Fi setup (`Network Configuration`)
@@ -17,9 +19,7 @@ Network Configuration step: Scan for Devices and the list of Wi-Fi networks.
 
 ### Step 2 - Server setup (`Configure Device`)
 
-::: warning 📸 Screenshot needed
-Configure Device step: Setup as Server / Setup as Client.
-:::
+![Configure Device step with Setup as Server and Setup as Client](../images/byrd-app_add-device_server.png)
 
 The app searches for existing Snapcast servers on your network:
 
@@ -35,14 +35,12 @@ The app then validates the connection to the server.
 Choose the soundcard configuration:
 
 - **Detected Soundcard** - use the hardware the Beatnik detected automatically.
-- **Manual** - select your soundcard from the list and tap **Apply Manual Soundcard Config**. Some soundcards cannot be detected automatically.
+- **Manual** - select your soundcard from the list and tap **Apply Manual Soundcard Config**. Some soundcards cannot be detected automatically. HiFiBerry cards are never detected, so always pick them here.
 
 Tap **Continue** when finished.
 
 ### Step 4 - Name the device group
 
-::: warning 📸 Screenshot needed
-Name the device group screen with Save & Complete Setup.
-:::
+![Name the device group screen with the Save & Complete Setup button](../images/byrd-app_add-device_name.png)
 
 Give the device a descriptive name such as "Living Room Amp" or "Kitchen Audio" and tap **Save & Complete Setup**. A group can contain a single device or several.

@@ -89,6 +89,15 @@ export default defineConfig({
         items: [
           { text: 'Choosing the Right Hardware', link: '/hardware/choosing-hardware' },
           { text: 'Hardware Examples', link: '/hardware/overview' },
+          {
+            text: 'Compatibility',
+            link: '/hardware/compatibility',
+            collapsed: false,
+            items: [
+              { text: 'Raspberry Pi Models', link: '/hardware/raspberry-pi' },
+              { text: 'Sound Cards', link: '/hardware/soundcards' }
+            ]
+          },
           { text: 'How to Build a Beatnik Amplifier', link: '/hardware/build-amplifier' }
         ]
       },
@@ -137,6 +146,7 @@ export default defineConfig({
           { text: 'Bleno Service (BLE WiFi Provisioning)', link: '/advanced/bleno' },
           { text: 'Network Debugging Guide', link: '/advanced/troubleshooting/network-debugging' },
           { text: 'Multi-AP Wi-Fi Crashes (brcmfmac)', link: '/advanced/troubleshooting/mulit-access-point-networks-wifi' },
+          { text: 'Updating from 0.6 to 0.8', link: '/advanced/legacy-updating/migration-0-6-to0-8' },
 
 
         ]

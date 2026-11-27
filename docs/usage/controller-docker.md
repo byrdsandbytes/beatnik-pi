@@ -1,5 +1,7 @@
 # Controller Docker Setup
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/usage/controller-docker.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/usage/controller-docker.md)
+
 Source: [byrdsandbytes/beatnik-controller](https://github.com/byrdsandbytes/beatnik-controller)
 
 Beatnik Controller is a web-based remote control for your [Beatnik Pi](https://github.com/byrdsandbytes/beatnik-pi) or [Snapcast](https://github.com/badaix/snapcast) multi-room audio server. It allows you to easily manage and control audio streams from any device with a web browser. The application can also be compiled for Android and iOS and is available in the App- & Play Store.

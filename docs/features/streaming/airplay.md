@@ -1,5 +1,7 @@
 # AirPlay
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/features/streaming/airplay.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/features/streaming/airplay.md)
+
 AirPlay (1 & 2) is in a stable state. The server accepts AirPlay streams from any smartphone, laptop or PC and re-distributes them to all your Snapclients.
 
 ::: tip Included in Beatnik OS

@@ -1,5 +1,7 @@
 # Beatnik Audio Pipelines
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/features/pipelines.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/features/pipelines.md)
+
 ![Beatnik audio signal processing pipeline](../images/signalProcessing-02.webp)
 
 The diagram shows the two audio paths on a Beatnik: the **line-in pipeline**, which digitises and pre-processes an analogue source before it is distributed, and the **playback pipeline**, which processes the signal before it is played. Both are managed from the [Beatnik Controller](../usage/controller.md) through the [Beatnik Hardware API](../advanced/hardware-api.md).

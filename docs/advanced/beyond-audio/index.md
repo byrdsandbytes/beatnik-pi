@@ -1,5 +1,7 @@
 # Beyond Audio: Running Other Services on Your Beatnik Pi
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/advanced/beyond-audio/index.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/advanced/beyond-audio/index.md)
+
 Your Beatnik Pi is a full Linux computer that's usually on, so it can also run small self-hosted services next to the audio stack. The guides in this section show how to install tools that have nothing to do with Beatnik itself.
 
 ::: warning Unofficial and unsupported

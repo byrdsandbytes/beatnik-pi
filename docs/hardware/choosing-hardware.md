@@ -1,5 +1,7 @@
 # Choosing the Right Hardware
 
+[![Provenance](https://us-central1-human-validated-badge.cloudfunctions.net/badges/provenance/byrdsandbytes/beatnik-pi/docs/hardware/choosing-hardware.md)](https://github.com/byrdsandbytes/beatnik-pi/blob/master/docs/hardware/choosing-hardware.md)
+
 Source: [beatnik.audio – Getting Started](https://beatnik.audio/blogs/docs/getting-started)
 
 ## 1. What do you already have?
@@ -43,12 +45,13 @@ You can build Beatnik devices in various quality. From "cost optimized" to "audi
 
 It's up to you to decide what you need.
 
-- More computing power, because you want to use crazy mixers & filters or even run it as homelab? -> Choose a Raspberry Pi with more RAM and GHz
-- Are you an audiophile? -> Choose a high end audio board.
-- Wanna connect your vinyl player? -> Choose an audio board that has line-in (DAC/ADC).
+- More computing power, because you want to use crazy mixers & filters or even run it as homelab? -> Choose a Raspberry Pi with more RAM and GHz. See [Raspberry Pi Models](./raspberry-pi.md).
+- Are you an audiophile? -> Choose a high end audio board. See [Sound Cards](./soundcards.md).
+- Wanna connect your vinyl player? -> Choose an audio board that has line-in (DAC/ADC). See [Line-In](./soundcards.md#line-in).
 
 ## Next
 
-See the [Hardware Examples](./overview.md) for example parts lists.
+- [Hardware Examples](./overview.md) – complete parts lists for a server and a client.
+- [Compatibility](./compatibility.md) – supported Raspberry Pi models and sound cards, if you want to pick your own parts.
 
 Curated bundles, components and Plug & Play devices are available at [beatnik.audio](https://beatnik.audio).
