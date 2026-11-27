@@ -37,7 +37,10 @@ For passive speakers. Connect them directly to the board.
 |------------|---------|--------|--------|
 | [HiFiBerry Amp4 Pro](../software/soundcards/hifiberry-amp4Pro.md) | `hifiberry-amp4pro` | S32LE | Beatnik, Community |
 | [Raspberry Pi DigiAMP+](../software/soundcards/raspberry-digiAmpPlus.md) | `iqaudio-digiamp-plus,unmute_amp` | S32LE | Beatnik |
-| HiFiBerry Amp2 / Amp4 | `hifiberry-dacplus-std` | S32LE | Beatnik, Community |
+| HiFiBerry Amp2 | `hifiberry-dacplus-std` | S32LE | Beatnik, Community |
+| HiFiBerry Amp4 | `hifiberry-dacplus-std` | S32LE | Beatnik, Community |
+
+The Amp2 and Amp4 share one profile. In the app, select **HiFiBerry Amp2 / Amp4** for either card.
 
 The older HiFiBerry **Amp+** and **Amp3** have no profile and are not supported.
 

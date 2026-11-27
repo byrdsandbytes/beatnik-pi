@@ -32,7 +32,8 @@ Tested by the Beatnik team:
 | Sound card | Type | Use with |
 |------------|------|----------|
 | **HiFiBerry Amp4 Pro** | Amplifier | Passive speakers |
-| **HiFiBerry Amp2 / Amp4** | Amplifier | Passive speakers |
+| **HiFiBerry Amp4** | Amplifier | Passive speakers |
+| **HiFiBerry Amp2** | Amplifier | Passive speakers |
 | **Raspberry Pi DigiAMP+** | Amplifier | Passive speakers |
 | **HiFiBerry DAC+ ADC Pro / DAC2 ADC Pro** | DAC + ADC | Active speakers, amp or receiver. Also has Line-In. |
 | **HiFiBerry DAC+ ADC** | DAC + ADC | Active speakers, amp or receiver. Also has Line-In. |
