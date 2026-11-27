@@ -66,6 +66,32 @@ jobs:
           echo "::error::No build metadata asset found on release $TAG"
           exit 1
 
+      # Hash the image people will actually download and compare it with the metadata,
+      # i.e. exactly what Raspberry Pi Imager checks. Catches a release whose files were
+      # replaced by another build (that is how v0.8.3 ended up with a SHA256 mismatch).
+      - name: Verify release image matches metadata
+        if: steps.state.outputs.skip != 'true'
+        run: |
+          IMG_XZ="beatnik-os-${TAG}.img.xz"
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$IMG_XZ" --clobber
+
+          check() { # name expected actual
+            if [[ "$2" == "$3" ]]; then
+              echo "OK        $1: $3"
+            else
+              echo "::error::$1 mismatch - metadata says $2, release file is $3"
+              FAILED=1
+            fi
+          }
+          FAILED=0
+          check version    "$(jq -r .version meta.json)"    "$TAG"
+          check xz_size    "$(jq -r .xz_size meta.json)"    "$(stat -c%s "$IMG_XZ")"
+          check xz_sha256  "$(jq -r .xz_sha256 meta.json)"  "$(sha256sum "$IMG_XZ" | cut -d' ' -f1)"
+          check img_size   "$(jq -r .img_size meta.json)"   "$(xz -dc "$IMG_XZ" | wc -c)"
+          check img_sha256 "$(jq -r .img_sha256 meta.json)" "$(xz -dc "$IMG_XZ" | sha256sum | cut -d' ' -f1)"
+          rm -f "$IMG_XZ"
+          exit "$FAILED"
+
       - name: Update beatnik-repo.json
         if: steps.state.outputs.skip != 'true'
         run: python3 ci/update_repo_json.py --meta meta.json

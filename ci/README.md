@@ -18,6 +18,7 @@ Workflow files:
 | `shairport-snapcast.conf` | While the image is being built | Provides the Shairport-Sync settings used by both Snapserver AirPlay sources. |
 | `firstboot.sh` | Once, the first time a real Pi boots with this image | Starts the Beatnik Controller, then disables itself so it never runs again. |
 | `beatnik-firstboot.service` | Real first boot only | Triggers `firstboot.sh` once. |
+| `assert_release_not_published.sh` | Before a release build, and again before uploading | Stops the build if the tag's release is already published, so its files can never be swapped. |
 | `update_repo_json.py` | Twice: as a preview during the build, and for real once the release is published | Adds the new release's download link, size, and checksums to `beatnik-repo.json`. |
 
 ## The `beatnik` user account
@@ -42,34 +43,23 @@ Docker and the Beatnik Controller's files are already installed at build time. T
 only thing that has to wait for a real boot is actually starting the Controller,
 since that needs a live Docker daemon.
 
-## Testing changes before merging to `master`
+## Testing changes and releasing
 
-1. Push your branch.
-2. Go to Actions → **Build Beatnik OS Image** → **Run workflow**, and pick your branch.
-3. Leave **publish** unchecked. This still builds the full image, but uploads the
-   `.img.xz` file and a matching `beatnik-repo.json` as workflow attachments instead of
-   creating a release, so you can test without touching the real release.
-4. Download the image and flash it using Raspberry Pi Imager's "Use custom" option,
-   then test it following Test A/B from the Iso-Flashing guide. The test
-   `beatnik-repo.json`'s download link won't work on its own since no real release was
-   published - it's only for checking the generated file looks right.
+The full process, including troubleshooting, is in the
+[Releasing Beatnik OS](../docs/advanced/releasing.md) guide. In short:
 
-Pushing a version tag (like `v1.0.0`), or running the workflow with **publish**
-checked, builds the image and creates a **draft** GitHub release with the `.img.xz`
-attached - it does **not** touch `beatnik-repo.json` yet.
-
-`beatnik-repo.json` only gets updated once you click **Publish release** on GitHub.
-A separate workflow (`publish-repo-json.yml`) handles that, so the download link
-never goes live before the file behind it is actually public. It downloads the
-`beatnik-os-<version>.meta.json` asset (sizes + checksums written by the build) from
-the release, runs `update_repo_json.py --meta`, and opens a pull request
-(`chore/repo-json-<version>`) against `master`, since `master` is protected. Merge that
-PR to make the release show up in Raspberry Pi Imager. Prereleases are skipped.
-This needs **Settings → Actions → General → "Allow GitHub Actions to create and
-approve pull requests"** enabled.
-
-If it ever fails, or for a release published before it worked, run it by hand:
-Actions → **Publish beatnik-repo.json** → **Run workflow** → enter the tag.
+- **Test build:** Actions → **Build Beatnik OS Image** → **Run workflow** on your branch.
+  The image and a preview `beatnik-repo.json` are uploaded as workflow artifacts. A
+  manual run never creates or changes a release.
+- **Release:** push a tag like `v1.0.0`. The build creates a **draft** release with the
+  `.img.xz` and `beatnik-os-<version>.meta.json` (sizes and checksums).
+- **Publish:** click **Publish release** on the draft. `publish-repo-json.yml` then
+  verifies the published image against `meta.json` and opens a pull request
+  (`chore/repo-json-<version>`) that adds it to `beatnik-repo.json`. Prereleases are
+  skipped.
+- A published release is final. `assert_release_not_published.sh` makes the build fail
+  rather than replace its files, because that breaks the checksums Raspberry Pi Imager
+  checks.
 
 ## Problems we ran into (so we don't repeat them)
 
@@ -87,3 +77,9 @@ Actions → **Publish beatnik-repo.json** → **Run workflow** → enter the tag
   Bleno), so those are allowed to fail with a warning instead of stopping the build.
 - The Hardware API and Bleno are installed from their release `.deb` packages.
   Node.js 22 is installed as a system package first, as required by both packages.
+- A manual run with "publish" checked created a draft without a tag. Publishing it
+  created the tag, which started a second build that replaced the files on the
+  already-published release, so the checksums in `beatnik-repo.json` no longer
+  matched (v0.8.3: "SHA256 mismatch" in Raspberry Pi Imager). Manual runs are now
+  test-only, published releases are never overwritten, and the publish workflow
+  hashes the real release file before opening the pull request.
