@@ -98,7 +98,15 @@ export default defineConfig({
               { text: 'Sound Cards', link: '/hardware/soundcards' }
             ]
           },
-          { text: 'Power Consumption & Running Costs', link: '/hardware/power-consumption' },
+          {
+            text: 'Power Consumption',
+            link: '/hardware/power-consumption/',
+            collapsed: true,
+            items: [
+              { text: 'Pioneer VSX-529-K', link: '/hardware/power-consumption/pioneer-vsx-529-k' },
+              { text: 'Sansui AU-222', link: '/hardware/power-consumption/sansui-au-222' }
+            ]
+          },
           { text: 'How to Build a Beatnik Amplifier', link: '/hardware/build-amplifier' }
         ]
       },
