@@ -147,6 +147,7 @@ export default defineConfig({
           { text: 'Network Debugging Guide', link: '/advanced/troubleshooting/network-debugging' },
           { text: 'Multi-AP Wi-Fi Crashes (brcmfmac)', link: '/advanced/troubleshooting/mulit-access-point-networks-wifi' },
           { text: 'Updating from 0.6 to 0.8', link: '/advanced/legacy-updating/migration-0-6-to0-8' },
+          { text: 'Releasing Beatnik OS', link: '/advanced/releasing' },
 
 
         ]

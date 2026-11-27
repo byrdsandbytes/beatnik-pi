@@ -1,19 +1,19 @@
 name: Build Beatnik OS Image
 
+# Two ways to run this, and only one of them makes a release:
+#
+#   push a tag v*.*.*   -> builds the image and creates a DRAFT GitHub release.
+#                          Publishing that draft triggers publish-repo-json.yml.
+#   Run workflow (UI)   -> test build only: the image is uploaded as a workflow
+#                          artifact. Never creates or touches a release.
+#
+# See docs/advanced/releasing.md.
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: "Release version tag, e.g. v1.0.0"
-        required: true
-      publish:
-        description: "Create a real release and commit beatnik-repo.json"
-        type: boolean
-        default: false
-      prerelease:
-        description: "Mark the GitHub release as a prerelease"
-        type: boolean
-        default: false
+      label:
+        description: "Label for the test image file name (optional, defaults to test-<commit>)"
+        required: false
   push:
     tags:
       - "v*.*.*"
@@ -21,22 +21,30 @@ on:
 permissions:
   contents: write
 
+# Two builds for the same tag must never run at the same time.
+concurrency:
+  group: build-image-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-image:
     # Pinned: newer ubuntu-latest no longer ships a installable qemu-user-static
     # package, which pguyot/arm-runner-action installs.
     runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Resolve version, publish and prerelease flags
+      - name: Resolve version and release flags
         id: ver
+        env:
+          LABEL: ${{ inputs.label }}
         run: |
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
             VERSION="${GITHUB_REF_NAME}"
-            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "release=true" >> "$GITHUB_OUTPUT"
             # semver pre-release suffix, e.g. v1.0.0-rc1 or v1.0.0-beta.2
             if [[ "${VERSION}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-.+ ]]; then
               echo "prerelease=true" >> "$GITHUB_OUTPUT"
@@ -44,10 +52,16 @@ jobs:
               echo "prerelease=false" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
-            echo "publish=${{ github.event.inputs.publish }}" >> "$GITHUB_OUTPUT"
-            echo "prerelease=${{ github.event.inputs.prerelease }}" >> "$GITHUB_OUTPUT"
+            VERSION="${LABEL:-test-${GITHUB_SHA::7}}"
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
           fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      # Fail fast instead of spending 15 minutes on a build we are not allowed to upload.
+      - name: Refuse to overwrite a published release
+        if: steps.ver.outputs.release == 'true'
+        run: ci/assert_release_not_published.sh "${{ steps.ver.outputs.version }}"
 
       # Mitigates transient "Cannot allocate memory" apt errors seen under QEMU emulation.
       # Uses a distinct filename since ubuntu-latest runners already ship an active
@@ -101,7 +115,7 @@ jobs:
           echo "size=$(stat -c%s "$XZFILE")" >> "$GITHUB_OUTPUT"
 
       - name: Upload build artifact (test runs)
-        if: steps.ver.outputs.publish != 'true'
+        if: steps.ver.outputs.release != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.rename.outputs.img }}.xz
@@ -127,8 +141,13 @@ jobs:
           cat "$META_FILE"
           echo "file=$META_FILE" >> "$GITHUB_OUTPUT"
 
+      # Checked again: someone may have published the draft while this build ran.
+      - name: Re-check release is still unpublished
+        if: steps.ver.outputs.release == 'true'
+        run: ci/assert_release_not_published.sh "${{ steps.ver.outputs.version }}"
+
       - name: Create GitHub release (draft)
-        if: steps.ver.outputs.publish == 'true'
+        if: steps.ver.outputs.release == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.ver.outputs.version }}
